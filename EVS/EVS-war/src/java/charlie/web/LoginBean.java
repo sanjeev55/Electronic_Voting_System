@@ -1,0 +1,88 @@
+package charlie.web;
+
+import charlie.dto.UserDto;
+import charlie.logic.UserLogic;
+import java.io.IOException;
+import javax.inject.Named;
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
+import java.security.Principal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
+
+@Named(value = "loginBean")
+@SessionScoped
+public class LoginBean implements Serializable {
+
+    private static final Logger LOG = Logger.getLogger(LoginBean.class.getName());
+
+    private UserDto currentUser;
+    
+    @EJB
+    private UserLogic ul;
+    
+    @PostConstruct
+    public void newSession() {
+        LOG.info("Contacts: NEW SESSION");
+    }
+
+    public boolean isLoggedIn() {
+        return getUser() != null;
+    }
+
+    public boolean isStaff() {
+        if (!isLoggedIn()) {
+            return false;
+        }
+        return FacesContext.getCurrentInstance()
+                .getExternalContext().isUserInRole("STAFF");
+    }
+
+    private Principal oldPrincipal = null; // used to detect changed login
+
+    public UserDto getUser() {
+        Principal p = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getUserPrincipal();
+        if (p == null) {
+            currentUser = null;
+        } else {
+            if (!p.equals(oldPrincipal)) {
+                LOG.log(Level.INFO, "Contacts: LOGIN user {0}", p.getName());
+                currentUser = ul.getCurrentUser();
+            }
+        }
+        oldPrincipal = p;
+        return currentUser;
+    }
+
+    public void invalidateSession() {
+        LOG.log(Level.INFO, "invalidateSession()");
+        Principal p = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getUserPrincipal();
+        if (p != null) {
+            LOG.log(Level.INFO, "Contacts: LOGOUT user {0}", p.getName());
+        }
+        currentUser = null;
+        oldPrincipal = null;
+        FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .invalidateSession();
+    }
+
+    public void logout() {
+        try {
+            invalidateSession();
+            
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/pages/login.xhtml?faces-redirect=true");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+}
