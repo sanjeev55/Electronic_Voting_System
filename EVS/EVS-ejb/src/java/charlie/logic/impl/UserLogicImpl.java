@@ -4,6 +4,7 @@ import charlie.logic.UserLogic;
 import charlie.dao.UserAccess;
 import charlie.dto.UserDto;
 import charlie.entity.UserEntity;
+import charlie.mapper.UserEntityMapper;
 import java.security.Principal;
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
@@ -22,6 +23,9 @@ public class UserLogicImpl implements UserLogic {
 
     @EJB
     private UserAccess ua;
+    
+    @EJB
+    private UserEntityMapper userEntityMapper;
 
     @Resource
     private EJBContext ejbContext;
@@ -30,9 +34,9 @@ public class UserLogicImpl implements UserLogic {
 
     @AroundInvoke
     private Object getCaller(InvocationContext ctx) throws Exception {
-        Principal p = ejbContext.getCallerPrincipal();
-        if (p != null) {
-            caller = ua.getUser(p.getName());
+        String username = getCurrentUsername();
+        if (username != null) {
+            caller = ua.getUser(username);
         }
         return ctx.proceed();
     }
@@ -40,11 +44,16 @@ public class UserLogicImpl implements UserLogic {
     @Override
     @RolesAllowed(USER_ROLE)
     public UserDto getCurrentUser() {
-        return createDTO(caller);
+        return userEntityMapper.toDto(caller);
     }
 
-    private UserDto createDTO(UserEntity ue) {
-        return new UserDto(ue.getUuid(), ue.getJpaVersion(), ue.getUsername(), ue.getFirstName(), ue.getLastName());
+    @Override
+    public String getCurrentUsername() {
+        Principal p = ejbContext.getCallerPrincipal();
+        if(p == null)
+            return null;
+        
+        return p.getName();
     }
 
 }

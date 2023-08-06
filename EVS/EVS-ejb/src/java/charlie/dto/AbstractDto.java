@@ -1,12 +1,13 @@
 package charlie.dto;
 
+import java.util.Date;
 import java.util.Objects;
 
 public abstract class AbstractDto {
 
     private Integer id;
-    private String createdAt;
-    private String updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
     private String uuid;
     private int jpaVersion;
     
@@ -26,19 +27,19 @@ public abstract class AbstractDto {
         this.id = id;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -50,9 +51,18 @@ public abstract class AbstractDto {
         return uuid;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public boolean isNew() {
         return uuid == null;
     }
+
+    public void setJpaVersion(int jpaVersion) {
+        this.jpaVersion = jpaVersion;
+    }
+    
 
     @Override
     public int hashCode() {

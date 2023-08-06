@@ -18,4 +18,6 @@ public interface UserLogic {
     public static final String ADMIN_ROLE = "ADMIN";
     
     public UserDto getCurrentUser();
+    
+    public String getCurrentUsername();
 }
