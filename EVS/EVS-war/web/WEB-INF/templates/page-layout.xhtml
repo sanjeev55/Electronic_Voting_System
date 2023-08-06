@@ -37,8 +37,14 @@
                             </li>
 
                             <li>
-                                <a href="#{request.contextPath}/pages/user/manage_poll.xhtml">
-                                    <i class="zmdi zmdi-calendar"></i> Manage Polls
+                                <a href="#{request.contextPath}/pages/user/manage_poll.xhtml?show_polls_configured_by_me=true">
+                                    <i class="zmdi zmdi-calendar"></i> Polls by ${loginBean.user.username}
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href="#{request.contextPath}/pages/user/manage_poll.xhtml?show_polls_configured_by_me=false">
+                                    <i class="zmdi zmdi-calendar"></i> Polls owned by others
                                 </a>
                             </li>
                         </ul>

@@ -3,16 +3,15 @@ package charlie.mapper;
 import charlie.dto.PollDto;
 import charlie.entity.PollEntity;
 import charlie.utils.DateUtils;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 @Stateless
 @LocalBean
 public class PollEntityMapper extends AbstractEntityMapper<PollEntity, PollDto> {
-
-    public PollEntityMapper() {
-        super(new PollEntity(), new PollDto());
-    }
 
     @Override
     public PollEntity toEntity(PollDto domain) {
@@ -21,6 +20,7 @@ public class PollEntityMapper extends AbstractEntityMapper<PollEntity, PollDto> 
             return null;
         }
 
+        super.setEntity(new PollEntity());
         PollEntity entity = super.toEntity(domain);
         entity.setTitle(domain.getTitle());
         entity.setDescription(domain.getDescription());
@@ -39,7 +39,8 @@ public class PollEntityMapper extends AbstractEntityMapper<PollEntity, PollDto> 
         if (entity == null) {
             return null;
         }
-
+        
+        super.setDto(new PollDto());
         PollDto dto = super.toDto(entity);
         dto.setTitle(entity.getTitle());
         dto.setDescription(entity.getDescription());
@@ -49,4 +50,12 @@ public class PollEntityMapper extends AbstractEntityMapper<PollEntity, PollDto> 
         dto.setState(entity.getState());
         return dto;
     }
+    
+    public List<PollDto> toDomainList(List<PollEntity> entities) {
+        if (entities.isEmpty())
+            return Collections.emptyList();
+
+        return entities.stream().map(entity -> toDto(entity)).collect(Collectors.toList());
+    }
+
 }

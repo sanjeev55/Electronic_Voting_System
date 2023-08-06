@@ -9,11 +9,6 @@ public abstract class AbstractEntityMapper<E extends AbstractEntity, D extends A
     private E entity;
     private D domain;
     
-    public AbstractEntityMapper(E entity, D domain) {
-        this.entity = entity;
-        this.domain = domain;
-    }
-    
     public E toEntity(D domain) {
         entity.setId(domain.getId());
         entity.setJpaVersion(domain.getJpaVersion());
@@ -30,6 +25,14 @@ public abstract class AbstractEntityMapper<E extends AbstractEntity, D extends A
         domain.setUpdatedAt(entity.getUpdatedAt());
         domain.setUuid(entity.getUuid());
         return domain;
+    }
+    
+    public void setEntity(E entity) {
+        this.entity = entity;
+    }
+    
+    public void setDto(D domain) {
+        this.domain = domain;
     }
 
 }
