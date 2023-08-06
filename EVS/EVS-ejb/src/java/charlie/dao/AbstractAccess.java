@@ -17,8 +17,10 @@ public abstract class AbstractAccess<E extends AbstractEntity> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(E entity) {
+    public E create(E entity) {
         getEntityManager().persist(entity);
+        getEntityManager().flush();
+        return entity;
     }
 
     public void edit(E entity) {

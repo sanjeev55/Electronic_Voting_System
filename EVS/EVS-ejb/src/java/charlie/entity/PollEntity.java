@@ -1,7 +1,7 @@
 package charlie.entity;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -19,10 +19,10 @@ public class PollEntity extends AbstractEntity {
     private String description;
 
     @Column(name = "starts_at", nullable = false, columnDefinition = "datetime")
-    private Instant startsAt;
+    private Date startsAt;
 
     @Column(name = "ends_at", nullable = false, columnDefinition = "datetime")
-    private Instant endsAt;
+    private Date endsAt;
 
     @Column(name = "state", nullable = false, columnDefinition = "ENUM ('PREPARED', 'STARTED', 'VOTING', 'FINISHED') DEFAULT 'PREPARED'")
     @Enumerated(EnumType.STRING)
@@ -36,7 +36,7 @@ public class PollEntity extends AbstractEntity {
 
     @OneToMany(mappedBy = "poll", fetch = FetchType.LAZY)
     private Set<PollQuestionEntity> pollQuestions;
-
+   
     public String getTitle() {
         return title;
     }
@@ -53,19 +53,19 @@ public class PollEntity extends AbstractEntity {
         this.description = description;
     }
 
-    public Instant getStartsAt() {
+    public Date getStartsAt() {
         return startsAt;
     }
 
-    public void setStartsAt(Instant startsAt) {
+    public void setStartsAt(Date startsAt) {
         this.startsAt = startsAt;
     }
 
-    public Instant getEndsAt() {
+    public Date getEndsAt() {
         return endsAt;
     }
 
-    public void setEndsAt(Instant endsAt) {
+    public void setEndsAt(Date endsAt) {
         this.endsAt = endsAt;
     }
 
