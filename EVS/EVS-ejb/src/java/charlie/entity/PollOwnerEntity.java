@@ -16,6 +16,14 @@ public class PollOwnerEntity extends AbstractEntity {
 
     @Column(name = "is_primary_organizer", columnDefinition = "boolean default false")
     private Boolean isPrimaryOrganizer;
+    
+    public PollOwnerEntity() {
+        
+    }
+    
+    public PollOwnerEntity(boolean isNew) {
+        super(isNew);
+    }
 
     public UserEntity getOrganizer() {
         return organizer;

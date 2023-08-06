@@ -65,13 +65,13 @@ public class PollManagerLogic implements Serializable{
         
         if (!StringUtils.hasText(pollInfo.getStartsAt())) {
             FacesMessage message = new FacesMessage("Poll start date cannot be empty");
-            context.addMessage("addPoll:startsAt", message);
+            context.addMessage("addPoll:title", message);
             return;
         }
 
         if (!StringUtils.hasText(pollInfo.getEndsAt())) {
             FacesMessage message = new FacesMessage("Poll end date cannot be empty");
-            context.addMessage("addPoll:endsAt", message);
+            context.addMessage("addPoll:title", message);
             return;
         }
         

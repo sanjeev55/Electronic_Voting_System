@@ -8,6 +8,10 @@ public class UserDto extends AbstractDto {
     private String firstName;
     private String lastName;
     private RoleEnum role;
+
+    public UserDto() {
+    }
+    
     
     public UserDto(String uuid, int jpaVersion, String username, String firstName, String lastName) {
         super(uuid, jpaVersion);
