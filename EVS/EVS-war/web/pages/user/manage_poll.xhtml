@@ -12,7 +12,8 @@
         <h4>Welcome, ${loginBean.user.username}</h4>
         <div class="container-fluid">
             <div class="d-flex justify-content-between">
-                <h4>Organizers</h4>
+                <h4>Polls</h4>
+                <hr/>
                 <div>
                     <a class="btn btn-dark" href="#{request.contextPath}/pages/user/add_poll.xhtml"
                        role="button">Add Poll</a>
@@ -29,12 +30,12 @@
                         <th scope="col">Ends At</th>
                         <th scope="col">State</th>
                         <th scope="col">Track Participant</th>
-                        <th scope="col">Poll Owner</th>
+                        <th scope="col">Primary Owner</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <ui:repeat value="#{pollManager.getPolls()}" var="poll" varStatus="loop">
+                    <ui:repeat value="#{pollManager.getPolls().data}" var="poll" varStatus="loop">
                         <tr>
                             <th scope="row">#{loop.index + 1}</th>
                             <td>#{poll.title}</td>
@@ -43,7 +44,7 @@
                             <td>#{poll.endsAt}</td>
                             <td>#{poll.state}</td>
                             <td>#{poll.trackParticipant}</td>
-                            <td>#{poll.primaryOrganizerId}</td>
+                            <td>#{poll.primaryOrganizer.username}</td>
                             <td class="d-flex">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
                                     <div>
@@ -52,9 +53,9 @@
                                             <image width="25px" src="#{request.contextPath}/resources/images/edit-icon.png"/>
                                         </a>
                                     </div>
-                                    <div id="btn-delete-#{organizer.id}">
-                                        <a onclick="return confirm('Are you sure you want to delete the organizer?');"
-                                           href="#{request.contextPath}/admin/manage_organizers.xhtml">
+                                    <div id="btn-delete-#{poll.id}">
+                                        <a onclick="return confirm('Are you sure you want to delete the poll?');"
+                                           href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=delete&amp;poll_id=#{poll.id}">
 
                                             <image width="20px" src="#{request.contextPath}/resources/images/delete-icon.png"/>
                                         </a>
@@ -65,6 +66,28 @@
                     </ui:repeat>
                 </tbody>
             </table>
+            <div class="d-flex ml-4">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <ui:repeat value="#{pollManager.pageNumberList}" var="pageNumber">
+                            <li class="page-item"><a class="page-link"
+                                                     href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=#{pageNumber}&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;show_polls_configured_by_me=#{pollManager.filterPostOwner}">#{pageNumber}</a>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </nav>
+
+            </div>
+
+            <f:metadata>
+                <f:viewParam name="pageNumber" value="#{pollManager.paginationRequest.pageNumber}"/>
+                <f:viewParam name="pageSize" value="#{pollManager.paginationRequest.pageSize}"/>
+                <f:viewParam name="sortOrder" value="#{pollManager.paginationRequest.sortOrder}"/>
+                <f:viewParam name="sortBy" value="#{pollManager.paginationRequest.sortBy}"/>
+                <f:viewParam name="action" value="#{pollManager.action}"/>
+               <f:viewParam name="poll_id" value="#{pollManager.pollId}"/>
+               <f:viewParam name="show_polls_configured_by_me" value="#{pollManager.filterPostOwner}"/>
+            </f:metadata>
 
         </div>
     </ui:define>

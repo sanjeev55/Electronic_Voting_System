@@ -10,7 +10,7 @@ public class PollDto extends AbstractDto{
     private String endsAt;
     private PollStateEnum state;
     private Boolean trackParticipant;
-    private Integer primaryOrganizerId;
+    private UserDto primaryOrganizer;
 
     public String getTitle() {
         return title;
@@ -61,17 +61,17 @@ public class PollDto extends AbstractDto{
         this.trackParticipant = trackParticipant;
     }
 
-    public Integer getPrimaryOrganizerId() {
-        return primaryOrganizerId;
+    public UserDto getPrimaryOrganizer() {
+        return primaryOrganizer;
     }
 
-    public void setPrimaryOrganizerId(Integer primaryOrganizerId) {
-        this.primaryOrganizerId = primaryOrganizerId;
+    public void setPrimaryOrganizer(UserDto primaryOrganizer) {
+        this.primaryOrganizer = primaryOrganizer;
     }
 
     @Override
     public String toString() {
-        return "PollDto{" + "title=" + title + ", description=" + description + ", startsAt=" + startsAt + ", endsAt=" + endsAt + ", state=" + state + ", trackParticipant=" + trackParticipant + ", primaryOrganizerId=" + primaryOrganizerId + '}';
+        return "PollDto{" + "title=" + title + ", description=" + description + ", startsAt=" + startsAt + ", endsAt=" + endsAt + ", state=" + state + ", trackParticipant=" + trackParticipant + ", primaryOrganizer=" + primaryOrganizer + '}';
     }
     
     

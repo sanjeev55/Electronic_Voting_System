@@ -1,14 +1,18 @@
 package charlie.logic.impl;
 
+import charlie.domain.Page;
 import charlie.dto.PollDto;
-import charlie.entity.PollStateEnum;
-import charlie.response.Result;
+import charlie.domain.PaginationRequest;
+import charlie.domain.PollPaginationRequest;
+import charlie.domain.Result;
 import charlie.service.PollService;
 
 import charlie.utils.StringUtils;
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 
@@ -23,32 +27,50 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScoped
 public class PollManagerLogic implements Serializable{
     
-
+    private static final Logger logger = Logger.getLogger(PollManagerLogic.class.getName());
+    
     @EJB
     private PollService pollService;
     
     private PollDto pollInfo = new PollDto();
+    private PollPaginationRequest paginationRequest = PollPaginationRequest.build();
+    private List<Integer> pageNumberList;
+    private int requestedPageSize;
+    private String requestedSortBy;
+    private String requestedSortOrder;
+    private String action;
+    private String pollId;
+    private String filterPostOwner;
     
-    
-    public List<PollDto> getPolls() {
-        return List.of(get("title1"), get("title2"), get("title3"));
+    public Page<PollDto> getPolls() {
+        logger.log(Level.INFO, "Inside get all polls");
+        logger.log(Level.INFO, "Pagination request: " + paginationRequest);
+        
+         if (StringUtils.hasText(action) && action.equalsIgnoreCase("delete") && StringUtils.hasText(pollId)) {
+            this.pollService.deleteById(StringUtils.parseInteger(pollId));
+        }
+        
+        paginationRequest.parseFilterPostOwner(filterPostOwner);
+        Page<PollDto> allWithPagination = pollService.getAllWithPagination(paginationRequest);
+        double totalPagesInDouble = (double) allWithPagination.getTotalCount() / allWithPagination.getPageSize();
+        int totalPages = (int) Math.ceil(totalPagesInDouble);
+
+        logger.log(Level.WARNING, allWithPagination.toString());
+        
+        this.pageNumberList = new ArrayList<>();
+        for (int i = 1; i <= totalPages; i++) {
+            this.pageNumberList.add(i);
+        }
+
+        this.requestedPageSize = paginationRequest.getPageSize();
+        this.requestedSortBy = paginationRequest.getSortBy();
+        this.requestedSortOrder = paginationRequest.getSortOrder();
+
+        return allWithPagination;
     }
     
     
-    private PollDto get(String pollName) {
-        PollDto dto = new PollDto();
-        dto.setId(1);
-        dto.setTitle(pollName);
-        dto.setDescription("kjdf");
-        dto.setEndsAt(Instant.now().toString());
-        dto.setStartsAt(Instant.now().toString());
-        dto.setTrackParticipant(Boolean.TRUE);
-        dto.setState(PollStateEnum.STARTED);
-        dto.setPrimaryOrganizerId(101);
-        return dto;
-    }
-    
-    public void addPoll() {
+    public String addPoll() {
         HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String startsAt = request.getParameter("startsAt");
         String endsAt = request.getParameter("endsAt");
@@ -60,19 +82,19 @@ public class PollManagerLogic implements Serializable{
         if (!StringUtils.hasText(pollInfo.getTitle())) {
             FacesMessage message = new FacesMessage("Title cannot be empty");
             context.addMessage("addPoll:title", message);
-            return;
+            return null;
         }
         
         if (!StringUtils.hasText(pollInfo.getStartsAt())) {
             FacesMessage message = new FacesMessage("Poll start date cannot be empty");
             context.addMessage("addPoll:title", message);
-            return;
+            return null;
         }
 
         if (!StringUtils.hasText(pollInfo.getEndsAt())) {
             FacesMessage message = new FacesMessage("Poll end date cannot be empty");
             context.addMessage("addPoll:title", message);
-            return;
+            return null;
         }
         
         System.out.println("charlie.logic.impl.PollManagerLogic.addOrUpdatePoll()");
@@ -82,8 +104,10 @@ public class PollManagerLogic implements Serializable{
         if(result.isError()) {
             FacesMessage message = new FacesMessage(result.getError());
             context.addMessage("addPoll:title", message);
-            return;
+            return null;
         }
+        
+        return "/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=10&amp;sortOrder=DESC&amp;sortBy=updatedAt&amp;faces-redirect=true";
     }
 
     public PollDto getPollInfo() {
@@ -93,7 +117,78 @@ public class PollManagerLogic implements Serializable{
     public void setPollInfo(PollDto pollInfo) {
         this.pollInfo = pollInfo;
     }
-    
+
+    public PollService getPollService() {
+        return pollService;
+    }
+
+    public void setPollService(PollService pollService) {
+        this.pollService = pollService;
+    }
+
+    public PollPaginationRequest getPaginationRequest() {
+        return paginationRequest;
+    }
+
+    public void setPaginationRequest(PollPaginationRequest paginationRequest) {
+        this.paginationRequest = paginationRequest;
+    }
+
+    public List<Integer> getPageNumberList() {
+        return pageNumberList;
+    }
+
+    public void setPageNumberList(List<Integer> pageNumberList) {
+        this.pageNumberList = pageNumberList;
+    }
+
+    public int getRequestedPageSize() {
+        return requestedPageSize;
+    }
+
+    public void setRequestedPageSize(int requestedPageSize) {
+        this.requestedPageSize = requestedPageSize;
+    }
+
+    public String getRequestedSortBy() {
+        return requestedSortBy;
+    }
+
+    public void setRequestedSortBy(String requestedSortBy) {
+        this.requestedSortBy = requestedSortBy;
+    }
+
+    public String getRequestedSortOrder() {
+        return requestedSortOrder;
+    }
+
+    public void setRequestedSortOrder(String requestedSortOrder) {
+        this.requestedSortOrder = requestedSortOrder;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getPollId() {
+        return pollId;
+    }
+
+    public void setPollId(String pollId) {
+        this.pollId = pollId;
+    }
+
+    public String getFilterPostOwner() {
+        return filterPostOwner;
+    }
+
+    public void setFilterPostOwner(String filterPostOwner) {
+        this.filterPostOwner = filterPostOwner;
+    }
     
     
 }

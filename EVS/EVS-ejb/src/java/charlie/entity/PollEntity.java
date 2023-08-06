@@ -9,6 +9,9 @@ import java.util.Set;
     @Index(name = "starts_ends_at_idx", columnList = "starts_at, ends_at"),
     @Index(name = "poll_state_idx", columnList = "state")
 })
+@NamedQueries({
+    @NamedQuery(name = "deleteById", query = "DELETE FROM PollEntity p WHERE p.id = :id")
+})
 public class PollEntity extends AbstractEntity {
 
     @Column(name = "title", nullable = false, unique = true)

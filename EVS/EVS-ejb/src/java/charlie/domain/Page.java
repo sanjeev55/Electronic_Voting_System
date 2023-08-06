@@ -1,4 +1,4 @@
-package charlie.response;
+package charlie.domain;
 
 import java.util.List;
 

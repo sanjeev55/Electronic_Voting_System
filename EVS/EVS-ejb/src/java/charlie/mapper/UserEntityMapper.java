@@ -9,16 +9,13 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class UserEntityMapper extends AbstractEntityMapper<UserEntity, UserDto>{
-    
-    public UserEntityMapper() {
-        super(new UserEntity(), new UserDto());
-    }
 
     @Override
     public UserDto toDto(UserEntity entity) {
         if(entity == null)
             return null;
         
+        super.setDto(new UserDto());
         UserDto dto = super.toDto(entity); 
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -32,6 +29,7 @@ public class UserEntityMapper extends AbstractEntityMapper<UserEntity, UserDto>{
         if(domain == null)
             return null;
         
+        super.setEntity(new UserEntity());
         UserEntity entity = super.toEntity(domain); 
         entity.setFirstName(domain.getFirstName());
         entity.setLastName(domain.getLastName());
@@ -39,6 +37,5 @@ public class UserEntityMapper extends AbstractEntityMapper<UserEntity, UserDto>{
         entity.setUsername(domain.getUsername());
         return entity;
     }
-    
-    
+       
 }
