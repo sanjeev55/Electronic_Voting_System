@@ -2,10 +2,13 @@ package charlie.mapper;
 
 import charlie.dto.PollDto;
 import charlie.entity.PollEntity;
+import charlie.entity.PollOwnerEntity;
 import charlie.utils.DateUtils;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -13,6 +16,9 @@ import javax.ejb.Stateless;
 @LocalBean
 public class PollEntityMapper extends AbstractEntityMapper<PollEntity, PollDto> {
 
+    @EJB
+    private UserEntityMapper userEntityMapper;
+    
     @Override
     public PollEntity toEntity(PollDto domain) {
 
@@ -48,6 +54,12 @@ public class PollEntityMapper extends AbstractEntityMapper<PollEntity, PollDto> 
         dto.setStartsAt(entity.getStartsAt() != null ? entity.getStartsAt().toString() : null);
         dto.setEndsAt(entity.getEndsAt() != null ? entity.getEndsAt().toString() : null);
         dto.setState(entity.getState());
+        Optional<PollOwnerEntity> pollOwnerEntity = entity.getPollOwners().stream().filter(pollOwner -> pollOwner.getPrimaryOrganizer() == Boolean.TRUE)
+                .findFirst();
+        
+        if(pollOwnerEntity.isPresent()) {
+            dto.setPrimaryOrganizer(userEntityMapper.toDto(pollOwnerEntity.get().getOrganizer()));
+        }
         return dto;
     }
     

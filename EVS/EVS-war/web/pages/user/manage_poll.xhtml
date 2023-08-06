@@ -29,7 +29,8 @@
                         <th scope="col">Starts At</th>
                         <th scope="col">Ends At</th>
                         <th scope="col">State</th>
-                        <th scope="col">Track Participant</th>                       
+                        <th scope="col">Track Participant</th>
+                        <th scope="col">Primary Owner</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -43,7 +44,7 @@
                             <td>#{poll.endsAt}</td>
                             <td>#{poll.state}</td>
                             <td>#{poll.trackParticipant}</td>
-                            
+                            <td>#{poll.primaryOrganizer.username}</td>
                             <td class="d-flex">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
                                     <div>
