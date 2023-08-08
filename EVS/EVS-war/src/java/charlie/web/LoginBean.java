@@ -53,11 +53,35 @@ public class LoginBean implements Serializable {
             if (!p.equals(oldPrincipal)) {
                 LOG.log(Level.INFO, "Contacts: LOGIN user {0}", p.getName());
                 currentUser = ul.getCurrentUser();
+                if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("STAFF")) {
+                ul.updateUserRole(currentUser.getUuid(), "STAFF");
+                } else if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("ADMIN")){
+                ul.updateUserRole(currentUser.getUuid(), "ADMIN");
+                }
             }
         }
         oldPrincipal = p;
         return currentUser;
     }
+    
+    public void redirectBasedOnRole(){
+        try{
+            FacesContext context = FacesContext.getCurrentInstance();
+            
+           if(context.getExternalContext().isUserInRole("ADMIN")){
+               context.getExternalContext().redirect("pages/admin/home.xhtml");
+           }
+           else if (context.getExternalContext().isUserInRole("STAFF")){
+               context.getExternalContext().redirect("pages/user/home.xhtml");
+           }
+           
+        }
+        catch(IOException e){
+            System.out.println("Error:" + e);
+        }
+        
+    }
+
 
     public void invalidateSession() {
         LOG.log(Level.INFO, "invalidateSession()");

@@ -38,4 +38,17 @@ public class UserAccess extends AbstractAccess<UserEntity> {
         }
         return ue;
     }
+    
+    public UserEntity getByUuid(String uuid) {
+        try {
+            return em.createNamedQuery("getUserByUuid", UserEntity.class)
+                    .setParameter("uuid", uuid)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            // Entity with specified UUID doesn't exist
+            return null;
+        }
+    }
+
+    
 }

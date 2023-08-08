@@ -59,7 +59,7 @@
         <web-resource-collection>
             <web-resource-name>User pages</web-resource-name>
             <description/>
-            <url-pattern>/pages/user/*</url-pattern>
+            <url-pattern>/pages/guest/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -83,14 +83,14 @@
         <web-resource-collection>
             <web-resource-name>Staff pages</web-resource-name>
             <description/>
-            <url-pattern>/pages/staff/*</url-pattern>
+            <url-pattern>/pages/user/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>STAFF</role-name>
         </auth-constraint>
     </security-constraint>
-        <login-config>
+    <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>evs-file-realm</realm-name>
         <form-login-config>
