@@ -49,9 +49,14 @@
             <to-view-id>index.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
-            <from-outcome>userPage</from-outcome>
+            <from-outcome>staffPage</from-outcome>
             <redirect>true</redirect>
-            <to-view-id>/pages/user/userPage.xhtml</to-view-id>
+            <to-view-id>/pages/user/home.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>adminPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/admin/home.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 

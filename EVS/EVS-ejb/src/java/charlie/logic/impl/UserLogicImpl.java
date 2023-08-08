@@ -3,6 +3,7 @@ package charlie.logic.impl;
 import charlie.logic.UserLogic;
 import charlie.dao.UserAccess;
 import charlie.dto.UserDto;
+import charlie.entity.RoleEnum;
 import charlie.entity.UserEntity;
 import charlie.mapper.UserEntityMapper;
 import java.security.Principal;
@@ -55,5 +56,20 @@ public class UserLogicImpl implements UserLogic {
         
         return p.getName();
     }
+    
+    @Override
+    @RolesAllowed(USER_ROLE)
+    public void updateUserRole(String uuid, String role) {
+        UserEntity ue = ua.getByUuid(uuid);
+        
+        if(role.equals("STAFF")){
+        ue.setRole(RoleEnum.ROLE_ORGANIZER);
+        }else if(role.equals("ADMIN")){
+        ue.setRole(RoleEnum.ROLE_ADMINISTRATOR);
+        }
+        
+        ua.edit(ue);
+    }
+
 
 }

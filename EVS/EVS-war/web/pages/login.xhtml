@@ -26,7 +26,7 @@
                     <div class="input-group">
                         <input class="form-control" type="password" placeholder="${msg.loginPasswordPlaceholder}" id="password" name="j_password" autocomplete="off"/>
                         <span class="input-group-btn">
-                            <button class="btn btn-success" type="submit">
+                            <button class="btn btn-success" type="submit" action="#{loginBean.redirectBasedOnRole()}">
                                 ${msg.loginButtonLabel} <span class="glyphicon glyphicon-log-in"></span>
                             </button>
                         </span>
