@@ -30,6 +30,10 @@
     <role-name>ADMIN</role-name>
     <principal-name>admin</principal-name>
   </security-role-mapping>
+  <security-role-mapping>
+    <role-name>STAFF</role-name>
+    <principal-name>prajwol</principal-name>
+  </security-role-mapping>
   <class-loader delegate="true"/>
   <jsp-config>
     <property name="keepgenerated" value="true">
