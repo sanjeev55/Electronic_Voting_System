@@ -12,9 +12,8 @@ public class PollParticipantEntity extends AbstractEntity {
     @Column(name = "has_participated", columnDefinition = "boolean default false")
     private Boolean hasParticipated;
 
-    @OneToOne
-    @JoinColumn(name = "fk_participant_list_id")
-    private ParticipantEntity participant;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "fk_poll_id")
@@ -36,12 +35,12 @@ public class PollParticipantEntity extends AbstractEntity {
         this.hasParticipated = hasParticipated;
     }
 
-    public ParticipantEntity getParticipant() {
-        return participant;
+    public String getEmail() {
+        return email;
     }
 
-    public void setParticipant(ParticipantEntity participant) {
-        this.participant = participant;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public PollEntity getPoll() {
