@@ -4,9 +4,13 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "poll_participant")
+@NamedQueries(value = {
+    @NamedQuery(name = "countPollParticipantsByPollId", query = "select count(pp.id) from PollParticipantEntity pp where pp.poll = :poll"),
+    @NamedQuery(name = "getPollParticipantsByPoll", query = "select pp from PollParticipantEntity pp where pp.poll = :poll")
+})
 public class PollParticipantEntity extends AbstractEntity {
 
-    @Column(name = "token", nullable = false, updatable = false, unique = true)
+    @Column(name = "token", nullable = false, unique = true)
     private String token;
 
     @Column(name = "has_participated", columnDefinition = "boolean default false")

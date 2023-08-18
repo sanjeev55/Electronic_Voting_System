@@ -6,7 +6,7 @@
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:f="http://java.sun.com/jsf/core"
-    >
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
     <ui:define name="content">
         <h4>Welcome, ${loginBean.user.username}</h4>
@@ -44,7 +44,9 @@
                             <td>#{poll.endsAt}</td>
                             <td>#{poll.state}</td>
                             <td>#{poll.trackParticipant}</td>
-                            <td>#{poll.primaryOrganizer.username}</td>
+                            <td>#{poll.primaryOrganizer.username}</td>                          
+                            <td><a href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=start_poll&amp;poll_id=#{poll.id}"
+                                   class="btn btn-dark" role="button" aria-pressed="true">Start Poll</a></td>
                             <td class="d-flex">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
                                     <div>
@@ -66,6 +68,7 @@
                     </ui:repeat>
                 </tbody>
             </table>
+            <h:message id="errorMessage" for="errorMessage" class="alert alert-danger" role="alert"/>
             <div class="d-flex ml-4">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -85,8 +88,8 @@
                 <f:viewParam name="sortOrder" value="#{pollManager.paginationRequest.sortOrder}"/>
                 <f:viewParam name="sortBy" value="#{pollManager.paginationRequest.sortBy}"/>
                 <f:viewParam name="action" value="#{pollManager.action}"/>
-               <f:viewParam name="poll_id" value="#{pollManager.pollId}"/>
-               <f:viewParam name="show_polls_configured_by_me" value="#{pollManager.filterPostOwner}"/>
+                <f:viewParam name="poll_id" value="#{pollManager.pollId}"/>
+                <f:viewParam name="show_polls_configured_by_me" value="#{pollManager.filterPostOwner}"/>
             </f:metadata>
 
         </div>

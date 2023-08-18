@@ -39,4 +39,10 @@ public class Result<T> {
 
         return error.get();
     }
+
+    @Override
+    public String toString() {
+        return "Result{" + "value=" + value + ", error=" + error + '}';
+    }
+   
 }

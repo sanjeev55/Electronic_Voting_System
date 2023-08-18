@@ -10,6 +10,7 @@ import charlie.service.PollService;
 import charlie.utils.StringUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,16 +23,15 @@ import javax.inject.Named;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 @Named(value = "pollManager")
 @SessionScoped
-public class PollManagerLogic implements Serializable{
-    
+public class PollManagerLogic implements Serializable {
+
     private static final Logger logger = Logger.getLogger(PollManagerLogic.class.getName());
-    
+
     @EJB
     private PollService pollService;
-    
+
     private PollDto pollInfo = new PollDto();
     private PollPaginationRequest paginationRequest = PollPaginationRequest.build();
     private List<Integer> pageNumberList;
@@ -41,22 +41,32 @@ public class PollManagerLogic implements Serializable{
     private String action;
     private String pollId;
     private String filterPostOwner;
-    
+
     public Page<PollDto> getPolls() {
         logger.log(Level.INFO, "Inside get all polls");
         logger.log(Level.INFO, "Pagination request: " + paginationRequest);
-        
-         if (StringUtils.hasText(action) && action.equalsIgnoreCase("delete") && StringUtils.hasText(pollId)) {
+        var context = FacesContext.getCurrentInstance();
+
+        if (StringUtils.hasText(action) && action.equalsIgnoreCase("delete") && StringUtils.hasText(pollId)) {
             this.pollService.deleteById(StringUtils.parseInteger(pollId));
         }
-        
+
+        if (StringUtils.hasText(action) && action.equalsIgnoreCase("start_poll") && StringUtils.hasText(pollId)) {
+            var result = this.pollService.changePollStateToStarted(StringUtils.parseInteger(pollId));
+            if (result.isError()) {
+
+                context.addMessage("errorMessage",
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, result.getError(), result.getError()));
+            }
+        }
+
         paginationRequest.parseFilterPostOwner(filterPostOwner);
         Page<PollDto> allWithPagination = pollService.getAllWithPagination(paginationRequest);
         double totalPagesInDouble = (double) allWithPagination.getTotalCount() / allWithPagination.getPageSize();
         int totalPages = (int) Math.ceil(totalPagesInDouble);
 
         logger.log(Level.WARNING, allWithPagination.toString());
-        
+
         this.pageNumberList = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
             this.pageNumberList.add(i);
@@ -68,23 +78,22 @@ public class PollManagerLogic implements Serializable{
 
         return allWithPagination;
     }
-    
-    
+
     public String addPoll() {
-        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String startsAt = request.getParameter("startsAt");
         String endsAt = request.getParameter("endsAt");
-        
+
         pollInfo.setStartsAt(startsAt);
         pollInfo.setEndsAt(endsAt);
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         if (!StringUtils.hasText(pollInfo.getTitle())) {
             FacesMessage message = new FacesMessage("Title cannot be empty");
             context.addMessage("addPoll:title", message);
             return null;
         }
-        
+
         if (!StringUtils.hasText(pollInfo.getStartsAt())) {
             FacesMessage message = new FacesMessage("Poll start date cannot be empty");
             context.addMessage("addPoll:title", message);
@@ -96,17 +105,17 @@ public class PollManagerLogic implements Serializable{
             context.addMessage("addPoll:title", message);
             return null;
         }
-        
+
         System.out.println("charlie.logic.impl.PollManagerLogic.addOrUpdatePoll()");
         System.out.println(this.pollInfo);
-        
+
         Result<PollDto> result = pollService.save(this.pollInfo);
-        if(result.isError()) {
+        if (result.isError()) {
             FacesMessage message = new FacesMessage(result.getError());
             context.addMessage("addPoll:title", message);
             return null;
         }
-        
+
         return "/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=10&amp;sortOrder=DESC&amp;sortBy=updatedAt&amp;faces-redirect=true";
     }
 
@@ -189,6 +198,5 @@ public class PollManagerLogic implements Serializable{
     public void setFilterPostOwner(String filterPostOwner) {
         this.filterPostOwner = filterPostOwner;
     }
-    
-    
+
 }
