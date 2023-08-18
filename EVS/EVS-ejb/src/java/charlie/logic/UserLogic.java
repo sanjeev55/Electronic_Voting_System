@@ -6,6 +6,7 @@ package charlie.logic;
 
 import charlie.dto.UserDto;
 import charlie.entity.RoleEnum;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -23,4 +24,10 @@ public interface UserLogic {
     public String getCurrentUsername();
     
     public void updateUserRole(String uuid, String role);
+    
+    public UserDto getUserByUsername(String username);
+    
+    public List<UserDto> getAllUsers();
+    
+    public void addUser(UserDto userDto);
 }

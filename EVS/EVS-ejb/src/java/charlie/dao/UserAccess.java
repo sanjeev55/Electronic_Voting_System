@@ -1,6 +1,7 @@
 package charlie.dao;
 
 import charlie.entity.UserEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -48,6 +49,25 @@ public class UserAccess extends AbstractAccess<UserEntity> {
             // Entity with specified UUID doesn't exist
             return null;
         }
+    }
+    
+    public UserEntity findUserByUsername(String username){
+        try{
+        return em.createNamedQuery("getUserByUserName", UserEntity.class)
+                .setParameter("username", username)
+                .getSingleResult();
+        } catch (NoResultException e){
+            return null;
+        }
+    }
+    
+    public List<UserEntity> findAllUsers(){
+        return em.createNamedQuery("getUserList", UserEntity.class)
+                .getResultList();
+    }
+    
+    public void save(UserEntity ue){
+        create(ue);
     }
 
     

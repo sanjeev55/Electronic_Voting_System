@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition
+    template="/WEB-INF/templates/login-layout.xhtml"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:param name="pageHeadline" value="${msg.evsHeadline}"/>
+    <ui:define name="content">
+        <h4>Welcome, ${loginBean.user.username}</h4>
+        <p>
+             <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Enter Token:" for="tokenInput" />
+                    <h:inputText id="tokenInput" value="#{tokenVerificationBean.token}" required="true" requiredMessage="Token is required!" />
+
+                    <h:commandButton value="Verify Token" action="#{tokenVerificationBean.verifyToken}" styleClass="btn btn-flat btn-primary" />
+                </h:panelGrid>
+
+        <h:messages />
+    </h:form>
+        </p>
+    </ui:define>
+</ui:composition>

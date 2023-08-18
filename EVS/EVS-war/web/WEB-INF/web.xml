@@ -54,6 +54,10 @@
         <extension>eot</extension>
         <mime-type>application/eot</mime-type>
     </mime-mapping>
+    <mime-mapping>
+        <extension>jsf</extension>
+        <mime-type>text/html</mime-type>
+    </mime-mapping>
     <security-constraint>
         <display-name>Authenticated access</display-name>
         <web-resource-collection>

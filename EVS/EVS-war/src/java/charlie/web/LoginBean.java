@@ -26,7 +26,7 @@ public class LoginBean implements Serializable {
     
     @PostConstruct
     public void newSession() {
-        LOG.info("Contacts: NEW SESSION");
+        LOG.info("EVS: NEW SESSION");
     }
 
     public boolean isLoggedIn() {
@@ -51,7 +51,7 @@ public class LoginBean implements Serializable {
             currentUser = null;
         } else {
             if (!p.equals(oldPrincipal)) {
-                LOG.log(Level.INFO, "Contacts: LOGIN user {0}", p.getName());
+                LOG.log(Level.INFO, "EVS: LOGIN user {0}", p.getName());
                 currentUser = ul.getCurrentUser();
                 if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("STAFF")) {
                 ul.updateUserRole(currentUser.getUuid(), "STAFF");
@@ -73,6 +73,9 @@ public class LoginBean implements Serializable {
            }
            else if (context.getExternalContext().isUserInRole("STAFF")){
                context.getExternalContext().redirect("pages/user/home.xhtml");
+           }
+           else if (context.getExternalContext().isUserInRole("USER")){
+               context.getExternalContext().redirect("pages/participant/tokenInput.xhtml");
            }
            
         }
