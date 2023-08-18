@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "poll_participant")
 @NamedQueries(value = {
     @NamedQuery(name = "countPollParticipantsByPollId", query = "select count(pp.id) from PollParticipantEntity pp where pp.poll = :poll"),
-    @NamedQuery(name = "getPollParticipantsByPoll", query = "select pp from PollParticipantEntity pp where pp.poll = :poll")
+    @NamedQuery(name = "getPollParticipantsByPoll", query = "select pp from PollParticipantEntity pp where pp.poll = :poll"),
+    @NamedQuery(name = "getPollParticipantByEmail", query = "SELECT p from PollParticipantEntity p where p.email = :email"),
 })
 public class PollParticipantEntity extends AbstractEntity {
 

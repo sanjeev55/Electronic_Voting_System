@@ -7,6 +7,8 @@ import charlie.entity.RoleEnum;
 import charlie.entity.UserEntity;
 import charlie.mapper.UserEntityMapper;
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
@@ -69,6 +71,25 @@ public class UserLogicImpl implements UserLogic {
         }
         
         ua.edit(ue);
+    }
+    
+    @Override
+    public UserDto getUserByUsername(String username){
+        UserEntity ue = ua.findUserByUsername(username);
+        
+        return userEntityMapper.toDto(ue);
+    }
+    
+    @Override
+    public List<UserDto> getAllUsers(){
+        List<UserEntity> entities = ua.findAllUsers();
+        return entities.stream().map(userEntityMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void addUser(UserDto userDto) {
+        UserEntity ue = userEntityMapper.toEntity(userDto);
+        ua.save(ue);
     }
 
 

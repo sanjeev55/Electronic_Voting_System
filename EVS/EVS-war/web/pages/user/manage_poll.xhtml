@@ -48,12 +48,14 @@
                             <td><a href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=start_poll&amp;poll_id=#{poll.id}"
                                    class="btn btn-dark" role="button" aria-pressed="true">Start Poll</a></td>
                             <td class="d-flex">
+                                <div>
                                 <div class="d-flex justify-content-center align-items-center gap-2">
-                                    <div>
-                                        <a href="#{request.contextPath}/admin/add_organizer.xhtml?action=edit&amp;organizer_id=#{poll.id}">
-
-                                            <image width="25px" src="#{request.contextPath}/resources/images/edit-icon.png"/>
-                                        </a>
+                                        <div>
+                                            <h:link outcome="editPollPage">
+                                                <f:param name="pollUuid" value="#{poll.uuid}" />
+                                                <image src="#{request.contextPath}/resources/images/edit-icon.png" style="width: 25px;"/>
+                                            </h:link>
+                                        </div>
                                     </div>
                                     <div id="btn-delete-#{poll.id}">
                                         <a onclick="return confirm('Are you sure you want to delete the poll?');"
