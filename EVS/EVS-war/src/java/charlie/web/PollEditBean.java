@@ -1,10 +1,8 @@
 package charlie.web;
 
-import charlie.dto.ParticipantDto;
 import charlie.dto.PollDto;
 import charlie.dto.UserDto;
 import charlie.entity.PollStateEnum;
-import charlie.logic.ParticipantLogic;
 import charlie.logic.PollLogic;
 import charlie.logic.PollParticipantLogic;
 import charlie.logic.UserLogic;
@@ -30,8 +28,6 @@ public class PollEditBean implements Serializable {
     @EJB
     private UserLogic ul;
 
-    @EJB
-    private ParticipantLogic pal;
 
     @EJB
     private PollParticipantLogic ppl;
@@ -43,13 +39,7 @@ public class PollEditBean implements Serializable {
     private String failureMessage;
 
     private String pollUuid;
-    private List<UserDto> availableUsers;
-    private List<UserDto> selectedUsers;
-    private List<ParticipantDto> selectedParticipants;
-
-    private String newParticipantEmail;
-    private String bulkParticipants;
-
+    
     @PostConstruct
     public void init() {
         getPollUuid();

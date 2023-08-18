@@ -4,7 +4,7 @@ public class PollParticipantDto extends AbstractDto {
     private String token;
     private Boolean hasParticipated;
     private String email;
-    private Integer pollId;
+    private PollDto poll;
 
     public String getToken() {
         return token;
@@ -30,12 +30,12 @@ public class PollParticipantDto extends AbstractDto {
         this.email = email;
     }
 
-    public Integer getPollId() {
-        return pollId;
+    public PollDto getPoll() {
+        return poll;
     }
 
-    public void setPollId(Integer pollId) {
-        this.pollId = pollId;
+    public void setPoll(PollDto poll) {
+        this.poll = poll;
     }
     
     

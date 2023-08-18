@@ -18,7 +18,7 @@ import javax.ejb.Stateless;
 @LocalBean
 public class PollParticipantMapper extends AbstractEntityMapper<PollParticipantEntity, PollParticipantDto> {
     @EJB
-    private ParticipantEntityMapper participantEntityMapper;
+    private ParticipantListEntityMapper participantEntityMapper;
     
     @EJB
     private PollEntityMapper pollEntityMapper; 
@@ -33,8 +33,7 @@ public class PollParticipantMapper extends AbstractEntityMapper<PollParticipantE
         PollParticipantEntity entity = super.toEntity(dto);
         entity.setToken(dto.getToken());
         entity.setHasParticipated(dto.getHasParticipated());
-        entity.setParticipant(participantEntityMapper.toEntity(dto.getParticipant()));
-        entity.setPoll(pollEntityMapper.toEntity(dto.getPoll()));
+        entity.setEmail(dto.getEmail());
 
 
         return entity;
@@ -50,10 +49,8 @@ public class PollParticipantMapper extends AbstractEntityMapper<PollParticipantE
         PollParticipantDto dto = super.toDto(entity);
         dto.setToken(entity.getToken());
         dto.setHasParticipated(entity.getHasParticipated());
+        dto.setEmail(entity.getEmail());
 
-        if (entity.getParticipant() != null) {
-            dto.setParticipant(participantEntityMapper.toDto(entity.getParticipant()));
-        }
         return dto;
     }
 }

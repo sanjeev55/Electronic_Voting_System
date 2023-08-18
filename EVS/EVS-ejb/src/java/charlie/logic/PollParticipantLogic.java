@@ -4,7 +4,6 @@
  */
 package charlie.logic;
 
-import charlie.dto.ParticipantDto;
 import charlie.dto.PollDto;
 import charlie.dto.PollParticipantDto;
 import java.util.List;
@@ -16,8 +15,6 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface PollParticipantLogic {
-    public PollParticipantDto getParticipantsOfPoll(PollDto poll);
+    public List<PollParticipantDto> getParticipantsOfPoll(PollDto pollDto);
     public void savePollParticipant(PollParticipantDto pollParticipantDto);
-    public void savePollParticipantList(PollDto poll, List<ParticipantDto> participantList);
-    public PollParticipantDto findByPollIdAndParticipantId(int pollId, int participantId);
 }

@@ -41,13 +41,6 @@ public class PollParticipantAccess extends AbstractAccess<PollParticipantEntity>
                 .getSingleResult();
     }
 
-    // 2. Find Poll Participants by a Specific Poll
-    public List<PollParticipantEntity> findParticipantsByPoll(PollEntity poll) {
-        return em.createNamedQuery("findParticipantsByPoll", PollParticipantEntity.class)
-                .setParameter("poll", poll)
-                .getResultList();
-    }
-
     // 3. Find Participants who have/haven't participated
     public List<PollParticipantEntity> findParticipantsByParticipationStatus(Boolean hasParticipated) {
         return em.createNamedQuery("findParticipantsByParticipationStatus", PollParticipantEntity.class)
@@ -55,10 +48,9 @@ public class PollParticipantAccess extends AbstractAccess<PollParticipantEntity>
                 .getResultList();
     }
     
-    public PollParticipantEntity findByPollIdAndParticipantId(int pollId, int participantId){
-        return em.createNamedQuery("findByPollIdAndParticipantId", PollParticipantEntity.class)
-                .setParameter("pollId", pollId)
-                .setParameter("participantId", participantId)
+    public PollParticipantEntity findByEmail(String email){
+        return em.createNamedQuery("findPollParticipantByEmail", PollParticipantEntity.class)
+                .setParameter("pollId", email)
                 .getSingleResult();
     }
     
