@@ -6,7 +6,11 @@
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+EVS-war/nbproject/build-impl.xml
+EVS-war/nbproject/genfiles.properties
+EVS-war/nbproject/project.properties
+EVS-war/nbproject/project.xml
+EVS/nbproject/project.properties   
 ### Mac OS ###
 .DS_Store
 .init-db/
