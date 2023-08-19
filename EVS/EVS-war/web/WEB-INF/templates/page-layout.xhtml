@@ -31,21 +31,18 @@
                         </header>
                         <ul class="nav">
                             <li>
-                                <a href="#{request.contextPath}/home.xhtml">
-                                    <i class="zmdi zmdi-view-dashboard"></i> ${msg.dashboard}
-                                </a>
+                                <i class="zmdi zmdi-calendar"></i>
+                                <h:link value="${msg.dashboard}" outcome="#{loginBean.isAdmin() ? 'adminPage' : 'staffPage'}" />
                             </li>
 
                             <li>
-                                <a href="#{request.contextPath}/pages/user/manage_poll.xhtml?show_polls_configured_by_me=true">
-                                    <i class="zmdi zmdi-calendar"></i> Polls by ${loginBean.user.username}
-                                </a>
+                                <i class="zmdi zmdi-calendar"></i>
+                                <h:link value="Polls by ${loginBean.user.username}" outcome="/pages/user/manage_poll?show_polls_configured_by_me=true" />
                             </li>
-                            
+
                             <li>
-                                <a href="#{request.contextPath}/pages/user/manage_poll.xhtml?show_polls_configured_by_me=false">
-                                    <i class="zmdi zmdi-calendar"></i> Polls owned by others
-                                </a>
+                                <i class="zmdi zmdi-calendar"></i>
+                                <h:link value="Polls owned by others" outcome="/pages/user/manage_poll?show_polls_configured_by_me=false" />
                             </li>
                         </ul>
                     </div>
