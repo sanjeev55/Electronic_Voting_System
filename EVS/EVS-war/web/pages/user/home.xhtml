@@ -9,8 +9,12 @@
     <ui:define name="content">
         <h4>Welcome Employee, ${loginBean.user.username}</h4>
         <p>
-            Make sure to keep all page content within the
-            <code>#content</code>.
+            <b:form id="createTestDataForm">
+            <b:commandButton id="mailParticipantsButton"
+                                 span="3" look="default" icon="envelope"
+                                 actionListener="#{loginBean.mailParticipants}"
+                                 value="Send Test Email" ajax="true"/>
+            </b:form>
         </p>
     </ui:define>
 </ui:composition>
