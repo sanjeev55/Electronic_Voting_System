@@ -14,18 +14,24 @@ import charlie.entity.PollStateEnum;
 import charlie.entity.UserEntity;
 import charlie.mapper.PollEntityMapper;
 import charlie.domain.Result;
+import charlie.dto.MailPollDescriptionDto;
 import charlie.entity.PollParticipantEntity;
 import charlie.utils.StringUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import javax.annotation.security.RolesAllowed;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
 
 @Stateless
 public class PollService {
+
+    private static final Logger LOG = Logger.getLogger(PollService.class.getName());
+    private final String EVS_VOTING_URL = "http://localhost:8080/EVS-war/public/poll/%s/voting-page.xhtml?token=%s";
 
     @EJB
     private PollEntityMapper pollEntityMapper;
@@ -44,6 +50,9 @@ public class PollService {
 
     @EJB
     private PollParticipantAccess pollParticipantDao;
+
+    @EJB
+    private MailService mailService;
 
     public Result<PollDto> save(PollDto domain) {
         if (domain == null) {
@@ -114,16 +123,32 @@ public class PollService {
         pollDao.edit(entity);
 
         List<PollParticipantEntity> pollParticipantList = pollParticipantDao.findAllByPoll(entity);
-        
+
         // running this into async because we don't want to block the main thread
         pollParticipantList.stream().forEach(pollParticipant -> CompletableFuture.runAsync(() -> {
-               pollParticipant.setToken(UUID.randomUUID().toString().replace("-", ""));
-               pollParticipantDao.edit(pollParticipant);
-               
-               // TODO: send email
-               System.out.println("sending email to: " + pollParticipant.getEmail());
+            pollParticipant.setToken(UUID.randomUUID().toString().replace("-", ""));
+            pollParticipantDao.edit(pollParticipant);
+
+            try {
+                var poll = pollParticipant.getPoll();
+                MailPollDescriptionDto descriptionDto = new MailPollDescriptionDto()
+                        .setEmail(pollParticipant.getEmail())
+                        .setStartsAt(poll.getStartsAt().toString())
+                        .setEndsAt(poll.getEndsAt().toString())
+                        .setTitle(poll.getTitle())
+                        .setToken(pollParticipant.getToken())
+                        .setUuid(poll.getUuid());
+
+                LOG.log(Level.INFO, "sending email to {0}", pollParticipant.getEmail());
+                LOG.log(Level.INFO, "MailPollDescriptionDto {0}", descriptionDto);
+                String message = buildMailMessage(descriptionDto);
+                LOG.log(Level.INFO, "sending message as {0}", message);
+                mailService.sendMail(pollParticipant.getEmail(), "You are invited to vote in a poll", message);
+            } catch (MessagingException ex) {
+                LOG.log(Level.INFO, String.format("Got exception while sending email to %s, message %s", pollParticipant.getEmail(), ex.getMessage()));
+            }
         }));
-        
+
         return Result.ok("Changed poll state to STARTED");
     }
 
@@ -147,5 +172,26 @@ public class PollService {
 
     public void deleteById(int id) {
         pollDao.deleteById(id);
+    }
+
+    private String buildMailMessage(MailPollDescriptionDto descriptionDto) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hi, ");
+        sb.append(descriptionDto.getEmail());
+        sb.append("\n Please find the poll details below \n");
+        sb.append("<b>Poll title:</b> ");
+        sb.append(descriptionDto.getTitle());
+        sb.append("\n <b>Poll start date:</b> ");
+        sb.append(descriptionDto.getStartsAt());
+        sb.append("\n <b>Poll end date:</b> ");
+        sb.append(descriptionDto.getEndsAt());
+        sb.append("\n <b>Poll Secret:</b> ");
+        sb.append(descriptionDto.getToken());
+        sb.append(" <i style='color:red'>Note: Please don't share this to any one</i>");
+        sb.append("\n <b>Poll URL:</b> ");
+        sb.append(String.format(EVS_VOTING_URL, descriptionDto.getUuid(), descriptionDto.getToken()));
+       
+        return sb.toString();   
     }
 }
