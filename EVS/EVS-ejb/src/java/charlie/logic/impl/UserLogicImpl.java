@@ -91,6 +91,12 @@ public class UserLogicImpl implements UserLogic {
         UserEntity ue = userEntityMapper.toEntity(userDto);
         ua.save(ue);
     }
+    
+    @Override
+    public UserDto getUserById(int userId){
+        UserEntity ue = ua.find(userId);
+        return userEntityMapper.toDto(ue);
+    }
 
 
 }

@@ -4,9 +4,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "participant_list")
+@NamedQueries({
+    @NamedQuery(name = "findParticipantListByOrganizer", query="SELECT pl FROM ParticipantListEntity pl WHERE pl.organizer.id = :organizerId "),
+})
 public class ParticipantListEntity extends AbstractEntity {
 
-    @Column(name = "name")
+    @Column(name = "name", unique=true)
     private String name;
 
     // This will store the list of unique email configured by organizers in json array format

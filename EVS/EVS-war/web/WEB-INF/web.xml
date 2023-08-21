@@ -58,6 +58,14 @@
         <extension>jsf</extension>
         <mime-type>text/html</mime-type>
     </mime-mapping>
+    <mime-mapping>
+        <extension>js</extension>
+        <mime-type>application/javascript</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
     <security-constraint>
         <display-name>Authenticated access</display-name>
         <web-resource-collection>

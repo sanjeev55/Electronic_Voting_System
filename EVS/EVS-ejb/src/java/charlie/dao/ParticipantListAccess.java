@@ -5,6 +5,7 @@ import charlie.utils.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -43,6 +44,14 @@ public class ParticipantListAccess extends AbstractAccess<ParticipantListEntity>
         }
 
         return super.create(entity);
+    }
+    
+    public List<ParticipantListEntity> findParticipantListByOrganizerId(int organizerId){
+        List<ParticipantListEntity> ple = em.createNamedQuery("findParticipantListByOrganizer", ParticipantListEntity.class)
+                .setParameter("organizerId", organizerId)
+                .getResultList();
+        
+        return ple;
     }
 
 }
