@@ -1,16 +1,15 @@
-package charlie.logic.impl;
+package charlie.web;
+
 
 import charlie.domain.Page;
 import charlie.dto.PollDto;
-import charlie.domain.PaginationRequest;
 import charlie.domain.PollPaginationRequest;
 import charlie.domain.Result;
-import charlie.service.PollService;
+import charlie.logic.PollLogic;
 
 import charlie.utils.StringUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,12 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Named(value = "pollManager")
 @SessionScoped
-public class PollManagerLogic implements Serializable {
+public class PollManagerBean implements Serializable {
 
-    private static final Logger logger = Logger.getLogger(PollManagerLogic.class.getName());
+    private static final Logger logger = Logger.getLogger(PollManagerBean.class.getName());
 
     @EJB
-    private PollService pollService;
+    private PollLogic pollService;
 
     private PollDto pollInfo = new PollDto();
     private PollPaginationRequest paginationRequest = PollPaginationRequest.build();
@@ -127,13 +126,6 @@ public class PollManagerLogic implements Serializable {
         this.pollInfo = pollInfo;
     }
 
-    public PollService getPollService() {
-        return pollService;
-    }
-
-    public void setPollService(PollService pollService) {
-        this.pollService = pollService;
-    }
 
     public PollPaginationRequest getPaginationRequest() {
         return paginationRequest;

@@ -1,21 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package charlie.logic;
 
+import charlie.domain.Page;
+import charlie.domain.PollPaginationRequest;
+import charlie.domain.Result;
 import charlie.dto.PollDto;
 import javax.ejb.Remote;
 
-/**
- *
- * @author Sanjeev Sun Shakya <sshakya@uni-koblenz.de>
- */
 @Remote
 public interface PollLogic {
-    public PollDto getPollById(int id);
+    PollDto getPollById(int id);
     
-    public PollDto getPollForEdit(String uuid);
+    PollDto getPollForEdit(String uuid);
     
-    public void updatePoll(PollDto pollDto);
+    void updatePoll(PollDto pollDto);
+    
+    Result<PollDto> save(PollDto domain);
+    
+    Result<String> changePollStateToStarted(Integer id);
+    
+    Page<PollDto> getAllWithPagination(PollPaginationRequest request);
+    
+    void deleteById(int id);
 }
