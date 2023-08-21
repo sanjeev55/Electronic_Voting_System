@@ -5,7 +5,6 @@
 package charlie.logic;
 
 import charlie.dto.UserDto;
-import charlie.entity.RoleEnum;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -30,4 +29,6 @@ public interface UserLogic {
     public List<UserDto> getAllUsers();
     
     public void addUser(UserDto userDto);
+    
+    public UserDto getUserById(int id);
 }

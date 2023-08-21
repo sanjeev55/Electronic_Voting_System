@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/WEB-INF/templates/page-layout.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:param name="pageHeadline" value="${msg.manageParticipantListLabel}"/>
+    <ui:define name="metadata">
+        
+
+    </ui:define>
+    <ui:define name="content">
+        <f:verbatim>
+                <script type="text/javascript">
+                    //<![CDATA[
+                    function closeParticipantListModal() {
+                        console.log("Close modal");
+                        $('#createParticipantListModal').modal('hide');
+                        location.reload();
+                    }
+                    
+                    function closeEditParticipantListModal() {
+                        console.log("Close modal");
+                        $('#editParticipantListModal').modal('hide');
+                        location.reload();
+                    }
+                    
+                    function refreshPage(){
+                        location.reload();
+                    }
+
+                    function validateEmail(email) {
+                        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                        return emailPattern.test(email);
+                    }
+
+                    function validateForm() {
+                        var emails = document.getElementById('addParticipantListForm:newListEmails').value.split(',');
+                        console.log("EmailsList:"+emails);
+                        var valid = true;
+
+                        for (var i = 0; i < emails.length; i++) {
+                            var email = emails[i].trim();
+                            console.log("Emails:"+email);
+                            if (!validateEmail(email)) {
+                                alert('Invalid email format: ' + email);
+                                valid = false;
+                                break;
+                            }
+                        }
+
+                        return valid;
+                    }
+                    
+                    function confirmDelete() {
+                        return confirm("Are you sure you want to delete this participant list?");
+                    }
+                    //]]> 
+                </script>
+            </f:verbatim>
+        <b:form id="participantListForm">
+            
+            <b:alert severity="success" rendered="${manageParticipantListBean.deleteSuccess}">
+                ${msg.participantListDeleteSuccessMessage}
+            </b:alert>
+            <b:alert severity="danger" rendered="${manageParticipantListBean.deleteFailure}">
+                ${msg.participantListDeleteFailureMessage}<br/>
+                ${manageParticipantListBean.deleteFailureMessage}
+            </b:alert>
+            <b:alert severity="success" rendered="${manageParticipantListBean.createSuccess}">
+                ${msg.participantListCreateSuccessMessage}
+            </b:alert>
+            <b:alert severity="danger" rendered="${manageParticipantListBean.createFailure}">
+                ${msg.participantListCreateFailureMessage}<br/>
+                ${manageParticipantListBean.createFailureMessage}
+            </b:alert>
+            <b:row>
+                <b:column span="12">
+                    <h:link outcome="staffPage" value="${msg.goToHomepage}"/>
+                </b:column>
+            </b:row>
+            <b:row>
+                <b:column offset="1" span="10">
+                    <b:dataTable striped="true" var="participantList" value="#{manageParticipantListBean.participantList}">
+                        <b:dataTableColumn label="${msg.participantListNameLabel}" value="#{participantList.name}"/>
+                        <b:dataTableColumn label="${msg.participantListEmailLabel}" value="#{participantList.emails}"/>
+                        <b:dataTableColumn label="Action">
+                            <b:button id="editListButton"
+                                    icon="edit"
+                                    outcome="editParticipantPollPage">
+                                <f:param name="participantListId" value="#{participantList.id}"/>
+                                <f:param name="currentUserId" value="#{manageParticipantListBean.currentUser.id}"/>
+                            </b:button>
+                            <b:commandButton id="deleteListButton"
+                                    icon="trash"
+                                    action="#{manageParticipantListBean.deleteParticipantList()}"
+                                    update="participantListForm">
+                                <f:param name="listId" value="#{participantList.id}"/>
+                            </b:commandButton>
+                        </b:dataTableColumn>
+                    </b:dataTable>
+                </b:column>
+            </b:row>
+
+            <b:row>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createParticipantListModal">
+                        ${msg.createParticipantListLabel}
+                    </button>
+                </div>
+            </b:row>
+        </b:form>
+        
+        <b:modal id="createParticipantListModal" title="${msg.createParticipantListLabel}" 
+                 closable="false"
+                 closeOnEscape="true">
+            <h:form id="addParticipantListForm">
+                
+                <b:inputText label ="${msg.listNameLabel}" id="listName" placeholder="${msg.participantListNameLabel}" value="#{manageParticipantListBean.newListName}" required="true" >
+                    <h:message for="listName" class="text-danger mt-2"/>
+                </b:inputText>
+                <b:inputTextarea label ="${msg.listEmailsLabel}" id="emailList" placeholder="${msg.listEmailsPlaceholder}" value="#{manageParticipantListBean.newListEmails}" required="true">   
+                    <h:message for="emailList" class="text-danger mt-2"/>
+                </b:inputTextarea>
+                <b:button value="Cancel"
+                          dismiss="modal" onclick="return false;"/>
+                <b:commandButton value="${msg.saveButton}" 
+                                 action="#{manageParticipantListBean.createParticipantList()}" 
+                                 look="success" 
+                                 icon="check"
+                                 update="participantListForm"
+                                 onclick="closeParticipantListModal()"/>             
+            </h:form>
+        </b:modal>
+        
+    </ui:define>
+    
+        
+</ui:composition>
