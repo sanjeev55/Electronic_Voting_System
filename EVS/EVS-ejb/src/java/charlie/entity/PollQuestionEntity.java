@@ -17,10 +17,10 @@ public class PollQuestionEntity extends AbstractEntity {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "multiple_choice_min", columnDefinition = "int default 1")
+    @Column(name = "multiple_choice_min", columnDefinition = "int default 2")
     private Integer multipleChoiceMin;
 
-    @Column(name = "multiple_choice_max", columnDefinition = "int default 1")
+    @Column(name = "multiple_choice_max", columnDefinition = "int default 2")
     private Integer multipleChoiceMax;
 
     @Column(name = "name")
