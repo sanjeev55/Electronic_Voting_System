@@ -30,6 +30,14 @@
                     ${managePollOrganizers.deleteFailureMessage}
                 </b:alert>
 
+                <b:alert severity="success" rendered="${managePollOrganizers.addOrganizerToPollSuccess}">
+                    ${msg.participantListCreateSuccessMessage}
+                </b:alert>
+                <b:alert severity="danger" rendered="${managePollOrganizers.addOrganizerToPollFailure}">
+                    ${msg.participantListCreateFailureMessage}<br/>
+                    ${managePollOrganizers.addOrganizerToPollFailureMessage}
+                </b:alert>
+
                 <b:row>
                     <b:column offset="1" span="10">
                         <b:dataTable striped="true" var="pollOrganizer" value="#{managePollOrganizers.pollOrganizers}">
@@ -60,7 +68,7 @@
                      closable="false"
                      closeOnEscape="true">
                 <h:form id="addOrganizerToPollForm">
-                    
+
                     <b:selectOneMenu value="#{managePollOrganizers.selectedOrganizer}"  required="true" label="${msg.selectOrganizerLabel}" select2="true">
                         <f:selectItems value="#{managePollOrganizers.getOrganizers()}" var="c" itemValue="#{c.id}" itemLabel="#{c.username}" />
                     </b:selectOneMenu>
@@ -68,7 +76,7 @@
                     <b:button value="Cancel"
                               dismiss="modal" onclick="return false;"/>
                     <b:commandButton value="${msg.saveButton}" 
-                                     action="#{manageParticipantListBean.createParticipantList()}" 
+                                     action="#{managePollOrganizers.addOrganizerToPoll()}" 
                                      look="success" 
                                      icon="check"
                                      update="participantListForm"

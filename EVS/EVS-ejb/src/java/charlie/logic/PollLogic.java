@@ -29,4 +29,6 @@ public interface PollLogic {
     List<PollOwnerDto> getPollOwners(int pollId);
     
     void deletePollOrganizerById(int id);
+    
+    Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId);
 }

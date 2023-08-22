@@ -5,6 +5,7 @@ import charlie.dto.PollOwnerDto;
 import charlie.dto.UserDto;
 import charlie.logic.PollLogic;
 import charlie.logic.UserLogic;
+import charlie.utils.StringUtils;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,9 @@ public class ManagePollOrganizers implements Serializable {
     private boolean deleteSuccess;
     private boolean deleteFailure;
     private String deleteFailureMessage;
+    private boolean addOrganizerToPollSuccess;
+    private boolean addOrganizerToPollFailure;
+    private String addOrganizerToPollFailureMessage;
     private String selectedOrganizer;
 
     @EJB
@@ -90,11 +94,49 @@ public class ManagePollOrganizers implements Serializable {
         }
 
     }
-    
+
     public List<UserDto> getOrganizers() {
-        var uu =  userLogic.getUserHavingRoleOrganizers();
+        var uu = userLogic.getUserHavingRoleOrganizers();
         System.out.println("uu " + uu);
         return uu;
+    }
+
+    public void addOrganizerToPoll() {
+        if (!StringUtils.hasText(this.selectedOrganizer)) {
+            this.addOrganizerToPollFailure = true;
+            this.addOrganizerToPollSuccess = false;
+            this.addOrganizerToPollFailureMessage = "Please select at least one organizer to add into poll";
+            return;
+        }
+
+        if (this.currentPoll == null || this.pollOrganizers == null) {
+            this.addOrganizerToPollFailure = true;
+            this.addOrganizerToPollSuccess = false;
+            this.addOrganizerToPollFailureMessage = "Unhandled error";
+            return;
+        }
+
+        var filteredPollOrganizerById = pollOrganizers.stream().filter(po -> po.getOrganizerId() == Integer.parseInt(this.selectedOrganizer)).findFirst();
+        if (filteredPollOrganizerById.isPresent()) {
+            this.addOrganizerToPollFailure = true;
+            this.addOrganizerToPollSuccess = false;
+            this.addOrganizerToPollFailureMessage = "Organizer with username " + filteredPollOrganizerById.get().getUsername() + " already mapped to current poll";
+            return;
+        }
+
+        var result = pollLogic.addOrganizerToPoll(this.currentPoll.getId(), Integer.parseInt(this.selectedOrganizer));
+        if (result.isError()) {
+            this.addOrganizerToPollFailure = true;
+            this.addOrganizerToPollSuccess = false;
+            this.addOrganizerToPollFailureMessage = result.getError();
+            return;
+        }
+
+        this.addOrganizerToPollFailure = false;
+        this.addOrganizerToPollSuccess = true;
+        this.addOrganizerToPollFailureMessage = null;
+        this.pollOrganizers = null;
+        return;
     }
 
     public Integer getCurrentPollOwnerId() {
@@ -152,6 +194,29 @@ public class ManagePollOrganizers implements Serializable {
     public void setSelectedOrganizer(String selectedOrganizer) {
         this.selectedOrganizer = selectedOrganizer;
     }
-    
+
+    public boolean isAddOrganizerToPollSuccess() {
+        return addOrganizerToPollSuccess;
+    }
+
+    public void setAddOrganizerToPollSuccess(boolean addOrganizerToPollSuccess) {
+        this.addOrganizerToPollSuccess = addOrganizerToPollSuccess;
+    }
+
+    public boolean isAddOrganizerToPollFailure() {
+        return addOrganizerToPollFailure;
+    }
+
+    public void setAddOrganizerToPollFailure(boolean addOrganizerToPollFailure) {
+        this.addOrganizerToPollFailure = addOrganizerToPollFailure;
+    }
+
+    public String getAddOrganizerToPollFailureMessage() {
+        return addOrganizerToPollFailureMessage;
+    }
+
+    public void setAddOrganizerToPollFailureMessage(String addOrganizerToPollFailureMessage) {
+        this.addOrganizerToPollFailureMessage = addOrganizerToPollFailureMessage;
+    }
 
 }

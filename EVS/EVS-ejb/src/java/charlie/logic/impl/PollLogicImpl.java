@@ -3,6 +3,7 @@ package charlie.logic.impl;
 import charlie.dao.PollAccess;
 import charlie.dao.PollOwnerAccess;
 import charlie.dao.PollParticipantAccess;
+import charlie.dao.UserAccess;
 import charlie.dao.filter.PollSearchFilter;
 import charlie.dao.filter.SearchOrderEnum;
 import charlie.domain.Page;
@@ -22,8 +23,6 @@ import charlie.mapper.PollOwnerEntityMapper;
 import charlie.service.MailService;
 import charlie.service.UserService;
 import charlie.utils.StringUtils;
-import com.sun.faces.util.CollectionsUtils;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +64,9 @@ public class PollLogicImpl implements PollLogic {
 
     @EJB
     private PollOwnerEntityMapper pollOwnerEntityMapper;
+    
+    @EJB
+    private UserAccess userDao;
 
     @Override
     public PollDto getPollById(int id) {
@@ -256,5 +258,24 @@ public class PollLogicImpl implements PollLogic {
     @Override
     public void deletePollOrganizerById(int id) {
         pollOwnerDao.deleteById(id);
+    }
+
+    @Override
+    public Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId) {
+        var poll = pollDao.find(pollId);
+        if(poll == null)
+            return Result.error("cannot find poll");
+        
+        var user = userDao.find(organizerId);
+        if(user == null)
+            return Result.error("cannot find organizer");
+        
+        PollOwnerEntity pollOwnerEntity = new PollOwnerEntity(true);
+        pollOwnerEntity.setOrganizer(user);
+        pollOwnerEntity.setPoll(poll);
+        pollOwnerEntity.setPrimaryOrganizer(Boolean.FALSE);
+        
+        pollOwnerDao.create(pollOwnerEntity);
+        return Result.ok("created successfully");
     }
 }

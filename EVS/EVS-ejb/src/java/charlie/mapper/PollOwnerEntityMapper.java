@@ -23,6 +23,7 @@ public class PollOwnerEntityMapper extends AbstractEntityMapper<PollOwnerEntity,
         dto.setUsername(entity.getOrganizer().getUsername());
         dto.setPrimaryOrganizer(entity.getPrimaryOrganizer());
         dto.setPollId(entity.getPoll().getId());
+        dto.setOrganizerId(entity.getOrganizer().getId());
         return dto;
     }
 

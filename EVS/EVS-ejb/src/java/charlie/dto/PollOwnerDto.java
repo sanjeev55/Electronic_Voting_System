@@ -2,6 +2,7 @@ package charlie.dto;
 
 public class PollOwnerDto extends AbstractDto{
     private String username;
+    private Integer organizerId;
     private Boolean primaryOrganizer;
     private int pollId;
 
@@ -27,6 +28,14 @@ public class PollOwnerDto extends AbstractDto{
 
     public void setPrimaryOrganizer(Boolean primaryOrganizer) {
         this.primaryOrganizer = primaryOrganizer;
+    }
+
+    public Integer getOrganizerId() {
+        return organizerId;
+    }
+
+    public void setOrganizerId(Integer organizerId) {
+        this.organizerId = organizerId;
     }
     
     
