@@ -20,6 +20,7 @@
   <security-role-mapping>
     <role-name>STAFF</role-name>
     <principal-name>sameep</principal-name>
+    <principal-name>eric</principal-name>
     <group-name>EMPLOYEE</group-name>
   </security-role-mapping>
   <security-role-mapping>
