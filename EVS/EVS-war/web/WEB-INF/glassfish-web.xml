@@ -30,11 +30,11 @@
   <security-role-mapping>
     <role-name>ADMIN</role-name>
     <principal-name>admin</principal-name>
-    <principal-name>admin1</principal-name>
   </security-role-mapping>
   <security-role-mapping>
     <role-name>STAFF</role-name>
     <principal-name>prajwol</principal-name>
+    <principal-name>eric</principal-name>
   </security-role-mapping>
   <security-role-mapping>
     <role-name>STAFF</role-name>
