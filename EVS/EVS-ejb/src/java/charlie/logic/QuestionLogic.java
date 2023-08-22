@@ -5,6 +5,7 @@ package charlie.logic;
  * @author Eric Babcock <ebabcock@uni-koblenz.de>
  */
 
+import charlie.domain.Result;
 import charlie.dto.QuestionDto;
 
 import javax.ejb.Remote;
@@ -17,7 +18,7 @@ public interface QuestionLogic {
     
     void updateQuestion(QuestionDto questionDto);
     
-    //TODO:Result<QuestionDto> save(QuestionDto domain);
+    Result<QuestionDto> save(QuestionDto domain);
     
     void deleteById(int id);
     
