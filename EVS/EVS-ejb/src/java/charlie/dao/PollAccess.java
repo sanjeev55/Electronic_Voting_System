@@ -5,7 +5,9 @@ import charlie.dao.filter.SearchOrderEnum;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.domain.Page;
+import charlie.entity.PollStateEnum;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -115,5 +117,21 @@ public class PollAccess extends AbstractAccess<PollEntity> {
 
     public void updatePoll(PollEntity pe) {
         edit(pe);
+    }
+
+    public List<PollEntity> getPollsInStartedStateInDateRange(Date from, Date to) {
+        return em.createNamedQuery("getStartedPollsInDateRange", PollEntity.class)
+                .setParameter("from", from)
+                .setParameter("to", to)
+                .setParameter("state", PollStateEnum.STARTED)
+                .getResultList();
+    }
+
+    public List<PollEntity> getPollsInVotingStateInDateRange(Date from, Date to) {
+        return em.createNamedQuery("getVotingPollsInDateRange", PollEntity.class)
+                .setParameter("from", from)
+                .setParameter("to", to)
+                .setParameter("state", PollStateEnum.VOTING)
+                .getResultList();
     }
 }

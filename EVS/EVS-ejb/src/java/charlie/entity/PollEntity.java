@@ -13,6 +13,8 @@ import java.util.Set;
     @NamedQuery(name = "deleteById", query = "DELETE FROM PollEntity p WHERE p.id = :id"),
     @NamedQuery(name = "getPollById", query = "SELECT p FROM PollEntity p WHERE p.id = :id"),
     @NamedQuery(name = "getPollByUuid", query = "SELECT p FROM PollEntity p WHERE p.uuid = :uuid"),
+    @NamedQuery(name = "getStartedPollsInDateRange", query = "select p from PollEntity p where p.state = :state and p.startsAt >= :from and p.startsAt < :to"),
+    @NamedQuery(name = "getVotingPollsInDateRange", query = "select p from PollEntity p where p.state = :state and p.endsAt >= :from and p.endsAt < :to")
 })
 public class PollEntity extends AbstractEntity {
 
