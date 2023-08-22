@@ -6,8 +6,10 @@ package charlie.web;
  * TODO: model after PollManagerBean
  */
 
-import charlie.utils.StringUtils;
+import charlie.domain.Result;
 import charlie.dto.QuestionDto;
+import charlie.logic.QuestionLogic;
+import charlie.utils.StringUtils;
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -23,19 +25,19 @@ import javax.faces.context.FacesContext;
 
 @Named(value = "questionManager")
 @SessionScoped
-// QUESTION: 
+// QUESTION: HOW TO SCOPE TO POLL
 public class QuestionManagerBean implements Serializable {
     
     private static final Logger logger = Logger.getLogger(QuestionManagerBean.class.getName());
     
     @EJB
     private QuestionLogic questionService;//TODO: connect this
-    
     private QuestionDto questionInfo = new QuestionDto();
+    private String questionId;
     //TODO: ADD QuestionPagination info
     
     public String addQuestion() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInsance().getExternalContext().getRequest();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         
         FacesContext context = FacesContext.getCurrentInstance();
         if (!StringUtils.hasText(questionInfo.getTitle())) {
@@ -47,6 +49,7 @@ public class QuestionManagerBean implements Serializable {
         System.out.println("charlie.logic.impl.QuestionManagerLogic.addOrUpdateQuestion()");//TODO: CREATE 
         System.out.println(this.questionInfo);
         
+        Result<QuestionDto> result = questionService.save(this.questionInfo);
         return null;// "/pages
        
     }
