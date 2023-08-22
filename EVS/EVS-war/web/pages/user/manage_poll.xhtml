@@ -20,57 +20,68 @@
                 </div>
             </div>
             <hr/>
-            <table class="table" id="tbl-organizers">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Starts At</th>
-                        <th scope="col">Ends At</th>
-                        <th scope="col">State</th>
-                        <th scope="col">Track Participant</th>
-                        <th scope="col">Primary Owner</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ui:repeat value="#{pollManager.getPolls().data}" var="poll" varStatus="loop">
+            <b:form id="participantListForm">
+                <table class="table" id="tbl-organizers">
+                    <thead>
                         <tr>
-                            <th scope="row">#{loop.index + 1}</th>
-                            <td>#{poll.title}</td>
-                            <td>#{poll.description}</td>
-                            <td>#{poll.startsAt}</td>
-                            <td>#{poll.endsAt}</td>
-                            <td>#{poll.state}</td>
-                            <td>#{poll.trackParticipant}</td>
-                            <td>#{poll.primaryOrganizer.username}</td>                          
-                            <td><a href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=start_poll&amp;poll_id=#{poll.id}"
-                                   class="btn btn-dark" role="button" aria-pressed="true">Start Poll</a></td>
-                            <td class="d-flex">
-                                <div>
-                                <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <div>
-                                            <h:link outcome="editPollPage">
-                                                <f:param name="pollUuid" value="#{poll.uuid}" />
-                                                <image src="#{request.contextPath}/resources/images/edit-icon.png" style="width: 25px;"/>
-                                            </h:link>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Starts At</th>
+                            <th scope="col">Ends At</th>
+                            <th scope="col">State</th>
+                            <th scope="col">Track Participant</th>
+                            <th scope="col">Primary Owner</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{pollManager.pollsWithPagination.data}" var="poll" varStatus="loop">
+                            <tr>
+                                <th scope="row">#{loop.index + 1}</th>
+                                <td>#{poll.title}</td>
+                                <td>#{poll.description}</td>
+                                <td>#{poll.startsAt}</td>
+                                <td>#{poll.endsAt}</td>
+                                <td>#{poll.state}</td>
+                                <td>#{poll.trackParticipant}</td>
+                                <td>#{poll.primaryOrganizer.username}</td>                          
+                                <td><b:commandButton id="startPollBtn"
+                                                     icon="submit"
+                                                     value="Start Poll"
+                                                     action="#{pollManager.startPoll()}"
+                                                     update="participantListForm">
+                                        <f:param name="id" value="#{poll.id}"/>
+                                    </b:commandButton></td>
+                                <td class="d-flex">
+                                    <div>
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                            <div>
+                                                <h:link outcome="editPollPage">
+                                                    <f:param name="pollUuid" value="#{poll.uuid}" />
+                                                    <image src="#{request.contextPath}/resources/images/edit-icon.png" style="width: 25px;"/>
+                                                </h:link>
+                                            </div>
+                                        </div>
+                                        <div id="btn-delete-#{poll.id}">
+                                            <a onclick="return confirm('Are you sure you want to delete the poll?');"
+                                               href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=delete&amp;poll_id=#{poll.id}">
+
+                                                <image width="20px" src="#{request.contextPath}/resources/images/delete-icon.png"/>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div id="btn-delete-#{poll.id}">
-                                        <a onclick="return confirm('Are you sure you want to delete the poll?');"
-                                           href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=delete&amp;poll_id=#{poll.id}">
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+                <b:alert severity="danger" rendered="${pollManager.renderErrorMessage}">
+                    ${msg.startPollErrorMessage}<br/>
+                    ${pollManager.errorMessage}
+                </b:alert>
+            </b:form>
 
-                                            <image width="20px" src="#{request.contextPath}/resources/images/delete-icon.png"/>
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </ui:repeat>
-                </tbody>
-            </table>
-            <h:message id="errorMessage" for="errorMessage" class="alert alert-danger" role="alert"/>
             <div class="d-flex ml-4">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -89,8 +100,6 @@
                 <f:viewParam name="pageSize" value="#{pollManager.paginationRequest.pageSize}"/>
                 <f:viewParam name="sortOrder" value="#{pollManager.paginationRequest.sortOrder}"/>
                 <f:viewParam name="sortBy" value="#{pollManager.paginationRequest.sortBy}"/>
-                <f:viewParam name="action" value="#{pollManager.action}"/>
-                <f:viewParam name="poll_id" value="#{pollManager.pollId}"/>
                 <f:viewParam name="show_polls_configured_by_me" value="#{pollManager.filterPostOwner}"/>
             </f:metadata>
 

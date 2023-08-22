@@ -1,6 +1,5 @@
 package charlie.web;
 
-
 import charlie.domain.Page;
 import charlie.dto.PollDto;
 import charlie.domain.PollPaginationRequest;
@@ -11,8 +10,10 @@ import charlie.utils.StringUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 
@@ -37,34 +38,23 @@ public class PollManagerBean implements Serializable {
     private int requestedPageSize;
     private String requestedSortBy;
     private String requestedSortOrder;
-    private String action;
     private String pollId;
     private String filterPostOwner;
+    private boolean renderErrorMessage;
+    private String errorMessage;
+    private Page<PollDto> pollsWithPagination;
 
-    public Page<PollDto> getPolls() {
+    public Page<PollDto> getPollsWithPagination() {
+
         logger.log(Level.INFO, "Inside get all polls");
         logger.log(Level.INFO, "Pagination request: " + paginationRequest);
-        var context = FacesContext.getCurrentInstance();
-
-        if (StringUtils.hasText(action) && action.equalsIgnoreCase("delete") && StringUtils.hasText(pollId)) {
-            this.pollService.deleteById(StringUtils.parseInteger(pollId));
-        }
-
-        if (StringUtils.hasText(action) && action.equalsIgnoreCase("start_poll") && StringUtils.hasText(pollId)) {
-            var result = this.pollService.changePollStateToStarted(StringUtils.parseInteger(pollId));
-            if (result.isError()) {
-
-                context.addMessage("errorMessage",
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, result.getError(), result.getError()));
-            }
-        }
 
         paginationRequest.parseFilterPostOwner(filterPostOwner);
-        Page<PollDto> allWithPagination = pollService.getAllWithPagination(paginationRequest);
-        double totalPagesInDouble = (double) allWithPagination.getTotalCount() / allWithPagination.getPageSize();
+        this.pollsWithPagination = pollService.getAllWithPagination(paginationRequest);
+        double totalPagesInDouble = (double) pollsWithPagination.getTotalCount() / pollsWithPagination.getPageSize();
         int totalPages = (int) Math.ceil(totalPagesInDouble);
 
-        logger.log(Level.WARNING, allWithPagination.toString());
+        logger.log(Level.WARNING, pollsWithPagination.toString());
 
         this.pageNumberList = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
@@ -74,8 +64,36 @@ public class PollManagerBean implements Serializable {
         this.requestedPageSize = paginationRequest.getPageSize();
         this.requestedSortBy = paginationRequest.getSortBy();
         this.requestedSortOrder = paginationRequest.getSortOrder();
+        return this.pollsWithPagination;
+    }
 
-        return allWithPagination;
+    public void startPoll() {
+        try {
+            System.out.println("inside start poll");
+            Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            pollId = params.get("id");
+            System.out.println("pollId: " + pollId);
+
+            var result = this.pollService.changePollStateToStarted(StringUtils.parseInteger(pollId));
+            System.out.println("result: " + result);
+            if (result.isError()) {
+                this.renderErrorMessage = true;
+                this.errorMessage = result.getError();
+                return;
+            }
+
+            pollId = null;
+            renderErrorMessage = false;
+            errorMessage = null;
+        } catch (Exception e) {
+            this.renderErrorMessage = true;
+
+            Throwable t = e;
+            while (t.getCause() != null) {
+                t = t.getCause();
+            }
+            this.errorMessage = t.getMessage();
+        }
     }
 
     public String addPoll() {
@@ -126,7 +144,6 @@ public class PollManagerBean implements Serializable {
         this.pollInfo = pollInfo;
     }
 
-
     public PollPaginationRequest getPaginationRequest() {
         return paginationRequest;
     }
@@ -167,14 +184,6 @@ public class PollManagerBean implements Serializable {
         this.requestedSortOrder = requestedSortOrder;
     }
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
     public String getPollId() {
         return pollId;
     }
@@ -189,6 +198,22 @@ public class PollManagerBean implements Serializable {
 
     public void setFilterPostOwner(String filterPostOwner) {
         this.filterPostOwner = filterPostOwner;
+    }
+
+    public boolean isRenderErrorMessage() {
+        return renderErrorMessage;
+    }
+
+    public void setRenderErrorMessage(boolean renderErrorMessage) {
+        this.renderErrorMessage = renderErrorMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
 }

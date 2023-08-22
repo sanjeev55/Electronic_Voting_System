@@ -3,6 +3,7 @@ package charlie.web;
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
 import charlie.dto.UserDto;
+import charlie.entity.PollStateEnum;
 import charlie.logic.PollLogic;
 import charlie.logic.UserLogic;
 import charlie.utils.StringUtils;
@@ -76,6 +77,13 @@ public class ManagePollOrganizers implements Serializable {
                 }
             }
 
+            if (currentPoll != null && !currentPoll.getState().equals(PollStateEnum.PREPARED)) {
+                deleteSuccess = false;
+                deleteFailure = true;
+                deleteFailureMessage = "Only poll having state as PREPARED is allowed for modification";
+                return;
+            }
+
             System.out.println("Current list id:" + currentPollOwnerId);
             pollLogic.deletePollOrganizerById(currentPollOwnerId);
 
@@ -121,6 +129,13 @@ public class ManagePollOrganizers implements Serializable {
             this.addOrganizerToPollFailure = true;
             this.addOrganizerToPollSuccess = false;
             this.addOrganizerToPollFailureMessage = "Organizer with username " + filteredPollOrganizerById.get().getUsername() + " already mapped to current poll";
+            return;
+        }
+
+        if (currentPoll != null && !currentPoll.getState().equals(PollStateEnum.PREPARED)) {
+            deleteSuccess = false;
+            deleteFailure = true;
+            deleteFailureMessage = "Only poll having state as PREPARED is allowed for modification";
             return;
         }
 
