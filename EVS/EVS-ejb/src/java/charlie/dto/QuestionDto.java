@@ -10,7 +10,7 @@ import charlie.entity.QuestionTypeEnum;
 public class QuestionDto extends AbstractDto{
     
     private String title;
-    private QuestionTypeEnum questionType;
+    private QuestionTypeEnum type;
     
     public String getTitle() {
         return title;
@@ -20,17 +20,17 @@ public class QuestionDto extends AbstractDto{
         this.title = title;
     }
     
-    public QuestionTypeEnum getQuestionType(){
-        return questionType;
+    public QuestionTypeEnum getType(){
+        return type;
     }
     
-    public void setQuestionType(QuestionTypeEnum questionType) {
-        this.questionType = questionType;
+    public void setType(QuestionTypeEnum type) {
+        this.type = type;
     }
     
     @Override
     public String toString() {
-        return "QuestionDto{" + "title=" + title + ",questionType=" +questionType + '}';
+        return "QuestionDto{" + "title=" + title + ",type=" +type + '}';
     }
     
 }
