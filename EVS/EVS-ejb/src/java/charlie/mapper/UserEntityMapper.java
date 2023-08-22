@@ -2,6 +2,9 @@ package charlie.mapper;
 
 import charlie.dto.UserDto;
 import charlie.entity.UserEntity;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -36,6 +39,10 @@ public class UserEntityMapper extends AbstractEntityMapper<UserEntity, UserDto>{
         entity.setRole(domain.getRole());
         entity.setUsername(domain.getUsername());
         return entity;
+    }
+    
+    public List<UserDto> toDtoList(List<UserEntity> entitys) {
+        return entitys.stream().map(entity -> toDto(entity)).collect(Collectors.toList());
     }
        
 }

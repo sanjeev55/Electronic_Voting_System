@@ -31,4 +31,6 @@ public interface UserLogic {
     public void addUser(UserDto userDto);
     
     public UserDto getUserById(int id);
+    
+    public List<UserDto> getUserHavingRoleOrganizers();
 }

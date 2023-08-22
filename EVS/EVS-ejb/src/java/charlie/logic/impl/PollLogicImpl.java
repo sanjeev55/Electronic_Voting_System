@@ -10,6 +10,7 @@ import charlie.domain.PollPaginationRequest;
 import charlie.domain.Result;
 import charlie.dto.MailPollDescriptionDto;
 import charlie.dto.PollDto;
+import charlie.dto.PollOwnerDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.entity.PollParticipantEntity;
@@ -17,9 +18,13 @@ import charlie.entity.PollStateEnum;
 import charlie.entity.UserEntity;
 import charlie.logic.PollLogic;
 import charlie.mapper.PollEntityMapper;
+import charlie.mapper.PollOwnerEntityMapper;
 import charlie.service.MailService;
 import charlie.service.UserService;
 import charlie.utils.StringUtils;
+import com.sun.faces.util.CollectionsUtils;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,9 +37,9 @@ import javax.mail.MessagingException;
 
 @Stateless
 public class PollLogicImpl implements PollLogic {
-    
+
     private static final Logger LOG = Logger.getLogger(PollLogicImpl.class.getName());
-    
+
     private final String EVS_VOTING_URL = "http://localhost:8080/EVS-war/public/poll/%s/voting-page.xhtml?token=%s";
 
     @EJB
@@ -57,25 +62,27 @@ public class PollLogicImpl implements PollLogic {
 
     @EJB
     private MailService mailService;
-    
-    
+
+    @EJB
+    private PollOwnerEntityMapper pollOwnerEntityMapper;
+
     @Override
     public PollDto getPollById(int id) {
         PollEntity pe = pollDao.getPollById(id);
         return pollEntityMapper.toDto(pe);
-        
+
     }
-    
+
     @Override
-    public PollDto getPollForEdit(String uuid){
-    
+    public PollDto getPollForEdit(String uuid) {
+
         PollEntity pe = pollDao.getPollForEdit(uuid);
         System.out.println("POll Entity" + pe);
         return pollEntityMapper.toDto(pe);
     }
-    
+
     @Override
-    public void updatePoll(PollDto pollDto){
+    public void updatePoll(PollDto pollDto) {
         String startDate = pollDto.getStartsAt();
         System.out.println("startDate====" + startDate);
         String endDate = pollDto.getEndsAt();
@@ -84,7 +91,7 @@ public class PollLogicImpl implements PollLogic {
         PollEntity pe = pollEntityMapper.toEntity(pollDto);
         pollDao.updatePoll(pe);
     }
-    
+
     public Result<PollDto> save(PollDto domain) {
         if (domain == null) {
             return Result.error("Cannot accept null values");
@@ -222,8 +229,32 @@ public class PollLogicImpl implements PollLogic {
         sb.append(" <i style='color:red'>Note: Please don't share this to any one</i>");
         sb.append("\n <b>Poll URL:</b> ");
         sb.append(String.format(EVS_VOTING_URL, descriptionDto.getUuid(), descriptionDto.getToken()));
-       
-        return sb.toString();   
+
+        return sb.toString();
     }
-    
+
+    @Override
+    public Result<PollDto> getPollByUUID(String uuid) {
+        PollEntity pe = pollDao.getPollForEdit(uuid);
+        if (pe == null) {
+            return Result.error("poll not found by " + uuid);
+        }
+
+        return Result.ok(pollEntityMapper.toDto(pe));
+    }
+
+    @Override
+    public List<PollOwnerDto> getPollOwners(int pollId) {
+        var poll = pollDao.find(pollId);
+        if (poll == null) {
+            return Collections.emptyList();
+        }
+        var entities = pollOwnerDao.findAllByPoll(poll);
+        return pollOwnerEntityMapper.toDomainList(entities);
+    }
+
+    @Override
+    public void deletePollOrganizerById(int id) {
+        pollOwnerDao.deleteById(id);
+    }
 }

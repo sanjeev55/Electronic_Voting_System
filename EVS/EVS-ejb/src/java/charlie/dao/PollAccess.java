@@ -5,8 +5,6 @@ import charlie.dao.filter.SearchOrderEnum;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.domain.Page;
-import charlie.dto.PollDto;
-import charlie.entity.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -28,10 +26,9 @@ public class PollAccess extends AbstractAccess<PollEntity> {
 
     @PersistenceContext(unitName = "EVS-ejbPU")
     private EntityManager em;
-    
+
     @EJB
     private PollOwnerAccess pollOwnerDao;
-    
 
     public PollAccess() {
         super(PollEntity.class);
@@ -94,26 +91,29 @@ public class PollAccess extends AbstractAccess<PollEntity> {
                 .setParameter("id", id)
                 .executeUpdate();
     }
-    
-    public PollEntity getPollById(int id){
+
+    public PollEntity getPollById(int id) {
         try {
             return em.createNamedQuery("getPollById", PollEntity.class)
                     .setParameter("id", id)
                     .getSingleResult();
-            
-            
+
         } catch (NoResultException e) {
             return null;
         }
     }
-    
-    public PollEntity getPollForEdit (String uuid){
-         return em.createNamedQuery("getPollByUuid", PollEntity.class)
+
+    public PollEntity getPollForEdit(String uuid) {
+        try {
+            return em.createNamedQuery("getPollByUuid", PollEntity.class)
                     .setParameter("uuid", uuid)
                     .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-    
-    public void updatePoll(PollEntity pe){
+
+    public void updatePoll(PollEntity pe) {
         edit(pe);
     }
 }

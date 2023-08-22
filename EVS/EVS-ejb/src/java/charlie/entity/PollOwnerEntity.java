@@ -7,6 +7,10 @@ import javax.persistence.*;
 @NamedNativeQueries({
     @NamedNativeQuery(name = "deleteByPollId", query = "delete from poll_owner where poll_id = ?")
 })
+@NamedQueries({
+    @NamedQuery(name = "getByPoll", query = "select po from PollOwnerEntity po where po.poll = :poll"),
+    @NamedQuery(name = "deletePollOwnerById", query = "delete from PollOwnerEntity po where po.id = :id")
+})
 public class PollOwnerEntity extends AbstractEntity {
 
     @ManyToOne

@@ -13,6 +13,7 @@ import javax.persistence.*;
     @NamedQuery(name = "getUserByName", query = "SELECT u FROM UserEntity u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "getUserByUserName", query = "SELECT u FROM UserEntity u WHERE u.username = :username"),
     @NamedQuery(name = "getUserByUuid", query= "SELECT u from UserEntity u WHERE u.uuid = :uuid"),
+    @NamedQuery(name = "getUsersByRole", query= "SELECT u from UserEntity u WHERE u.role = :role"),
 }
 )
 public class UserEntity extends AbstractEntity {

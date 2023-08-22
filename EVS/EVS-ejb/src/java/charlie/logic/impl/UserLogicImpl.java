@@ -7,6 +7,7 @@ import charlie.entity.RoleEnum;
 import charlie.entity.UserEntity;
 import charlie.mapper.UserEntityMapper;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -96,6 +97,16 @@ public class UserLogicImpl implements UserLogic {
     public UserDto getUserById(int userId){
         UserEntity ue = ua.find(userId);
         return userEntityMapper.toDto(ue);
+    }
+    
+    @Override
+    public List<UserDto> getUserHavingRoleOrganizers() {
+      var entities = ua.findAllUsersHavingRoleOrganizers();
+        System.out.println("entitiesL " + entities);
+      if(entities == null) 
+          return Collections.emptyList();
+      
+      return userEntityMapper.toDtoList(entities);
     }
 
 

@@ -1,5 +1,6 @@
 package charlie.dao;
 
+import charlie.entity.RoleEnum;
 import charlie.entity.UserEntity;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -63,6 +64,12 @@ public class UserAccess extends AbstractAccess<UserEntity> {
     
     public List<UserEntity> findAllUsers(){
         return em.createNamedQuery("getUserList", UserEntity.class)
+                .getResultList();
+    }
+    
+     public List<UserEntity> findAllUsersHavingRoleOrganizers(){
+        return em.createNamedQuery("getUsersByRole", UserEntity.class)
+                .setParameter("role", RoleEnum.ROLE_ORGANIZER)
                 .getResultList();
     }
     

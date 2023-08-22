@@ -4,6 +4,8 @@ import charlie.domain.Page;
 import charlie.domain.PollPaginationRequest;
 import charlie.domain.Result;
 import charlie.dto.PollDto;
+import charlie.dto.PollOwnerDto;
+import java.util.List;
 import javax.ejb.Remote;
 
 @Remote
@@ -21,4 +23,10 @@ public interface PollLogic {
     Page<PollDto> getAllWithPagination(PollPaginationRequest request);
     
     void deleteById(int id);
+    
+    Result<PollDto> getPollByUUID(String uuid);
+    
+    List<PollOwnerDto> getPollOwners(int pollId);
+    
+    void deletePollOrganizerById(int id);
 }
