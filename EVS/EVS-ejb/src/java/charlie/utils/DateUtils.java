@@ -2,6 +2,7 @@ package charlie.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -24,6 +25,14 @@ public class DateUtils {
     
     public static Date parseDate(String dateInString) {
         return parseDate(dateInString, "yyyy-MM-dd'T'HH:mm");
+    }
+    
+    public static Date getDateMinusFiveMinutes() {
+        Date toDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(toDate);
+        cal.add(Calendar.MINUTE, -5);
+        return cal.getTime();
     }
     
     public static String convertDateToCustomFormat(String input) {
