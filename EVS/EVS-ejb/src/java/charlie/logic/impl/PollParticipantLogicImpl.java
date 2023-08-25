@@ -44,5 +44,39 @@ public class PollParticipantLogicImpl implements PollParticipantLogic {
     public void savePollParticipant(PollParticipantDto pollParticipantDto) {
         ppa.create(ppm.toEntity(pollParticipantDto));
     }
+
+    @Override
+    public PollParticipantDto getByToken(String token) {
+        PollParticipantEntity ppe = ppa.findByToken(token);
+        return ppm.toDto(ppe);
+    }
+
+    @Override
+    public List<PollParticipantDto> getParticipantsByParticipationStatus(Boolean hasParticipated) {
+        List<PollParticipantEntity> ppe = ppa.findParticipantsByParticipationStatus(hasParticipated);
+        return ppe.stream().map(ppm::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public PollParticipantDto getByEmail(String email) {
+        PollParticipantEntity ppe = ppa.findByEmail(email);
+        return ppm.toDto(ppe);
+    }
+
+    @Override
+    public Long getCountOfParticipantInPoll(PollDto pollDto) {
+        return ppa.countPollParticipantByPoll(pm.toEntity(pollDto));
+    }
+
+    @Override
+    public PollParticipantDto getById(int id) {
+        PollParticipantEntity ppe = ppa.find(id);
+        return ppm.toDto(ppe);
+    }
+    
+    @Override
+    public void deleteByPoll(PollDto pollDto){
+        ppa.deleteByPollId(pm.toEntity(pollDto));
+    }
     
 }

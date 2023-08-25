@@ -94,6 +94,11 @@ public class ManageParticipantListBean implements Serializable {
     
     public void createParticipantList(){
         try {
+            
+            if (isListNameTaken(newListName)) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "List name already in use: " + newListName, null));
+            }
+            
             Set<String> emails = new HashSet<>(Arrays.asList(newListEmails.split(",")));
             System.out.println("Emails:"+emails);
             
@@ -218,6 +223,13 @@ public class ManageParticipantListBean implements Serializable {
         this.processedEmailString = processedEmailString;
     }
     
-    
+    private boolean isListNameTaken(String name) {
+        for (ParticipantListDto list : getParticipantList()) {
+            if (list.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
 }
