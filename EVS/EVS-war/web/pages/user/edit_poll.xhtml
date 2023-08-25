@@ -8,14 +8,10 @@
 
     <ui:param name="pageHeadline" value="${msg.pollEditHeadline}"/>
     <ui:define name="metadata">
-        <f:metadata>
-            <f:viewParam id="pollUuid" name="pollUuid" value="#{pollEditBean.pollUuid}"
-                         required="true"/>
-        </f:metadata>
         <f:verbatim>
             <script type="text/javascript">
-                function closeParticipantModal() {
-                    $('#participantModal').modal('hide');
+                function closeParticipantListModal() {
+                    $('#manageParticipantModal').modal('hide');
                 }
             </script>
         </f:verbatim>
@@ -25,11 +21,6 @@
         <h:link outcome="managePollPage" value="${msg.pollEditBackToList}"/>
         <b:messages/>
         
-        <b:alert severity="info" rendered="${not pollEditBean.valid}">
-            <h:outputFormat value="${msg.pollEditPollNotFound}">
-                <f:param value="${pollEditBean.pollUuid}"/>
-            </h:outputFormat>
-        </b:alert>
 
         <b:form id="pollEditForm" horizontal="true">
 
@@ -39,6 +30,14 @@
             <b:alert severity="danger" rendered="${pollEditBean.failure}">
                 ${msg.pollEditFailureMessage}<br/>
                 ${pollEditBean.failureMessage}
+            </b:alert>
+            
+            <b:alert severity="success" rendered="${pollEditBean.pollParticipantSuccess}">
+                ${msg.pollParticipantEditSuccessMessage}
+            </b:alert>
+            <b:alert severity="danger" rendered="${pollEditBean.pollParticipantFailure}">
+                ${msg.pollParticipantEditFailureMessage}<br/>
+                ${pollEditBean.pollParticipantFailureMessage}
             </b:alert>
 
             <b:row>
@@ -89,9 +88,52 @@
                                      action="#{pollEditBean.saveChanges}"
                                      value="${msg.pollEditSaveChangesButtonLabel}" />
                 </div>
+
                 <a href="add_organizers_to_poll.xhtml?poll_uuid=#{pollEditBean.pollUuid}" > Add Organizers </a>
             </b:row>
         </b:form>
+        
+        <b:modal id="manageParticipantModal" title="${msg.manageParticipantListLabel}" 
+                 closable="false"
+                 closeOnEscape="true">
+            <h:form id="editParticipantForm">
+                
+                <b:selectMultiMenu id="multiSelect"
+                                    update="newEmailList"
+                                    label="${msg.participantListHeadline}" 
+                                    value="#{pollEditBean.selectedParticipants}"
+                                    ondropdownhide="ajax:pollEditBean.updateEmailList()">
+                    <f:selectItems value="#{pollEditBean.processedOrganizerParticipantListDto.entrySet()}" 
+                                    var="participant"
+                                    itemLabel="#{participant.key}" 
+                                    itemValue="#{participant.value}" />
+                 </b:selectMultiMenu>
+                
+                <b:inputTextarea 
+                    label ="${msg.listEmailsLabel}" 
+                    id="newEmailList" 
+                    placeholder="${msg.listEmailsPlaceholder}" 
+                    value="#{pollEditBean.newSelectedParticipants}">   
+                <h:message for="newEmailList" class="text-danger mt-2"/>
+                </b:inputTextarea>
+                
+                <b:inputTextarea label ="${msg.listEmailsLabel}" 
+                                    id="emailList" 
+                                    placeholder="${msg.listEmailsPlaceholder}" 
+                                    value="#{pollEditBean.selectedPollParticipants}">   
+                <h:message for="emailList" class="text-danger mt-2"/>
+                </b:inputTextarea>
+
+                <b:button value="Cancel"
+                          dismiss="modal" onclick="return false;"/>
+                <b:commandButton value="${msg.saveButton}" 
+                                 action="#{pollEditBean.addParticipantsToPoll()}" 
+                                 look="success" 
+                                 icon="check"
+                                 onclick="closeParticipantListModal()"/>             
+            </h:form>
+        </b:modal>
+        
     </ui:define>
     
     

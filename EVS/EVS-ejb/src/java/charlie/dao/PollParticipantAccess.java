@@ -34,14 +34,13 @@ public class PollParticipantAccess extends AbstractAccess<PollParticipantEntity>
                 .setParameter("poll", poll)
                 .getResultList();        
     }
-        // 1. Find by Token
+    
     public PollParticipantEntity findByToken(String token) {
         return em.createNamedQuery("findByToken", PollParticipantEntity.class)
                 .setParameter("token", token)
                 .getSingleResult();
     }
 
-    // 3. Find Participants who have/haven't participated
     public List<PollParticipantEntity> findParticipantsByParticipationStatus(Boolean hasParticipated) {
         return em.createNamedQuery("findParticipantsByParticipationStatus", PollParticipantEntity.class)
                 .setParameter("hasParticipated", hasParticipated)
@@ -49,9 +48,15 @@ public class PollParticipantAccess extends AbstractAccess<PollParticipantEntity>
     }
     
     public PollParticipantEntity findByEmail(String email){
-        return em.createNamedQuery("findPollParticipantByEmail", PollParticipantEntity.class)
+        return em.createNamedQuery("getPollParticipantByEmail", PollParticipantEntity.class)
                 .setParameter("pollId", email)
                 .getSingleResult();
+    }
+    
+    public void deleteByPollId(PollEntity poll){
+        em.createNamedQuery("deleteAllByPollId", PollParticipantEntity.class)
+                .setParameter("poll", poll)
+                .executeUpdate();
     }
     
     
