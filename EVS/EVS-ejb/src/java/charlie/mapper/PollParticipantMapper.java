@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package charlie.mapper;
 
 import charlie.dto.PollParticipantDto;
@@ -10,10 +6,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-/**
- *
- * @author Sanjeev Sun Shakya <sshakya@uni-koblenz.de>
- */
 @Stateless
 @LocalBean
 public class PollParticipantMapper extends AbstractEntityMapper<PollParticipantEntity, PollParticipantDto> {
@@ -49,8 +41,7 @@ public class PollParticipantMapper extends AbstractEntityMapper<PollParticipantE
         dto.setToken(entity.getToken());
         dto.setHasParticipated(entity.getHasParticipated());
         dto.setEmail(entity.getEmail());
-        dto.setPoll(pollEntityMapper.toDto(entity.getPoll()));
-
+        dto.setPoll(entity.getPoll() != null ? pollEntityMapper.toDto(entity.getPoll()) : null);
         return dto;
     }
 }

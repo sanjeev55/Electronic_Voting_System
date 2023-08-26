@@ -5,6 +5,7 @@ import charlie.domain.PollPaginationRequest;
 import charlie.domain.Result;
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
+import charlie.dto.PollQuestionAnswerDto;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -31,4 +32,6 @@ public interface PollLogic {
     void deletePollOrganizerById(int id);
     
     Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId);
+    
+    List<PollQuestionAnswerDto> getPollQuestionsByPollId(Integer pollId);
 }

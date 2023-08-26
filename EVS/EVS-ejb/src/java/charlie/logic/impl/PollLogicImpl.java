@@ -3,6 +3,7 @@ package charlie.logic.impl;
 import charlie.dao.PollAccess;
 import charlie.dao.PollOwnerAccess;
 import charlie.dao.PollParticipantAccess;
+import charlie.dao.PollQuestionAnswerAccess;
 import charlie.dao.UserAccess;
 import charlie.dao.filter.PollSearchFilter;
 import charlie.dao.filter.SearchOrderEnum;
@@ -12,6 +13,7 @@ import charlie.domain.Result;
 import charlie.dto.MailPollDescriptionDto;
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
+import charlie.dto.PollQuestionAnswerDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.entity.PollParticipantEntity;
@@ -20,6 +22,7 @@ import charlie.entity.UserEntity;
 import charlie.logic.PollLogic;
 import charlie.mapper.PollEntityMapper;
 import charlie.mapper.PollOwnerEntityMapper;
+import charlie.mapper.PollQuestionAnswerEntityMapper;
 import charlie.service.MailService;
 import charlie.service.UserService;
 import charlie.utils.StringUtils;
@@ -39,7 +42,7 @@ public class PollLogicImpl implements PollLogic {
 
     private static final Logger LOG = Logger.getLogger(PollLogicImpl.class.getName());
 
-    private final String EVS_VOTING_URL = "http://localhost:8080/EVS-war/public/poll/%s/voting-page.xhtml?token=%s";
+    private final String EVS_VOTING_URL = "http://localhost:8080/EVS-war/pages/participant/voting-page.xhtml?token=%s";
 
     @EJB
     private PollEntityMapper pollEntityMapper;
@@ -67,6 +70,12 @@ public class PollLogicImpl implements PollLogic {
     
     @EJB
     private UserAccess userDao;
+    
+    @EJB
+    private PollQuestionAnswerAccess pollQuestionAnswerDao;
+    
+    @EJB
+    private PollQuestionAnswerEntityMapper pollQuestionAnswerMapper;
 
     @Override
     public PollDto getPollById(int id) {
@@ -230,7 +239,7 @@ public class PollLogicImpl implements PollLogic {
         sb.append(descriptionDto.getToken());
         sb.append(" <i style='color:red'>Note: Please don't share this to any one</i>");
         sb.append("\n <b>Poll URL:</b> ");
-        sb.append(String.format(EVS_VOTING_URL, descriptionDto.getUuid(), descriptionDto.getToken()));
+        sb.append(String.format(EVS_VOTING_URL, descriptionDto.getToken()));
 
         return sb.toString();
     }
@@ -277,5 +286,15 @@ public class PollLogicImpl implements PollLogic {
         
         pollOwnerDao.create(pollOwnerEntity);
         return Result.ok("created successfully");
+    }
+
+    @Override
+    public List<PollQuestionAnswerDto> getPollQuestionsByPollId(Integer pollId) {
+        var results = pollQuestionAnswerDao.getPollQuestionsByPollId(pollId);
+        System.out.println("results: " + results);
+        if(results == null || results.isEmpty())
+            return Collections.emptyList();
+               
+        return pollQuestionAnswerMapper.toDtoList(results);
     }
 }

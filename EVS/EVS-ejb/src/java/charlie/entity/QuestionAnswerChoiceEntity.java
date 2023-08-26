@@ -39,5 +39,10 @@ public class QuestionAnswerChoiceEntity extends AbstractEntity {
 
     public void setPollQuestion(PollQuestionEntity pollQuestion) {
         this.pollQuestion = pollQuestion;
+    } 
+
+    @Override
+    public String toString() {
+        return "QuestionAnswerChoiceEntity{" + "shortName=" + shortName + ", description=" + description + '}';
     }
 }
