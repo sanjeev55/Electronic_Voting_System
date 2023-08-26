@@ -54,12 +54,12 @@ public class VotingPageBean implements Serializable {
             return;
         }
 
-        if(!currentPollParticipant.getPoll().getState().equals(PollStateEnum.VOTING)) {
+        if (!currentPollParticipant.getPoll().getState().equals(PollStateEnum.VOTING)) {
             renderInvalidTokenMessage = true;
             errorMessage = "Current poll state " + currentPollParticipant.getPoll().getState() + " not allowed";
             this.currentPollParticipant = null;
             return;
-        }      
+        }
     }
 
     public List<PollQuestionAnswerDto> getPollQuestions() {
@@ -74,6 +74,8 @@ public class VotingPageBean implements Serializable {
     public void submitVote() {
         System.out.println("submitting vote");
 
+        boolean isValidationError = false;
+        String validationErrorMsg = null;
         Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String param = parameterMap.get("jsonResponse");
 
@@ -97,16 +99,14 @@ public class VotingPageBean implements Serializable {
                 }
 
                 if (answers.size() < pollQuestionAnswer.getMultipleChoiceMin()) {
-                    renderInvalidTokenMessage = true;
-                    errorMessage = "Please select at least " + pollQuestionAnswer.getMultipleChoiceMin() + " choice for " + pollQuestionAnswer.getTitle();
-                    return;
-                } 
+                    isValidationError = true;
+                    validationErrorMsg = "Please select at least " + pollQuestionAnswer.getMultipleChoiceMin() + " choice for " + pollQuestionAnswer.getTitle();
+                }
 
                 if (answers.size() > pollQuestionAnswer.getMultipleChoiceMax()) {
-                    renderInvalidTokenMessage = true;
-                    errorMessage = "Please select at most " + pollQuestionAnswer.getMultipleChoiceMax() + " choice for " + pollQuestionAnswer.getTitle();
-                    return;
-                } 
+                    isValidationError = true;
+                    validationErrorMsg = "Please select at most " + pollQuestionAnswer.getMultipleChoiceMax() + " choice for " + pollQuestionAnswer.getTitle();
+                }
 
             } else {
                 Integer id = userResponseJsonMap.get(pollQuestionAnswer.getUuid());
@@ -119,11 +119,18 @@ public class VotingPageBean implements Serializable {
                 }
                 answers.add(id);
             }
-           
+
             participantQuestionAnswerDto.setPollId(currentPollParticipant.getPoll().getId());
             participantQuestionAnswerDto.setAnswerChoiceIds(answers);
             participantQuestionAnswerDto.setQuestionId(pollQuestionAnswer.getId());
             participantQuestionAnswers.add(participantQuestionAnswerDto);
+        }
+        if (isValidationError) {
+            renderInvalidTokenMessage = true;
+            errorMessage = validationErrorMsg;
+            return;
+        } else {
+            renderInvalidTokenMessage = false;
         }
         System.out.println("user answer map: " + participantQuestionAnswers);
     }
