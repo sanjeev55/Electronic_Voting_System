@@ -87,7 +87,6 @@ public class QuestionLogicImpl implements QuestionLogic{
             return Result.error("Cannot accept null values");//TODO: check if correct
         }
         domain.setUuid(UUID.randomUUID().toString());
-        //domain.setType
         
         PollQuestionEntity entity = questionEntityMapper.toEntity(domain);
         
