@@ -2,6 +2,7 @@ package charlie.web;
 
 import charlie.dto.PollParticipantDto;
 import charlie.dto.*;
+import charlie.entity.PollStateEnum;
 import charlie.entity.QuestionTypeEnum;
 import charlie.logic.PollLogic;
 import charlie.logic.PollParticipantLogic;
@@ -53,7 +54,12 @@ public class VotingPageBean implements Serializable {
             return;
         }
 
-        // TODO: poll date validation       
+        if(!currentPollParticipant.getPoll().getState().equals(PollStateEnum.VOTING)) {
+            renderInvalidTokenMessage = true;
+            errorMessage = "Current poll state " + currentPollParticipant.getPoll().getState() + " not allowed";
+            this.currentPollParticipant = null;
+            return;
+        }      
     }
 
     public List<PollQuestionAnswerDto> getPollQuestions() {
