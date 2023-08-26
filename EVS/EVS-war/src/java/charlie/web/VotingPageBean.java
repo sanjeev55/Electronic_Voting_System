@@ -2,12 +2,16 @@ package charlie.web;
 
 import charlie.dto.PollParticipantDto;
 import charlie.dto.*;
+import charlie.entity.QuestionTypeEnum;
 import charlie.logic.PollLogic;
 import charlie.logic.PollParticipantLogic;
 import charlie.utils.StringUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -21,7 +25,7 @@ public class VotingPageBean implements Serializable {
 
     private PollParticipantDto currentPollParticipant;
     private List<PollQuestionAnswerDto> pollQuestions;
-    
+
     @EJB
     private PollParticipantLogic participantLogic;
     @EJB
@@ -48,19 +52,76 @@ public class VotingPageBean implements Serializable {
             this.currentPollParticipant = null;
             return;
         }
-        
+
         // TODO: poll date validation       
     }
 
     public List<PollQuestionAnswerDto> getPollQuestions() {
-        
-        if(pollQuestions == null) {            
+
+        if (pollQuestions == null) {
             pollQuestions = pollLogic.getPollQuestionsByPollId(currentPollParticipant.getPoll().getId());
         }
         System.out.println("pollQuestions: " + pollQuestions);
         return pollQuestions;
     }
-   
+
+    public void submitVote() {
+        System.out.println("submitting vote");
+
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String param = parameterMap.get("jsonResponse");
+
+        var userResponseJsonMap = StringUtils.convertJsonStringToMap(param);
+        System.out.println("user resp json map: " + userResponseJsonMap);
+
+        List<ParticipantQuestionAnswerDto> participantQuestionAnswers = new ArrayList<>();
+        for (PollQuestionAnswerDto pollQuestionAnswer : pollQuestions) {
+            ParticipantQuestionAnswerDto participantQuestionAnswerDto = new ParticipantQuestionAnswerDto();
+            List<Integer> answers = new ArrayList<>();
+
+            if (pollQuestionAnswer.getQuestionType().equals(QuestionTypeEnum.MULTIPLE_CHOICE.name())) {
+                for (QuestionAnswerChoiceDto answerChoice : pollQuestionAnswer.getAnswerChoices()) {
+                    String key = pollQuestionAnswer.getUuid() + ";" + answerChoice.getUuid();
+                    if (userResponseJsonMap.containsKey(key)) {
+                        answers.add(answerChoice.getId());
+                        answerChoice.setIsSelected(true);
+                    } else {
+                        answerChoice.setIsSelected(false);
+                    }
+                }
+
+                if (answers.size() < pollQuestionAnswer.getMultipleChoiceMin()) {
+                    renderInvalidTokenMessage = true;
+                    errorMessage = "Please select at least " + pollQuestionAnswer.getMultipleChoiceMin() + " choice for " + pollQuestionAnswer.getTitle();
+                    return;
+                } 
+
+                if (answers.size() > pollQuestionAnswer.getMultipleChoiceMax()) {
+                    renderInvalidTokenMessage = true;
+                    errorMessage = "Please select at most " + pollQuestionAnswer.getMultipleChoiceMax() + " choice for " + pollQuestionAnswer.getTitle();
+                    return;
+                } 
+
+            } else {
+                Integer id = userResponseJsonMap.get(pollQuestionAnswer.getUuid());
+                for (QuestionAnswerChoiceDto answerChoice : pollQuestionAnswer.getAnswerChoices()) {
+                    if (answerChoice.getId() == id) {
+                        answerChoice.setIsSelected(true);
+                    } else {
+                        answerChoice.setIsSelected(false);
+                    }
+                }
+                answers.add(id);
+            }
+           
+            participantQuestionAnswerDto.setPollId(currentPollParticipant.getPoll().getId());
+            participantQuestionAnswerDto.setAnswerChoiceIds(answers);
+            participantQuestionAnswerDto.setQuestionId(pollQuestionAnswer.getId());
+            participantQuestionAnswers.add(participantQuestionAnswerDto);
+        }
+        System.out.println("user answer map: " + participantQuestionAnswers);
+    }
+
     public String getToken() {
         return token;
     }
@@ -87,5 +148,5 @@ public class VotingPageBean implements Serializable {
 
     public PollParticipantDto getCurrentPollParticipant() {
         return currentPollParticipant;
-    }   
+    }
 }

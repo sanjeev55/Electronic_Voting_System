@@ -19,23 +19,32 @@
             <h4>Welcome, #{votingPageBean.currentPollParticipant.email}</h4>
             <center><h5>You are voting on: <b>#{votingPageBean.currentPollParticipant.poll.title}</b></h5></center>
             <hr/>
-            <form id="voting-form">
+            <b:form id="voting-form">
                 <ui:repeat value="#{votingPageBean.pollQuestions}" var="question">
                     <div class="form-group">
                         <label for="#{question.uuid}">#{question.title}</label>
                         <ui:repeat value="#{question.answerChoices}" var="answer">
                             <div>
-                                <input type="#{answer.inputType}" id="#{answer.uuid}" name="#{answer.inputName}" value="#{answer.shortName}" />
-                                  <label for="#{answer.uuid}">#{answer.shortName}</label>
+                                <b:container rendered="#{answer.isSelected}">
+                                    <input type="#{answer.inputType}" id="#{answer.uuid}" name="#{answer.inputName}" value="#{answer.id}" checked="true" />
+                                    <label for="#{answer.uuid}">#{answer.shortName}</label>
+                                </b:container>
+                                <b:container rendered="#{!answer.isSelected}">
+                                    <input type="#{answer.inputType}" id="#{answer.uuid}" name="#{answer.inputName}" value="#{answer.id}"/>
+                                    <label for="#{answer.uuid}">#{answer.shortName}</label>
+                                </b:container>
                             </div>
-
                         </ui:repeat>
                     </div>
                     <hr/>
                 </ui:repeat>
+                <div hidden="true">
+                    <input type="hidden" name="jsonResponse" id="user-response"/>
+                </div>
                 <button type="button">Cancel</button>
-                <button type="submit">Submit</button>
-            </form>
+                <b:commandButton actionListener="#{votingPageBean.submitVote}" value="Submit" onclick="prepareUserResponse()"/>
+
+            </b:form>
         </b:container>
 
         <f:metadata>
@@ -43,12 +52,17 @@
         </f:metadata>
         <f:verbatim>
             <script type="text/javascript">
-                var form = document.getElementById('voting-form');
-                form.onsubmit = () => {
+                function prepareUserResponse() {
+                    var form = document.getElementById('voting-form');
                     var data = new FormData(form);
+                    data.delete('jsonResponse');
+                    data.delete('javax.faces.ViewState');
+                    data.delete('voting-form');
                     const json = JSON.stringify(Object.fromEntries(data));
+
                     console.log(json);
-                    return false;
+                    document.getElementById('user-response').setAttribute('value', json);
+                    return true;
                 }
             </script>
         </f:verbatim>
