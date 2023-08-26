@@ -41,7 +41,7 @@ public class PollParticipantAccess extends AbstractAccess<PollParticipantEntity>
 
     public PollParticipantEntity findByToken(String token) {
         try {
-            return em.createNamedQuery("getPollParticipantByToken", PollParticipantEntity.class)
+            return em.createNamedQuery("findByToken", PollParticipantEntity.class)
                     .setParameter("token", token)
                     .getSingleResult();
         } catch (NoResultException e) {
