@@ -11,6 +11,8 @@ public class QuestionDto extends AbstractDto{
     
     private String title;
     private QuestionTypeEnum type;
+    //private Integer questionId;
+    private int pollId;
     
     public String getTitle() {
         return title;
@@ -28,20 +30,21 @@ public class QuestionDto extends AbstractDto{
         this.type = type;
     }
     
+    public int getPollId() {
+        return pollId;
+    }
+    
+    public void setPollId(int pollId) {
+        this.pollId = pollId;
+    }
+    
     @Override
     public String toString() {
-        return "QuestionDto{" + "title=" + title + ",type=" +type + '}';
+        return "QuestionDto{" 
+                + "title=" + title 
+                + ",type=" + type 
+                + ",pollId" + pollId 
+                + "}";
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-

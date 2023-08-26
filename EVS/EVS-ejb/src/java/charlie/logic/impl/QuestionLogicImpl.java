@@ -1,6 +1,7 @@
 package charlie.logic.impl;
 
 import charlie.dao.QuestionAccess;
+import charlie.dao.PollAccess;
 import charlie.logic.QuestionLogic;
 import charlie.domain.Result;
 import charlie.dto.QuestionDto;
@@ -9,6 +10,7 @@ import charlie.entity.PollQuestionEntity;
 import charlie.entity.QuestionTypeEnum;
 import charlie.entity.UserEntity;
 import charlie.logic.QuestionLogic;
+import charlie.mapper.PollEntityMapper;
 import charlie.mapper.QuestionEntityMapper;
 import charlie.service.UserService;
 import charlie.utils.StringUtils;
@@ -38,6 +40,19 @@ public class QuestionLogicImpl implements QuestionLogic{
     @EJB
     private UserService userService;//TODO: WHAT does this do
     
+    //@EJB
+    //private QuestionEntityMapper entityMapper;//TODO: do I need?
+    
+    @EJB
+    private PollEntityMapper pollEntityMapper;
+    
+    @EJB
+    private PollAccess pollDao;
+  
+    //@Override
+    //public PollDto getPollById(int id){}
+        
+    
     @Override
     public QuestionDto getQuestionById(int id) {
         PollQuestionEntity qe = questionDao.getQuestionById(id);
@@ -48,22 +63,31 @@ public class QuestionLogicImpl implements QuestionLogic{
     public QuestionDto getQuestionForEdit(String uuid) {
         
         PollQuestionEntity qe = questionDao.getQuestionForEdit(uuid);
-        System.out.println("QUESTION Entity" + qe);
+        System.out.println("Question Entity" + qe);
         return questionEntityMapper.toDto(qe);
     }
     
     @Override
-    public void updateQuestion(QuestionDto questionDto) {
-        PollQuestionEntity qe = questionEntityMapper.toEntity(questionDto);
-        questionDao.updateQuestion(qe);
+    public Result<QuestionDto> getQuestionByUuid(String uuid) {
+        PollQuestionEntity qe = questionDao.getQuestionForEdit(uuid);
+        if (qe == null) {
+            return Result.error("question not found by " + uuid);
+        }
+        
+        return Result.ok(questionEntityMapper.toDto(qe));
     }
+            
+    /*@Override
+    public void updateQuestion(QuestionDto questionDto) {
+        
+    }*/
    
-    public Result<QuestionDto> save (QuestionDto domain) {
+    public Result<QuestionDto> addQuestion (QuestionDto domain) {
         if (domain == null) {
             return Result.error("Cannot accept null values");//TODO: check if correct
         }
-        
         domain.setUuid(UUID.randomUUID().toString());
+        //domain.setType
         
         PollQuestionEntity entity = questionEntityMapper.toEntity(domain);
         
@@ -77,7 +101,7 @@ public class QuestionLogicImpl implements QuestionLogic{
             
             PollQuestionEntity savedEntity = questionDao.create(entity);
             
-            //PollEntity poll = new PollEntity(true); TODO: finish
+            //PollEntity poll = new PollEntity(true); //TODO: finish
             
             return Result.ok(questionEntityMapper.toDto(savedEntity));
         } catch (Exception e) {
@@ -88,22 +112,22 @@ public class QuestionLogicImpl implements QuestionLogic{
         }
     }
     
-    public void deleteById(int id) {
-        questionDao.deleteById(id);
-    }
+    /*@Override
+    public Result<?> addAssociatedPoll(Integer pollId, Integer questionId) {
+        var poll = pollDao.find(pollId);
+        if (poll == null)
+            return Result.error("cannot find poll");
+        
+        var question = questionDao.find(questionId);
+        if(question == null)
+            return Result.error("cannot find question");
+        
+        pollQuestionEntity.setPoll(poll);
+    }*/
     
+    
+    
+    /*public void deleteById(int id) {
+        questionDao.deleteById(id);
+    }*/
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

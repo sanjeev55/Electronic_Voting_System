@@ -28,7 +28,7 @@ public interface PollLogic {
     Result<PollDto> getPollByUUID(String uuid);
     
     List<PollOwnerDto> getPollOwners(int pollId);
-    
+        
     void deletePollOrganizerById(int id);
     
     Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId);
@@ -42,4 +42,9 @@ public interface PollLogic {
     public List<PollDto> findAllPolls();
     
     public void deletePollAdmin(int pollId, String pollState);
+
+    //TODO: List<PollQuestionDto> getPollQuestions (int pollId);
+    //TODO: deletQuestionById
+    //TODO: addQuestionToPoll
+
 }

@@ -21,12 +21,43 @@
                                      class="form-control w-50" 
                                      id="title" 
                                      name ="title"
-                                     value="#{questionManager.questionInfo.title}"
+                                     value="#{questionManagerBean.questionInfo.title}"
                                      />
                     </div>
+                </div>
+            </div>
+            <div class="form-group mb-3 row">
+                <div class = "col-1">
+                    <label for ="title" class = "col-form-label"> Question Type</label>
+                </div>
+                <div class ="col-11">
+                    <b:row>
+                        <b:selectOneMenu span="6" label-col-md="2" id="type" value = "#{questionManagerBean.questionInfo.type}">
+                            <f:selectItems value= "#{questionManagerBean.questionTypes}" />
+                        </b:selectOneMenu>
+                    </b:row>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1">
+
+                </div>
+                <div class="col-11">
+                    <div class="d-flex justify-content-end w-50">
+                        <h:commandButton id="btn-submit"
+                                         value="Submit"
+                                         class="btn btn-sm btn-dark mt-2"
+                                         action="#{questionManagerBean.addQuestion()}"></h:commandButton>
+                    </div>
+
                 </div>
             </div>
             
         </h:form>
     </ui:define>
 </ui:composition>
+<!-- 
+TODO:-
+     - reroute error
+     -viewId:/pages/user/add_question.xhtml - View /pages/user/add_question.xhtml could not be restored. 
+-->

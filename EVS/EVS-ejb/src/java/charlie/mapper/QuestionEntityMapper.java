@@ -2,11 +2,11 @@ package charlie.mapper;
 
 import charlie.dto.QuestionDto;
 import charlie.entity.PollQuestionEntity;
-import charlie.utils.DateUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -18,6 +18,9 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntity,QuestionDto>{
+    
+    @EJB
+    private UserEntityMapper userEntityMapper;
     
     @Override
     public PollQuestionEntity toEntity(QuestionDto domain) {

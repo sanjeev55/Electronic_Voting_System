@@ -11,6 +11,7 @@ public class PollDto extends AbstractDto{
     private PollStateEnum state;
     private Boolean trackParticipant;
     private UserDto primaryOrganizer;
+    //TODO: ADD QUESTION?
 
     public String getTitle() {
         return title;

@@ -7,19 +7,35 @@ package charlie.logic;
 
 import charlie.domain.Result;
 import charlie.dto.QuestionDto;
+import charlie.dto.PollDto;
+
+import java.util.List;
 
 import javax.ejb.Remote;
         
 @Remote
 public interface QuestionLogic {
-    QuestionDto getQuestionById(int id);
     
-    QuestionDto getQuestionForEdit(String uuid);
+    public static final String SINGLE_CHOICE = "SINGLE";
+    public static final String MULTIPLE_CHOICE = "MULTIPLE";
+    public static final String YES_NO = "YES_NO";
+
+    // QUESTION SECTION
+    public QuestionDto getQuestionById(int id);
     
-    void updateQuestion(QuestionDto questionDto);
+    public QuestionDto getQuestionForEdit(String uuid);
     
-    Result<QuestionDto> save(QuestionDto domain);
+    //public void updateQuestion(QuestionDto questionDto);
     
-    void deleteById(int id);
+    //public void updateQuestionType(String uuid, String type);
     
+    Result<QuestionDto> addQuestion(QuestionDto domain);
+    
+    //void deleteById(int id);
+    Result<QuestionDto> getQuestionByUuid (String uuid);
+    
+    // POLL SECTION
+    //PollDto getPollById(int pollId);
+    
+    //Result<?> addAssociatedPoll(Integer pollId, Integer questionId);//TODO: DOUBLE CHECK
 }
