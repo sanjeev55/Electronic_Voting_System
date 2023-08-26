@@ -2,6 +2,7 @@ package charlie.dao;
 
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
+import charlie.entity.UserEntity;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -37,9 +38,31 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
                 
     }
     
+    public List<PollOwnerEntity> findAllByPollId(int pollId) {
+       return em.createNamedQuery("getByPollId", PollOwnerEntity.class)
+                .setParameter("pollId", pollId)
+                .getResultList();
+                
+    }
+    
     public void deleteById(int id) {
         em.createNamedQuery("deletePollOwnerById")
                 .setParameter("id", id)
                 .executeUpdate();
     }
+    
+    public void deleteByOrganizer(UserEntity user){
+        em.createNamedQuery("deleteByOrganizer", PollOwnerEntity.class)
+                .setParameter("organizer", user)
+                .executeUpdate();
+    }
+    
+    public List<PollOwnerEntity> getAllByOrganizerAndIsPrimaryOrganizer(UserEntity organizer, Boolean isPrimaryOrganizer){
+        return em.createNamedQuery("findAllByOrganizerAndIsPrimaryOrganizer", PollOwnerEntity.class)
+                .setParameter("organizer", organizer)
+                .setParameter("isPrimaryOrganizer", isPrimaryOrganizer)
+                .getResultList();
+    }
+    
+    
 }

@@ -33,4 +33,6 @@ public interface UserLogic {
     public UserDto getUserById(int id);
     
     public List<UserDto> getUserHavingRoleOrganizers();
+    
+    public void deleteById(UserDto userDto);
 }

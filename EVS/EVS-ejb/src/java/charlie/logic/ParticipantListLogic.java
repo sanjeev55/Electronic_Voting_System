@@ -23,4 +23,6 @@ public interface ParticipantListLogic {
     public ParticipantListDto getByParticipantListById(int id);
     
     public void updateParticipantList(ParticipantListDto participantListDto);
+    
+    public void deleteByOrganizerId(int organizerId);
 }

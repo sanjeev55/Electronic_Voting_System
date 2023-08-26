@@ -12,10 +12,19 @@
            <h:form id="AdminManagement">
                 <b:row>
                     <b:column col-xs="6">
-                        <h:commandButton value="#{msg.managePolls}" action="#{adminBean.managePolls}" styleClass="btn btn-flat btn-primary"/>
+                        <b:button id="managePolls"
+                                    icon="edit"
+                                    outcome="managePollsAdminPage"
+                                    value="${msg.managePolls}"
+                                    look="primary"
+                                    disabled="true"/>
                     </b:column>
                     <b:column col-xs="6">
-                        <h:commandButton value="#{msg.manageOrganizer}" action="#{adminBean.manageOrganizer}" styleClass="btn btn-flat btn-secondary"/>
+                        <b:button id="editListButton"
+                                        icon="edit"
+                                        outcome="manageOrganizersAdminPage"
+                                        value="${msg.manageOrganizer}"
+                                        look='primary'/>
                     </b:column>
                 </b:row>
             </h:form>

@@ -53,5 +53,11 @@ public class ParticipantListAccess extends AbstractAccess<ParticipantListEntity>
         
         return ple;
     }
+    
+    public void deleteParicipantListByPollId(int organizerId){
+        em.createNamedQuery("deleteParicipantListByOrganizerId", ParticipantListEntity.class)
+                .setParameter("organizerId", organizerId)
+                .executeUpdate();
+    }
 
 }

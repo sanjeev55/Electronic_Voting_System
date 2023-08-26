@@ -64,4 +64,9 @@ public class ParticipantListLogicImpl implements ParticipantListLogic{
         
     }
     
+    @Override
+    public void deleteByOrganizerId(int organizerId){
+        pla.deleteParicipantListByPollId(organizerId);
+    }
+    
 }
