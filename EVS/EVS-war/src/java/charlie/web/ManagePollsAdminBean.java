@@ -6,10 +6,6 @@ package charlie.web;
 
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
-import charlie.dto.PollParticipantDto;
-import charlie.entity.PollEntity;
-import static charlie.entity.PollEntity_.pollOwners;
-import charlie.entity.PollOwnerEntity;
 import charlie.logic.PollLogic;
 import charlie.logic.PollOwnerLogic;
 import charlie.logic.PollParticipantLogic;
@@ -17,7 +13,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.TransactionAttribute;
