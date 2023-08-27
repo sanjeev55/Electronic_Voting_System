@@ -13,6 +13,7 @@ import charlie.domain.Result;
 import charlie.dto.MailPollDescriptionDto;
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
+import charlie.dto.PollParticipantDto;
 import charlie.dto.PollQuestionAnswerDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
@@ -20,6 +21,8 @@ import charlie.entity.PollParticipantEntity;
 import charlie.entity.PollStateEnum;
 import charlie.entity.UserEntity;
 import charlie.logic.PollLogic;
+import charlie.logic.PollOwnerLogic;
+import charlie.logic.PollParticipantLogic;
 import charlie.mapper.PollEntityMapper;
 import charlie.mapper.PollOwnerEntityMapper;
 import charlie.mapper.PollQuestionAnswerEntityMapper;
@@ -33,6 +36,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
@@ -76,6 +82,13 @@ public class PollLogicImpl implements PollLogic {
     
     @EJB
     private PollQuestionAnswerEntityMapper pollQuestionAnswerMapper;
+    
+    @EJB
+    private PollOwnerLogic pol;
+    
+    @EJB
+    private PollParticipantLogic ppl;
+    
 
     @Override
     public PollDto getPollById(int id) {
@@ -307,4 +320,63 @@ public class PollLogicImpl implements PollLogic {
     public void deletePollbyPollId(PollDto pollDto){
         pollDao.remove(entityMapper.toEntity(pollDto));
     }
+    
+    @Override
+    public List<PollDto> findAllPolls(){
+        List<PollEntity> listOfPolls = pollDao.findAll();
+        return listOfPolls.stream().map(entityMapper::toDto).collect(Collectors.toList());
+    }
+    
+    @Override
+    public void deletePollAdmin(int pollId, String pollState) {
+        PollDto pollDto = getPollById(pollId);
+
+        if(pollDto == null) {
+            LOG.log(Level.WARNING, "No poll found with the provided pollId.");
+            return;
+        }
+
+        List<String> allRecipients = getAllRecipientsForPoll(pollId, pollDto);
+        System.out.println("All Recipients" + allRecipients);
+        
+        ppl.deleteByPoll(pollDto);
+        
+        deleteById(pollId);
+        
+        //TODO: Add delete operation for PollQuestionEntity and QuestionAnswerChoiceEntity
+
+        if(!"PREPARED".equals(pollState) && !"FINISHED".equals(pollState)) {
+            sendPollDeletionNotification(allRecipients, pollDto.getTitle());
+        }
+    }
+
+    private List<String> getAllRecipientsForPoll(int pollId, PollDto pollDto) {
+        List<String> pollParticipantEmails = ppl.getParticipantsOfPoll(pollDto)
+                                                .stream()
+                                                .map(PollParticipantDto::getEmail)
+                                                .collect(Collectors.toList());
+
+        List<String> organizerEmails = pol.findAllByPollId(pollId)
+                                           .stream()
+                                           .map(PollOwnerDto::getUsername)
+                                           .collect(Collectors.toList());
+
+        pollParticipantEmails.addAll(organizerEmails);
+        return pollParticipantEmails;
+    }
+    
+    @Asynchronous
+    private void sendPollDeletionNotification(List<String> recipients, String pollTitle) {
+        String subject = "Poll Deletion Notification";
+        String body = "The poll titled '" + pollTitle + "' has been deleted. Thank you for your participation.";
+
+         recipients.stream().forEach(recipient -> CompletableFuture.runAsync(() -> {
+            try {
+                mailService.sendMail(recipient, subject, body);
+            } catch (MessagingException ex) {
+                LOG.log(Level.WARNING, String.format("Got exception while sending email to %s. Message: %s", recipient, ex.getMessage()), ex);
+            }
+        }));
+    }
+
 }

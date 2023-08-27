@@ -21,4 +21,5 @@ public interface PollOwnerLogic {
     public void deleteAllByOrganizer(UserDto userDto);
     public List<PollOwnerDto> findAllByPoll(PollDto pollDto);
     public List<PollOwnerDto> findAllByPollId(int pollId);
+    public void deleteByPoll(PollDto pollDto);
 }
