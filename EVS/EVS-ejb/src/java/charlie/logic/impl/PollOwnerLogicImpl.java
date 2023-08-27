@@ -62,4 +62,9 @@ public class PollOwnerLogicImpl implements PollOwnerLogic {
         return poe.stream().map(pom::toDto).collect(Collectors.toList());
     }
     
+    @Override
+    public void deleteByPoll(PollDto pollDto){
+        poa.deleteAllByPoll(pm.toEntity(pollDto));
+    }
+    
 }

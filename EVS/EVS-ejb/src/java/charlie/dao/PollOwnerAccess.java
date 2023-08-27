@@ -64,5 +64,11 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
                 .getResultList();
     }
     
+    public void deleteAllByPoll(PollEntity poll){
+        em.createNamedQuery("deleteAllByPoll", PollOwnerEntity.class)
+                .setParameter("poll", poll)
+                .executeUpdate();
+    }
+    
     
 }

@@ -38,4 +38,8 @@ public interface PollLogic {
     public void deletePollWithSingleOrganizer(PollOwnerDto pollOwnerDto);
     
     public void deletePollbyPollId(PollDto pollDto);
+    
+    public List<PollDto> findAllPolls();
+    
+    public void deletePollAdmin(int pollId, String pollState);
 }
