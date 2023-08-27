@@ -108,6 +108,10 @@ public class UserLogicImpl implements UserLogic {
       
       return userEntityMapper.toDtoList(entities);
     }
-
+    
+    @Override
+    public void deleteById(UserDto userDto){
+        ua.remove(userEntityMapper.toEntity(userDto));
+    }
 
 }

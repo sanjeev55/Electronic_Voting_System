@@ -5,7 +5,9 @@ import charlie.dao.filter.SearchOrderEnum;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.domain.Page;
+import charlie.dto.PollOwnerDto;
 import charlie.entity.PollStateEnum;
+import charlie.entity.UserEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -134,4 +136,17 @@ public class PollAccess extends AbstractAccess<PollEntity> {
                 .setParameter("state", PollStateEnum.VOTING)
                 .getResultList();
     }
+    
+    public void deleteByOrganizerId(UserEntity user){
+        em.createNamedQuery("deletePollByOrganizerId")
+                .setParameter("organizer", user)
+                .executeUpdate();
+    }
+    
+    public void deletePollBySingleOwner(PollOwnerDto pollOwnerDto){
+        em.createNamedQuery("deletePollBySingleOwner")
+                .setParameter("owner", pollOwnerDto)
+                .executeUpdate();
+    }
+    
 }

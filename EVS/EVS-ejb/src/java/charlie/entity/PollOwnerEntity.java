@@ -1,5 +1,6 @@
 package charlie.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
@@ -9,9 +10,14 @@ import javax.persistence.*;
 })
 @NamedQueries({
     @NamedQuery(name = "getByPoll", query = "select po from PollOwnerEntity po where po.poll = :poll"),
-    @NamedQuery(name = "deletePollOwnerById", query = "delete from PollOwnerEntity po where po.id = :id")
+    @NamedQuery(name = "getByPollId", query = "select po from PollOwnerEntity po where po.poll.id = :pollId"),
+    @NamedQuery(name = "deletePollOwnerById", query = "delete from PollOwnerEntity po where po.id = :id"),
+    @NamedQuery(name="deleteByOrganizer", 
+            query="DELETE FROM PollOwnerEntity po WHERE po.organizer = :organizer"),
+    @NamedQuery(name = "findAllByOrganizerAndIsPrimaryOrganizer", 
+            query="SELECT po FROM PollOwnerEntity po where po.organizer = :organizer AND po.isPrimaryOrganizer = :isPrimaryOrganizer"),
 })
-public class PollOwnerEntity extends AbstractEntity {
+public class PollOwnerEntity extends AbstractEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "organizer_id")

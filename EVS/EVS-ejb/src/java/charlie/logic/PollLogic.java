@@ -34,4 +34,8 @@ public interface PollLogic {
     Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId);
     
     List<PollQuestionAnswerDto> getPollQuestionsByPollId(Integer pollId);
+
+    public void deletePollWithSingleOrganizer(PollOwnerDto pollOwnerDto);
+    
+    public void deletePollbyPollId(PollDto pollDto);
 }

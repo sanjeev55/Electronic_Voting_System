@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "participant_list")
 @NamedQueries({
     @NamedQuery(name = "findParticipantListByOrganizer", query="SELECT pl FROM ParticipantListEntity pl WHERE pl.organizer.id = :organizerId "),
+    @NamedQuery(name = "deleteParicipantListByOrganizerId", query="DELETE FROM ParticipantListEntity pl WHERE pl.organizer.id = :organizerId")
 })
 public class ParticipantListEntity extends AbstractEntity {
 

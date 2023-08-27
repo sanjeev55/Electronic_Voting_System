@@ -297,4 +297,14 @@ public class PollLogicImpl implements PollLogic {
                
         return pollQuestionAnswerMapper.toDtoList(results);
     }
+    
+    @Override
+    public void deletePollWithSingleOrganizer(PollOwnerDto pollOwnerDto){
+        pollDao.deletePollBySingleOwner(pollOwnerDto);
+    }
+    
+    @Override
+    public void deletePollbyPollId(PollDto pollDto){
+        pollDao.remove(entityMapper.toEntity(pollDto));
+    }
 }

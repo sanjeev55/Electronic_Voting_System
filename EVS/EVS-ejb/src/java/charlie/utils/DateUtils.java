@@ -11,6 +11,10 @@ import java.util.logging.Logger;
 public class DateUtils {
 
     private static final Logger logger = Logger.getLogger(DateUtils.class.getName());
+    private static final String[] DATE_FORMATS = {
+        "yyyy-MM-dd'T'HH:mm",
+        "EEE MMM dd HH:mm:ss 'CEST' yyyy"
+    };
     
     public static Date parseDate(String dateInString, String pattern) {
         try {
@@ -24,7 +28,22 @@ public class DateUtils {
     }
     
     public static Date parseDate(String dateInString) {
-        return parseDate(dateInString, "yyyy-MM-dd'T'HH:mm");
+        for (String format : DATE_FORMATS) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                return sdf.parse(dateInString);
+            } catch (ParseException e) {
+                System.out.println("error" + e);
+            }
+        }
+        
+        logger.log(Level.SEVERE, "Got exception while parsing date: {0}", dateInString);
+        return null;
+    }
+
+    
+    public static Date parseDefaultDate(String dateInString) {
+        return parseDate(dateInString, "EEE MMM dd HH:mm:ss 'CEST' yyyy");
     }
     
     public static Date getDateMinusFiveMinutes() {
