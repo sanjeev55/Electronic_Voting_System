@@ -4,9 +4,11 @@ import charlie.dto.PollParticipantDto;
 import charlie.dto.*;
 import charlie.entity.PollStateEnum;
 import charlie.entity.QuestionTypeEnum;
+import charlie.logic.ParticipantQuestionAnswerLogic;
 import charlie.logic.PollLogic;
 import charlie.logic.PollParticipantLogic;
 import charlie.utils.StringUtils;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class VotingPageBean implements Serializable {
 
     private String token;
     private boolean renderInvalidTokenMessage;
+    private boolean renderTokenInputForm;
     private String errorMessage;
 
     private PollParticipantDto currentPollParticipant;
@@ -31,15 +34,16 @@ public class VotingPageBean implements Serializable {
     private PollParticipantLogic participantLogic;
     @EJB
     private PollLogic pollLogic;
+    @EJB
+    private ParticipantQuestionAnswerLogic participantQuestionAnswerLogic;
 
     public void init() {
         System.out.println(token);
-        if (!StringUtils.hasText(token)) {
-            renderInvalidTokenMessage = true;
-            errorMessage = "Invalid token!";
+        if(isRenderTokenInputForm()) {
+            renderInvalidTokenMessage = false;
             return;
         }
-
+        
         this.currentPollParticipant = participantLogic.getPollParticipantByToken(token);
         if (currentPollParticipant == null || currentPollParticipant.getPoll() == null) {
             renderInvalidTokenMessage = true;
@@ -71,7 +75,11 @@ public class VotingPageBean implements Serializable {
         return pollQuestions;
     }
 
-    public void submitVote() {
+    public void submitToken() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("voting-page.xhtml?token=" + token);
+    }
+    
+    public void submitVote() throws IOException {
         System.out.println("submitting vote");
 
         boolean isValidationError = false;
@@ -120,19 +128,29 @@ public class VotingPageBean implements Serializable {
                 answers.add(id);
             }
 
+            participantQuestionAnswerDto.setToken(token);
             participantQuestionAnswerDto.setPollId(currentPollParticipant.getPoll().getId());
             participantQuestionAnswerDto.setAnswerChoiceIds(answers);
             participantQuestionAnswerDto.setQuestionId(pollQuestionAnswer.getId());
             participantQuestionAnswers.add(participantQuestionAnswerDto);
         }
+        
         if (isValidationError) {
             renderInvalidTokenMessage = true;
             errorMessage = validationErrorMsg;
             return;
-        } else {
-            renderInvalidTokenMessage = false;
-        }
+        } 
+        
         System.out.println("user answer map: " + participantQuestionAnswers);
+        var result = participantQuestionAnswerLogic.saveParticipantQuestionAnswer(participantQuestionAnswers);
+        if (result.isError()) {
+            renderInvalidTokenMessage = true;
+            errorMessage = result.getError();
+            return;
+        }
+        
+        renderInvalidTokenMessage = false;
+        FacesContext.getCurrentInstance().getExternalContext().redirect("thankyou-page.xhtml");
     }
 
     public String getToken() {
@@ -162,4 +180,8 @@ public class VotingPageBean implements Serializable {
     public PollParticipantDto getCurrentPollParticipant() {
         return currentPollParticipant;
     }
+
+    public boolean isRenderTokenInputForm() {
+        return !StringUtils.hasText(token);
+    }   
 }
