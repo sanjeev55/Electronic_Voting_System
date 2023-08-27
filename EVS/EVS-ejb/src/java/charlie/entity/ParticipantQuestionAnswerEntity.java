@@ -3,10 +3,15 @@ package charlie.entity;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "participant_question_answer")
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "saveParticipantResponse", query = "insert into participant_question_answer(fk_question_id, fk_answer_id, fk_poll_id, uuid, jpa_version) values (?, ?, ?, ?, ?)")
+})
 public class ParticipantQuestionAnswerEntity extends AbstractEntity {
 
     @ManyToOne

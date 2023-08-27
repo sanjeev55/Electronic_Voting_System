@@ -2,7 +2,9 @@ package charlie.dto;
 
 import java.util.List;
 
-public class ParticipantQuestionAnswerDto extends AbstractDto{
+public class ParticipantQuestionAnswerDto extends AbstractDto {
+
+    private String token;
     private Integer pollId;
     private Integer questionId;
     private List<Integer> answerChoiceIds;
@@ -31,9 +33,17 @@ public class ParticipantQuestionAnswerDto extends AbstractDto{
         this.answerChoiceIds = answerChoiceIds;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
-        return "ParticipantQuestionAnswer{" + "pollId=" + pollId + ", questionId=" + questionId + ", answerChoiceIds=" + answerChoiceIds + '}';
+        return "ParticipantQuestionAnswerDto{" + "token=" + token + ", pollId=" + pollId + ", questionId=" + questionId + ", answerChoiceIds=" + answerChoiceIds + '}';
     }
-          
+
 }

@@ -14,6 +14,14 @@
         </b:alert>
 
         <f:event listener="#{votingPageBean.init}" type="preRenderView" />
+        
+        <b:container rendered="#{votingPageBean.renderTokenInputForm}">
+            <br/>
+            <b:form>
+                <b:inputText placeholder="Enter token here...." value="#{votingPageBean.token}" style="width:25%" />
+                <b:commandButton value="Submit" action="#{votingPageBean.submitToken}" look="primary"/>
+            </b:form>
+        </b:container>
 
         <b:container rendered="#{votingPageBean.currentPollParticipant != null}">
             <center>
@@ -25,7 +33,15 @@
             <b:form id="voting-form">
                 <ui:repeat value="#{votingPageBean.pollQuestions}" var="question">
                     <div class="form-group">
-                        <label for="#{question.uuid}" title="#{question.description}">#{question.title}</label>
+                        <div style="display:flex; align-items: baseline; gap:10px">
+                            <div>
+                              <label for="#{question.uuid}">#{question.title}</label>                             
+                            </div>
+                            <div class="info" title="#{question.description}">
+                                &#8505;
+                            </div>
+                        </div>
+                        
                         <ui:repeat value="#{question.answerChoices}" var="answer">
                             <div>
                                 <b:container rendered="#{answer.isSelected}">
@@ -44,8 +60,8 @@
                 <div hidden="true">
                     <input type="hidden" name="jsonResponse" id="user-response"/>
                 </div>
-                <b:commandButton value="Cancel" />
-                <b:commandButton actionListener="#{votingPageBean.submitVote}" value="Submit" onclick="prepareUserResponse()"/>
+                <b:commandButton value="Cancel" class="btn-cancel"/>
+                <b:commandButton actionListener="#{votingPageBean.submitVote}" value="Submit" onclick="prepareUserResponse()" class="btn-submit"/>
 
             </b:form>
         </b:container>

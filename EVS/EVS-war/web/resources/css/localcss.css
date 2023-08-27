@@ -37,3 +37,28 @@ a {
 .dropdown-menu {
     left: -25px !important;
 }
+
+.info {
+    width: 15px;
+    height: 15px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info:hover{
+    cursor:pointer; 
+}
+
+.btn-cancel {
+    background-color: #890f0f !important;
+    color: white !important;
+}
+
+.btn-submit {
+    background-color: #50b250 !important;
+    color: white !important;
+    margin-left: 10px;
+}
