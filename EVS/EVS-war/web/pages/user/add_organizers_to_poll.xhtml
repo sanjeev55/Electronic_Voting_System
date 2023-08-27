@@ -7,9 +7,8 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
     <ui:define name="content">
-        <h4>Welcome Employee, ${loginBean.user.username}</h4>
         <hr/><!-- comment -->
-        <h5>Add Organizer to poll</h5>
+        <center><h5>Add Organizer to poll</h5></center>
 
         <b:alert severity="danger" rendered="${managePollOrganizers.renderPollNotFoundMessage}">
             ${managePollOrganizers.errorMessage}

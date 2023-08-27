@@ -7,14 +7,6 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
     <ui:define name="content">
-        <h4>Welcome Employee, ${loginBean.user.username}</h4>
-        <p>
-            <b:form id="createTestDataForm">
-            <b:commandButton id="mailParticipantsButton"
-                                 span="3" look="default" icon="envelope"
-                                 actionListener="#{loginBean.mailParticipants}"
-                                 value="Send Test Email" ajax="true"/>
-            </b:form>
-        </p>
+        
     </ui:define>
 </ui:composition>

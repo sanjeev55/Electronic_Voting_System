@@ -9,10 +9,9 @@
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
     <ui:define name="content">
-        <h4>Welcome, ${loginBean.user.username}</h4>
         <div class="container-fluid">
             <div class="d-flex justify-content-between">
-                <h4>Polls</h4>
+                <center><h4>Polls</h4></center>
                 <hr/>
                 <div>
                     <a class="btn btn-dark" href="#{request.contextPath}/pages/user/add_poll.xhtml"

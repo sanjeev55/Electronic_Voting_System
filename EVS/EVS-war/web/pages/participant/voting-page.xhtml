@@ -16,22 +16,25 @@
         <f:event listener="#{votingPageBean.init}" type="preRenderView" />
 
         <b:container rendered="#{votingPageBean.currentPollParticipant != null}">
-            <h4>Welcome, #{votingPageBean.currentPollParticipant.email}</h4>
-            <center><h5>You are voting on: <b>#{votingPageBean.currentPollParticipant.poll.title}</b></h5></center>
+            <center>
+                <h4>You are voting on: <b>#{votingPageBean.currentPollParticipant.poll.title}</b></h4>
+                <h6>Ends on: <b>#{votingPageBean.currentPollParticipant.poll.endsAt}</b></h6>
+                <h6>Voting as: <b>#{votingPageBean.currentPollParticipant.email}</b></h6>
+            </center>
             <hr/>
             <b:form id="voting-form">
                 <ui:repeat value="#{votingPageBean.pollQuestions}" var="question">
                     <div class="form-group">
-                        <label for="#{question.uuid}">#{question.title}</label>
+                        <label for="#{question.uuid}" title="#{question.description}">#{question.title}</label>
                         <ui:repeat value="#{question.answerChoices}" var="answer">
                             <div>
                                 <b:container rendered="#{answer.isSelected}">
                                     <input type="#{answer.inputType}" id="#{answer.uuid}" name="#{answer.inputName}" value="#{answer.id}" checked="true" />
-                                    <label for="#{answer.uuid}">#{answer.shortName}</label>
+                                    <label for="#{answer.uuid}" title="#{answer.description}">#{answer.shortName}</label>
                                 </b:container>
                                 <b:container rendered="#{!answer.isSelected}">
                                     <input type="#{answer.inputType}" id="#{answer.uuid}" name="#{answer.inputName}" value="#{answer.id}"/>
-                                    <label for="#{answer.uuid}">#{answer.shortName}</label>
+                                    <label for="#{answer.uuid}" title="#{answer.description}">#{answer.shortName}</label>
                                 </b:container>
                             </div>
                         </ui:repeat>
@@ -41,7 +44,7 @@
                 <div hidden="true">
                     <input type="hidden" name="jsonResponse" id="user-response"/>
                 </div>
-                <button type="button">Cancel</button>
+                <b:commandButton value="Cancel" />
                 <b:commandButton actionListener="#{votingPageBean.submitVote}" value="Submit" onclick="prepareUserResponse()"/>
 
             </b:form>

@@ -5,6 +5,7 @@ import java.util.List;
 public class PollQuestionAnswerDto extends AbstractDto {
     private String title;
     private String questionType;
+    private String description;
     private int multipleChoiceMin;
     private int multipleChoiceMax;
     private List<QuestionAnswerChoiceDto> answerChoices;
@@ -49,9 +50,17 @@ public class PollQuestionAnswerDto extends AbstractDto {
         this.answerChoices = answerChoices;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "PollQuestionAnswerDto{" + "title=" + title + ", questionType=" + questionType + ", multipleChoiceMin=" + multipleChoiceMin + ", multipleChoiceMax=" + multipleChoiceMax + ", answerChoices=" + answerChoices + '}';
+        return "PollQuestionAnswerDto{" + "title=" + title + ", questionType=" + questionType + ", description=" + description + ", multipleChoiceMin=" + multipleChoiceMin + ", multipleChoiceMax=" + multipleChoiceMax + ", answerChoices=" + answerChoices + '}';
     }
-     
+               
 }

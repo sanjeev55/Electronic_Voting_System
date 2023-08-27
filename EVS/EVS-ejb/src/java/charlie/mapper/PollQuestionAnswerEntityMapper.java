@@ -25,6 +25,7 @@ public class PollQuestionAnswerEntityMapper extends AbstractEntityMapper<PollQue
         var dto = super.toDto(entity);
         dto.setTitle(entity.getTitle());
         dto.setQuestionType(entity.getType().name());
+        dto.setDescription(entity.getDescription());
         dto.setMultipleChoiceMax(entity.getMultipleChoiceMax());
         dto.setMultipleChoiceMin(entity.getMultipleChoiceMin());
         if(entity.getAnswerChoices() == null || entity.getAnswerChoices().isEmpty()) {
