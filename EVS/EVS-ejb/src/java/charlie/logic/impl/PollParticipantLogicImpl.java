@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package charlie.logic.impl;
 
 import charlie.dao.PollParticipantAccess;
@@ -17,10 +13,6 @@ import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-/**
- *
- * @author Sanjeev Sun Shakya <sshakya@uni-koblenz.de>
- */
 @Stateless
 public class PollParticipantLogicImpl implements PollParticipantLogic {
     
@@ -79,4 +71,11 @@ public class PollParticipantLogicImpl implements PollParticipantLogic {
         ppa.deleteByPollId(pm.toEntity(pollDto));
     }
     
+    public PollParticipantDto getPollParticipantByToken(String token) {        
+       var entity = ppa.findByToken(token);
+       if(entity == null)
+           return null;
+       
+       return ppm.toDto(entity);
+    }  
 }

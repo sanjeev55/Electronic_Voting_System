@@ -5,6 +5,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "question")
+@NamedQueries({
+    @NamedQuery(name = "getPollQuestionByPoll", query = "select q from PollQuestionEntity q where q.poll = :poll")
+})
 public class PollQuestionEntity extends AbstractEntity {
 
     @Column(name = "type", nullable = false)
@@ -31,7 +34,7 @@ public class PollQuestionEntity extends AbstractEntity {
     @JoinColumn(name = "fk_poll_id")
     private PollEntity poll;
 
-    @OneToMany(mappedBy = "pollQuestion")
+    @OneToMany(mappedBy = "pollQuestion", fetch = FetchType.EAGER)
     private Set<QuestionAnswerChoiceEntity> answerChoices;
 
     public QuestionTypeEnum getType() {
@@ -97,4 +100,10 @@ public class PollQuestionEntity extends AbstractEntity {
     public void setAnswerChoices(Set<QuestionAnswerChoiceEntity> answerChoices) {
         this.answerChoices = answerChoices;
     }
+
+    @Override
+    public String toString() {
+        return "PollQuestionEntity{" + "type=" + type + ", title=" + title + ", answerChoices=" + answerChoices + '}';
+    }
+    
 }

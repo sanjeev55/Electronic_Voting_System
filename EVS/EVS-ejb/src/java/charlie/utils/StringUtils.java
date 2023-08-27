@@ -1,5 +1,11 @@
 package charlie.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.util.Collections;
+import java.util.Map;
+import java.lang.reflect.Type;
+
 public class StringUtils {
 
     private StringUtils() {
@@ -29,6 +35,14 @@ public class StringUtils {
             return 0;
         }
     }
+    
+    public static Map<String, Integer> convertJsonStringToMap(String jsonString) {
+        if(!hasText(jsonString))
+            return Collections.emptyMap();
+        
+        Gson gson = new Gson();
+        Type mapType = new TypeToken<Map<String, Integer>>(){}.getType();
+        return gson.fromJson(jsonString, mapType);
+    }
 
 }
-

@@ -6,7 +6,6 @@ import charlie.dto.PollParticipantDto;
 import charlie.dto.UserDto;
 import charlie.entity.PollStateEnum;
 import charlie.logic.ParticipantListLogic;
-import charlie.logic.PollLogic;
 import charlie.logic.PollParticipantLogic;
 import charlie.logic.UserLogic;
 import charlie.utils.DateUtils;
@@ -27,7 +26,7 @@ import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import org.primefaces.context.RequestContext;
+import charlie.logic.PollLogic;
 
 @Named(value = "pollEditBean")
 @ViewScoped

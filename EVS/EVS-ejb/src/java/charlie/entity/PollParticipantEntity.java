@@ -11,7 +11,7 @@ import javax.persistence.*;
     @NamedQuery(name = "getPollParticipantByEmail", query = "SELECT p from PollParticipantEntity p where p.email = :email"),
     @NamedQuery(name = "findByToken", query="SELECT pp FROM PollParticipantEntity pp WHERE pp.token = :token"),
     @NamedQuery(name = "findParticipantsByParticipationStatus", query="SELECT pp FROM PollParticipantEntity pp WHERE pp.hasParticipated = :hasParticipated"),
-    @NamedQuery(name = "deleteAllByPollId", query = "DELETE FROM PollParticipantEntity pp WHERE pp.poll=:poll"),
+    @NamedQuery(name = "deleteAllByPollId", query = "DELETE FROM PollParticipantEntity pp WHERE pp.poll=:poll")
 })
 public class PollParticipantEntity extends AbstractEntity implements Serializable {
 
