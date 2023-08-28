@@ -8,8 +8,6 @@
     <ui:define name="content">
         <h3>Add Question</h3>
         <h:form class="card-body cardbody-color p-lg-5" id="addQuesion">
-            <!-- TODO: add above Id to QuestionManagerBean
-            -->
             
             <div class ="form-group mb-3 row">
                 <div class="col-1">
@@ -43,11 +41,13 @@
 
                 </div>
                 <div class="col-11">
-                    <div class="d-flex justify-content-end w-50">
+                    <div class="d-flex justify-content-end w-50" id ="addPoll">
                         <h:commandButton id="btn-submit"
                                          value="Submit"
                                          class="btn btn-sm btn-dark mt-2"
-                                         action="#{questionManagerBean.addQuestion()}"></h:commandButton>
+                                         action="#{questionManagerBean.addQuestion()}">
+                            <f:param name="pollUuid" value ="#{poll.Uuid}"/>
+                        </h:commandButton>
                     </div>
 
                 </div>
