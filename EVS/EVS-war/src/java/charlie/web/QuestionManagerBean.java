@@ -41,25 +41,6 @@ public class QuestionManagerBean implements Serializable {
     
     private QuestionDto questionInfo = new QuestionDto();
     private String questionId;
-    private String pollUuid;
-    
-    @PostConstruct
-    public void init() {
-        getPollUuid();
-    }
-    
-   public String getPollUuid() {
-        Map<String, String> params = FacesContext
-                .getCurrentInstance()
-                .getExternalContext()
-                .getRequestParameterMap();
-        pollUuid = params.get("pollUuid");
-        return pollUuid;
-    }
-
-    public void setPollUuid(String pollUuid) {
-        this.pollUuid = pollUuid;
-    }
     
     public List<QuestionTypeEnum> getQuestionTypes() {
         return Arrays.asList(QuestionTypeEnum.values());
@@ -70,11 +51,10 @@ public class QuestionManagerBean implements Serializable {
                 .getCurrentInstance()
                 .getExternalContext()
                 .getRequest();
-        Map<String,String> params = FacesContext
-                .getCurrentInstance()
-                .getExternalContext()
-                .getRequestParameterMap();
-        pollUuid = params.get("pollUuid");
+        String pollUuid = request.getParameter("pollUuid");
+        
+        questionInfo.setPollUuid(pollUuid);
+        
         
         FacesContext context = FacesContext.getCurrentInstance();
         if (!StringUtils.hasText(questionInfo.getTitle())) {
