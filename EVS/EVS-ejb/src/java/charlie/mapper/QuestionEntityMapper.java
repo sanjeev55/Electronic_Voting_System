@@ -33,6 +33,7 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
         PollQuestionEntity entity = super.toEntity(domain);
         entity.setTitle(domain.getTitle());
         entity.setType(domain.getType());
+        entity.setPollUuid(domain.getPollUuid());
         
         return entity;
     }
@@ -48,6 +49,7 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
         QuestionDto dto = super.toDto(entity);
         dto.setTitle(entity.getTitle());
         dto.setType(entity.getType());
+        dto.setPollUuid(entity.getPollUuid());
         
         return dto;
     }

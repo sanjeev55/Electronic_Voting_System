@@ -48,7 +48,7 @@ public class QuestionManagerBean implements Serializable {
         getPollUuid();
     }
     
-    public String getPollUuid() {
+   public String getPollUuid() {
         Map<String, String> params = FacesContext
                 .getCurrentInstance()
                 .getExternalContext()
@@ -56,7 +56,7 @@ public class QuestionManagerBean implements Serializable {
         pollUuid = params.get("pollUuid");
         return pollUuid;
     }
-    
+
     public void setPollUuid(String pollUuid) {
         this.pollUuid = pollUuid;
     }
@@ -70,7 +70,11 @@ public class QuestionManagerBean implements Serializable {
                 .getCurrentInstance()
                 .getExternalContext()
                 .getRequest();
-        
+        Map<String,String> params = FacesContext
+                .getCurrentInstance()
+                .getExternalContext()
+                .getRequestParameterMap();
+        pollUuid = params.get("pollUuid");
         
         FacesContext context = FacesContext.getCurrentInstance();
         if (!StringUtils.hasText(questionInfo.getTitle())) {

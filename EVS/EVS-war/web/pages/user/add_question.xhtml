@@ -47,7 +47,9 @@
                         <h:commandButton id="btn-submit"
                                          value="Submit"
                                          class="btn btn-sm btn-dark mt-2"
-                                         action="#{questionManagerBean.addQuestion()}"></h:commandButton>
+                                         action="#{questionManagerBean.addQuestion()}">
+                            <f:param name="pollUuid" value ="#{poll.Uuid}"/>
+                        </h:commandButton>
                     </div>
 
                 </div>

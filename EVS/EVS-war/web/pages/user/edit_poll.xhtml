@@ -68,14 +68,15 @@
                 </b:selectOneMenu>
                 <b:message offset="2" span="6"/>
             </b:row>
-            
-            <!--TODO: ADD QUESTIONS HERE-->
+           
             <b:row class="topsep">
                 <div class="col-md-4 col-md-offset-2">
+                    <f:param name ="pollUuid" value="#{pollEditBean.pollUuid}"/>
                     <a class="btn btn-dark" 
-                    href="#{request.contextPath}/pages/user/add_question.xhtml?poll_id=#{pollEditBean.pollUuid}" 
+                       href="#{request.contextPath}/pages/user/add_question.xhtml?poll_uuid=#{pollEditBean.pollUuid}" 
                        role="button">Add Question</a>
                 </div>
+                
             </b:row>
 
             <b:row>

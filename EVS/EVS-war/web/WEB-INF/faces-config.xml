@@ -64,6 +64,11 @@
             <to-view-id>/pages/user/edit_poll.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
+            <from-outcome>addQuestionPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/user/add_question.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>managePollPage</from-outcome>
             <redirect>true</redirect>
             <to-view-id>/pages/user/manage_poll.xhtml</to-view-id>
