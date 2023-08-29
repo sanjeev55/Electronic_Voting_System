@@ -68,7 +68,19 @@
                 </b:selectOneMenu>
                 <b:message offset="2" span="6"/>
             </b:row>
-           
+            <!--TODO:<ui:repeat value="{questionManagerBean.questionsWithPagination.data}" var = "questions" varStatus ="loop">-->
+            <!--<b:accordian id="QUESTIONUUID" title="RETRIEVE TITLE FROM QUESTION">-->
+            <!--</ui:repeat>-->
+            <table class="table">
+                <thead>    
+                    <tr>
+                    <th scope="col">${msg.questionLabel}</th>
+                    <th scope="col">${msg.questionTypeLabel}</th>
+                    <th scope="col">${msg.questionItemsNumberLabel}</th>
+                    <th scope="col">${msg.actionLabel}</th>
+                    </tr>
+                </thead>
+            </table>
             <b:row class="topsep">
                 <div class="col-md-4 col-md-offset-2">
                     <f:param name ="pollUuid" value="#{pollEditBean.pollUuid}"/>
