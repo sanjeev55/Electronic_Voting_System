@@ -33,6 +33,10 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
         PollQuestionEntity entity = super.toEntity(domain);
         entity.setTitle(domain.getTitle());
         entity.setType(domain.getType());
+        entity.setMultipleChoiceMax(domain.getMultipleChoiceMax());
+        entity.setMultipleChoiceMin(entity.getMultipleChoiceMin());
+        entity.setDescription(domain.getDescription());
+        entity.setName(domain.getName());
 
         return entity;
     }
@@ -48,6 +52,10 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
         QuestionDto dto = super.toDto(entity);
         dto.setTitle(entity.getTitle());
         dto.setType(entity.getType());
+        dto.setDescription(entity.getDescription());
+        dto.setMultipleChoiceMax(entity.getMultipleChoiceMax());
+        dto.setMultipleChoiceMin(entity.getMultipleChoiceMin());
+        dto.setName(entity.getName());
 
         return dto;
     }

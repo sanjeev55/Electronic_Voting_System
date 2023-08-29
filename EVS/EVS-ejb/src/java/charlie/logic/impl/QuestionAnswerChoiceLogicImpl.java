@@ -5,9 +5,11 @@
 package charlie.logic.impl;
 
 import charlie.dao.QuestionAnswerChoiceAccess;
+import charlie.dto.AnswerDto;
 import charlie.dto.QuestionAnswerChoiceDto;
 import charlie.entity.QuestionAnswerChoiceEntity;
 import charlie.logic.QuestionAnswerChoiceLogic;
+import charlie.mapper.AnswerEntityMapper;
 import charlie.mapper.QuestionAnswerChoiceEntityMapper;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,8 @@ public class QuestionAnswerChoiceLogicImpl implements QuestionAnswerChoiceLogic 
     private QuestionAnswerChoiceAccess qaca;
     @EJB
     private QuestionAnswerChoiceEntityMapper qacm;
+    @EJB
+    private AnswerEntityMapper am;
     
     @Override
     public QuestionAnswerChoiceDto getById(int id) {
@@ -35,6 +39,11 @@ public class QuestionAnswerChoiceLogicImpl implements QuestionAnswerChoiceLogic 
     public List<QuestionAnswerChoiceDto> getAllByQuestionId(int questionId){
         List<QuestionAnswerChoiceEntity> qace = qaca.findAllByQuestionId(questionId);
         return qace.stream().map(qacm::toDto).collect(Collectors.toList());
+    }
+    
+    @Override
+    public void addAnswer(AnswerDto answerDto){
+        qaca.create(am.toEntity(answerDto));
     }
     
 }
