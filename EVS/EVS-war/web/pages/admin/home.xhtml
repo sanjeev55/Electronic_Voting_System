@@ -10,7 +10,7 @@
     
     <ui:define name="content">
         
-        <h4 class="mb-4">Welcome Admin, ${loginBean.user.username}</h4>
+        <h4 class="mb-4">${msg.welcomeLabel} ${msg.adminLabel}, ${loginBean.user.username}</h4>
         
         <h:form id="AdminManagement">
             <b:row class="mb-3">
@@ -21,7 +21,7 @@
                             <p class="card-text">${msg.manageAndViewPollLabel}</p>
                             <b:button id="managePolls"
                                         outcome="managePollsAdminPage"
-                                        value="Manage Polls"
+                                        value="${msg.managePolls}"
                                         look="primary" class="btn-block"/>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                             <p class="card-text">${msg.manageAndViewOrganizerLabel}</p>
                             <b:button id="editListButton"
                                         outcome="manageOrganizersAdminPage"
-                                        value="Manage Organizers"
+                                        value="${msg.manageOrganizersLabel}"
                                         look='primary' class="btn-block"/>
                         </div>
                     </div>

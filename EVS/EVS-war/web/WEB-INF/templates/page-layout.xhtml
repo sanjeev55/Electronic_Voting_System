@@ -38,7 +38,7 @@
 
                             <li>
                                 <i class="zmdi zmdi-calendar"></i>
-                                <h:link value="Polls by ${loginBean.user.username}" outcome="/pages/user/manage_poll?show_polls_configured_by_me=true" />
+                                <h:link value="${msg.pollsByLabel} ${loginBean.user.username}" outcome="/pages/user/manage_poll?show_polls_configured_by_me=true" />
                             </li>
                             
                             <li>
@@ -48,7 +48,7 @@
 
                             <li>
                                 <i class="zmdi zmdi-calendar"></i>
-                                <h:link value="Polls owned by others" outcome="/pages/user/manage_poll?show_polls_configured_by_me=false" />
+                                <h:link value="${msg.pollsOwnedByOthersLabel}" outcome="/pages/user/manage_poll?show_polls_configured_by_me=false" />
                             </li>
                         </ul>
                     </div>
@@ -56,7 +56,7 @@
                     <div class="container">
                         <div id="content">
                             <div class="container-fluid">
-                                <h4>Welcome, ${loginBean.user.username}</h4>
+                                <h4>${msg.welcomeLabel}, ${loginBean.user.username}</h4>
                                 <ui:insert name="content"/>
                             </div>
                         </div>

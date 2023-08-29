@@ -67,8 +67,7 @@ public class QuestionManagerBean implements Serializable {
         System.out.println(this.questionInfo);
         
         Result<QuestionDto> result = questionService.addQuestion(this.questionInfo);
-        return null;// "/pages
-       
+        return null;// "TODO       
     }
     
     public QuestionDto getQuestionInfo() {
