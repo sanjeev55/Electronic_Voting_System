@@ -153,7 +153,7 @@
                 <h:message for="emailList" class="text-danger mt-2"/>
                 </b:inputTextarea>
 
-                <b:button value="Cancel"
+                <b:button value="${msg.cancelLabel}"
                           dismiss="modal" onclick="return false;"/>
                 <b:commandButton value="${msg.saveButton}" 
                                  action="#{pollEditBean.addParticipantsToPoll()}" 
@@ -162,7 +162,9 @@
                                  onclick="closeParticipantListModal()"/>             
             </h:form>
         </b:modal>
-        
+        <div hidden="true">
+            <input type="hidden" name="jsonResponse" id="user-response"/>
+        </div>
     </ui:define>
     
     

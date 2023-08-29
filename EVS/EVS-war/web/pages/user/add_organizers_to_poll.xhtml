@@ -8,7 +8,7 @@
     <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
     <ui:define name="content">
         <hr/><!-- comment -->
-        <center><h5>Add Organizer to poll</h5></center>
+        <center><h5>${msg.addOrganizerToPollLabel}</h5></center>
 
         <b:alert severity="danger" rendered="${managePollOrganizers.renderPollNotFoundMessage}">
             ${managePollOrganizers.errorMessage}
@@ -17,8 +17,8 @@
         <f:event listener="#{managePollOrganizers.init}" type="preRenderView" />
 
         <b:container rendered="#{managePollOrganizers.currentPoll != null}">
-            <b>Poll Name:</b> <p>#{managePollOrganizers.currentPoll.title}</p>
-            <b>Organizers:</b>
+            <b>${msg.pollNameLabel}:</b> <p>#{managePollOrganizers.currentPoll.title}</p>
+            <b>${msg.organizersLabel}:</b>
             <b:form id="participantListForm">
 
                 <b:alert severity="success" rendered="${managePollOrganizers.deleteSuccess}">
@@ -42,7 +42,7 @@
                         <b:dataTable striped="true" var="pollOrganizer" value="#{managePollOrganizers.pollOrganizers}">
                             <b:dataTableColumn label="${msg.idLabel}" value="#{pollOrganizer.id}"/>
                             <b:dataTableColumn label="${msg.organizerLabel}" value="#{pollOrganizer.username}"/>
-                            <b:dataTableColumn label="Action">
+                            <b:dataTableColumn label="${msg.actionLabel}">
                                 <b:commandButton id="deleteListButton"
                                                  icon="trash"
                                                  action="#{managePollOrganizers.deletePollOwner()}"
@@ -72,7 +72,7 @@
                         <f:selectItems value="#{managePollOrganizers.getOrganizers()}" var="c" itemValue="#{c.id}" itemLabel="#{c.username}" />
                     </b:selectOneMenu>
 
-                    <b:button value="Cancel"
+                    <b:button value="${msg.cancelLabel}"
                               dismiss="modal" onclick="return false;"/>
                     <b:commandButton value="${msg.saveButton}" 
                                      action="#{managePollOrganizers.addOrganizerToPoll()}" 
