@@ -49,6 +49,7 @@ public class PollLogicImpl implements PollLogic {
     private static final Logger LOG = Logger.getLogger(PollLogicImpl.class.getName());
 
     private final String EVS_VOTING_URL = "http://localhost:8080/EVS-war/pages/participant/voting-page.xhtml?token=%s";
+    private final String EVS_RESULT_URL = "http://localhost:8080/EVS-war/pages/participant/result_page.xhtml?pollUuid=%s";
 
     @EJB
     private PollEntityMapper pollEntityMapper;
@@ -377,6 +378,44 @@ public class PollLogicImpl implements PollLogic {
                 LOG.log(Level.WARNING, String.format("Got exception while sending email to %s. Message: %s", recipient, ex.getMessage()), ex);
             }
         }));
+    }
+    
+    @Asynchronous
+    private void sendPollResultNotification(List<String> recipients, String pollTitle, String pollUuid){
+        String subject = "Poll's Result Published!!";
+        String body = "The result of poll titled '" + pollTitle + "' has been published. Please refer to the link to view the result: "
+                + "http://localhost:8080/EVS-war/pages/participant/poll_result.xhtml?pollUuid=" + pollUuid;
+        
+        recipients.stream().forEach(recipient -> CompletableFuture.runAsync(() -> {
+            try {
+                mailService.sendMail(recipient, subject, body);
+            } catch (MessagingException ex) {
+                LOG.log(Level.WARNING, String.format("Got exception while sending email to %s. Message: %s", recipient, ex.getMessage()), ex);
+            }
+        }));
+    }
+    
+    @Override
+    public List<PollDto> getPollsByIdAndState(int id, PollStateEnum state){
+        List<PollEntity> pe = pollDao.findAllByIdAndState(id, state);
+        return pe.stream().map(entityMapper::toDto).collect(Collectors.toList());
+    }
+    
+    
+    @Override
+    public void publishPollResult(int pollId){
+        PollDto pollDto = getPollById(pollId);
+
+        if(pollDto == null) {
+            LOG.log(Level.WARNING, "No poll found with the provided pollId.");
+            return;
+        }
+
+        List<String> allRecipients = getAllRecipientsForPoll(pollId, pollDto);
+        System.out.println("All Recipients" + allRecipients);
+        
+        sendPollResultNotification(allRecipients, pollDto.getTitle(), pollDto.getUuid());
+        
     }
 
 }

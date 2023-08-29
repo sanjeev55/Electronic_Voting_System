@@ -149,4 +149,11 @@ public class PollAccess extends AbstractAccess<PollEntity> {
                 .executeUpdate();
     }
     
+    public List<PollEntity> findAllByIdAndState(int id, PollStateEnum state){
+        return em.createNamedQuery("findAllByIdAndState", PollEntity.class)
+                .setParameter("id", id)
+                .setParameter("state", state)
+                .getResultList();
+    }
+    
 }

@@ -6,8 +6,12 @@ import charlie.dao.PollParticipantAccess;
 import charlie.domain.ParticipantResponse;
 import charlie.domain.Result;
 import charlie.dto.ParticipantQuestionAnswerDto;
+import charlie.dto.PollDto;
+import charlie.entity.ParticipantQuestionAnswerEntity;
 import charlie.entity.PollStateEnum;
 import charlie.logic.ParticipantQuestionAnswerLogic;
+import charlie.mapper.ParticipantQuestionAnswerEntityMapper;
+import charlie.mapper.PollEntityMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -29,6 +33,12 @@ public class ParticipantQuestionAnswerLogicImpl implements ParticipantQuestionAn
     
     @EJB
     private PollParticipantAccess ppa;
+    
+    @EJB
+    private PollEntityMapper pm;
+    
+    @EJB
+    private ParticipantQuestionAnswerEntityMapper pqam;
     
     @Override
     @Transactional
@@ -63,6 +73,12 @@ public class ParticipantQuestionAnswerLogicImpl implements ParticipantQuestionAn
         pollParticipantInfo.setHasParticipated(Boolean.TRUE);
         ppa.edit(pollParticipantInfo);
         return Result.ok("Saved successfully");
+    }
+    
+    @Override
+    public List<ParticipantQuestionAnswerDto> getAllByPoll(PollDto pollDto){
+        List<ParticipantQuestionAnswerEntity> pqad = pqa.findAllByPoll(pm.toEntity(pollDto));
+        return pqad.stream().map(pqam::toDto).collect(Collectors.toList());
     }
     
 }

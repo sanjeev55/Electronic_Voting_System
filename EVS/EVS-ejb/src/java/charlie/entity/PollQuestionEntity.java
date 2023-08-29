@@ -6,7 +6,7 @@ import java.util.Set;
 @Entity
 @Table(name = "question")
 @NamedQueries({
-    @NamedQuery(name = "getPollQuestionByPoll", query = "select q from PollQuestionEntity q where q.poll = :poll")
+    @NamedQuery(name = "getPollQuestionByPoll", query = "select q from PollQuestionEntity q where q.poll = :poll"),
 })
 public class PollQuestionEntity extends AbstractEntity {
 

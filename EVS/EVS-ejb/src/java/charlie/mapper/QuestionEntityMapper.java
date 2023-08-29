@@ -21,36 +21,36 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
     
     @EJB
     private UserEntityMapper userEntityMapper;
-    
+
     @Override
     public PollQuestionEntity toEntity(QuestionDto domain) {
-        
+    
         if (domain == null) {
             return null;
         }
-        
+
         super.setEntity(new PollQuestionEntity());
         PollQuestionEntity entity = super.toEntity(domain);
         entity.setTitle(domain.getTitle());
         entity.setType(domain.getType());
         entity.setPollUuid(domain.getPollUuid());
-        
+
         return entity;
     }
-    
+
     @Override
     public QuestionDto toDto(PollQuestionEntity entity) {
         
         if (entity ==null) {
             return null;
         }
-        
+
         super.setDto(new QuestionDto());
         QuestionDto dto = super.toDto(entity);
         dto.setTitle(entity.getTitle());
         dto.setType(entity.getType());
         dto.setPollUuid(entity.getPollUuid());
-        
+
         return dto;
     }
     
@@ -59,7 +59,7 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
             return Collections.emptyList();
         
         return entities.stream().map(entity -> toDto(entity)).collect(Collectors.toList());
-    }
+}
 }
 
 

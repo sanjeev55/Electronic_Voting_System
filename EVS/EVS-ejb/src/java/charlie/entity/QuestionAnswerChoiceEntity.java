@@ -1,10 +1,14 @@
 package charlie.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "answer_choice")
-public class QuestionAnswerChoiceEntity extends AbstractEntity {
+@NamedQueries({
+    @NamedQuery(name="getAllByQuestionId", query="SELECT qac FROM QuestionAnswerChoiceEntity qac WHERE qac.pollQuestion.id = :questionId"),
+})
+public class QuestionAnswerChoiceEntity extends AbstractEntity implements Serializable {
 
     @Column(name = "short_name", nullable = false)
     private String shortName;

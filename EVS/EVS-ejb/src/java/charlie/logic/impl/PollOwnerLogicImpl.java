@@ -9,6 +9,7 @@ import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
 import charlie.dto.UserDto;
 import charlie.entity.PollOwnerEntity;
+import charlie.entity.PollStateEnum;
 import charlie.logic.PollOwnerLogic;
 import charlie.mapper.PollEntityMapper;
 import charlie.mapper.PollOwnerEntityMapper;
@@ -65,6 +66,12 @@ public class PollOwnerLogicImpl implements PollOwnerLogic {
     @Override
     public void deleteByPoll(PollDto pollDto){
         poa.deleteAllByPoll(pm.toEntity(pollDto));
+    }
+    
+    @Override
+    public List<PollOwnerDto> findAllByOrganizerAndPollState(UserDto userDto, PollStateEnum state){
+        List<PollOwnerEntity> poe = poa.getAllByOrganizerAndPollState(um.toEntity(userDto), state);
+        return poe.stream().map(pom::toDto).collect(Collectors.toList());
     }
     
 }

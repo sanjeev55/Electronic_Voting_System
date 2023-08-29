@@ -2,6 +2,7 @@ package charlie.dao;
 
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
+import charlie.entity.PollStateEnum;
 import charlie.entity.UserEntity;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -68,6 +69,13 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
         em.createNamedQuery("deleteAllByPoll", PollOwnerEntity.class)
                 .setParameter("poll", poll)
                 .executeUpdate();
+    }
+    
+    public List<PollOwnerEntity> getAllByOrganizerAndPollState(UserEntity organizer, PollStateEnum state){
+        return em.createNamedQuery("findAllByOrganizerAndPollState", PollOwnerEntity.class)
+                .setParameter("organizer", organizer)
+                .setParameter("state", state)
+                .getResultList();
     }
     
     

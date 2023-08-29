@@ -94,6 +94,21 @@
             <redirect>true</redirect>
             <to-view-id>/pages/admin/manage_organizers.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>viewResult</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/user/view_result.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>viewPollResultPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/user/view_poll_result.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>participantResultPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/participant/poll_result.xhtml</to-view-id>
+        </navigation-case>
         
     </navigation-rule>
 

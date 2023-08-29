@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/WEB-INF/templates/page-layout.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:param name="pageHeadline" value="${msg.viewResultLabel}"/>
+
+    <ui:define name="content">
+        <f:verbatim>
+            <script type="text/javascript">
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this organizer?');
+                }
+            </script>
+        </f:verbatim>
+
+        <b:form id="resultsForm">
+            <b:alert severity="success" rendered="${viewResultBean.success}">
+                ${msg.resultPublishLabel}
+            </b:alert>
+            <b:alert severity="danger" rendered="${viewResultBean.failure}">
+                ${msg.resultPublishFailureLabel}<br/>
+                ${viewResultBean.failureMessage}
+            </b:alert>
+            <b:row>
+                <b:column span="12" class="text-center mb-3">
+                    <h:link outcome="staffPage" value="${msg.goToHomepage}" styleClass="btn btn-primary"/>
+                </b:column>
+            </b:row>
+
+            <b:row>
+                <b:column offset="1" span="10">
+                    <b:dataTable striped="true" var="polls" value="#{viewResultBean.polls}" class="mb-5">
+                        <b:dataTableColumn label="${msg.pollTitleLabel}" value="#{polls.title}"/>
+                        <b:dataTableColumn label="${msg.pollStartDateLabel}" value="#{polls.startsAt}"/>
+                        <b:dataTableColumn label="${msg.pollEndDateLabel}" value="#{polls.endsAt}"/>
+                        <b:dataTableColumn label="${msg.pollStateLabel}" value="#{polls.state}"/>
+                        <b:dataTableColumn label="${msg.hasParticipatedLabel}">
+                            <h:outputText value="#{viewResultBean.countOfHasVoted(polls)}"/>
+                        </b:dataTableColumn>
+                        <b:dataTableColumn label="${msg.actionLabel}">
+                            <b:commandButton id="publishResultButton"
+                                             icon="envelope"
+                                             look="success"
+                                             action="#{viewResultBean.publishPollResult(polls.id)}"
+                                             rendered="#{viewResultBean.hasVotedParticipants(polls)}"
+                                             value="${msg.publishLabel}">
+                                <f:param name="pollId" value="#{polls.id}"/>
+                            </b:commandButton>
+                            <b:button id="viewResultButton"
+                                             iconAwesome="bar-chart"
+                                             look="info"
+                                             outcome="viewPollResultPage"
+                                             rendered="#{viewResultBean.hasVotedParticipants(polls)}"
+                                             value="${msg.viewLabel}">
+                                <f:param name="pollUuid" value="#{polls.uuid}"/>
+                            </b:button>
+                        </b:dataTableColumn>
+                    </b:dataTable>
+                </b:column>
+            </b:row>
+        </b:form>
+    </ui:define>
+</ui:composition>

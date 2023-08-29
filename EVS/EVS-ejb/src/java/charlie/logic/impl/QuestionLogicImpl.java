@@ -55,7 +55,7 @@ public class QuestionLogicImpl implements QuestionLogic{
     
     @Override
     public QuestionDto getQuestionById(int id) {
-        PollQuestionEntity qe = questionDao.getQuestionById(id);
+        PollQuestionEntity qe = questionDao.find(id);
         return questionEntityMapper.toDto(qe);
     }
     
