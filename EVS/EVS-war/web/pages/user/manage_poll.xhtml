@@ -15,7 +15,7 @@
                 <hr/>
                 <div>
                     <a class="btn btn-dark" href="#{request.contextPath}/pages/user/add_poll.xhtml"
-                       role="button">Add Poll</a>
+                       role="button">${msg.addPollLabel}</a>
                 </div>
             </div>
             <hr/>
@@ -24,14 +24,30 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Starts At</th>
-                            <th scope="col">Ends At</th>
-                            <th scope="col">State</th>
-                            <th scope="col">Track Participant</th>
-                            <th scope="col">Primary Owner</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">
+                                <h:outputText value = "${msg.pollTitleLabel}" />
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollDescriptionLabel}"/>
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollStartDateLabel}"/>
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollEndDateLabel}"/>
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollStateLabel}"/>
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollTrackParticipantLabel}"/>
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollPrimaryOwnerLabel}"/>
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.actionLabel}"/>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +63,7 @@
                                 <td>#{poll.primaryOrganizer.username}</td>                          
                                 <td><b:commandButton id="startPollBtn"
                                                      icon="submit"
-                                                     value="Start Poll"
+                                                     value="${msg.startPollLabel}"
                                                      action="#{pollManager.startPoll()}"
                                                      update="participantListForm">
                                         <f:param name="id" value="#{poll.id}"/>

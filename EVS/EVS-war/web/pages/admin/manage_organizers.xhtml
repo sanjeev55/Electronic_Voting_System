@@ -6,7 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:param name="pageHeadline" value="${msg.manageOrganizerLabel}"/>
+    <ui:param name="pageHeadline" value="${msg.manageOrganizersLabel}"/>
     <ui:define name="metadata">
         
 
@@ -41,7 +41,7 @@
                         <b:dataTableColumn label="${msg.firstNameLabel}" value="#{organizerList.firstName}"/>
                         <b:dataTableColumn label="${msg.lastNameLabel}" value="#{organizerList.lastName}"/>
                         <b:dataTableColumn label="${msg.roleLabel}" value="#{organizerList.role}"/>
-                        <b:dataTableColumn label="Action">
+                        <b:dataTableColumn label="${msg.actionLabel}">
                             <b:commandButton id="deleteListButton"
                                     icon="trash"
                                     look="danger"
