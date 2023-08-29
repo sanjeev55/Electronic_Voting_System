@@ -32,6 +32,7 @@ import charlie.utils.StringUtils;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
@@ -157,6 +158,7 @@ public class PollLogicImpl implements PollLogic {
             pollOwner.setPoll(savedEntity);
             pollOwner.setPrimaryOrganizer(Boolean.TRUE);
             pollOwnerDao.create(pollOwner);
+            savedEntity.setPollOwners(Set.of(pollOwner));
 
             return Result.ok(pollEntityMapper.toDto(savedEntity));
         } catch (Exception e) {
@@ -227,7 +229,6 @@ public class PollLogicImpl implements PollLogic {
         // TODO:
         System.out.println(filter);
         Page<PollEntity> pollPageEntities = pollDao.findAll(filter);
-        System.out.println(pollPageEntities);
         List<PollDto> pollDtos = entityMapper.toDomainList(pollPageEntities.getData());
 
         return Page.build(pollPageEntities.getTotalCount(), pollPageEntities.getPageSize(), pollPageEntities.getPageNumber(), pollDtos);

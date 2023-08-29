@@ -121,7 +121,6 @@ public class PollEntity extends AbstractEntity {
                 + ", endsAt=" + endsAt
                 + ", state=" + state
                 + ", trackParticipant=" + trackParticipant
-                + ", pollOwners=" + pollOwners
                 + "} " + super.toString();
     }
 }

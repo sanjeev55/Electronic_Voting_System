@@ -133,7 +133,8 @@ public class PollManagerBean implements Serializable {
             return null;
         }
 
-        return "/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=10&amp;sortOrder=DESC&amp;sortBy=updatedAt&amp;faces-redirect=true";
+        this.pollInfo = new PollDto();
+        return "/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=5&amp;sortOrder=DESC&amp;sortBy=updatedAt&amp;faces-redirect=true";
     }
 
     public PollDto getPollInfo() {

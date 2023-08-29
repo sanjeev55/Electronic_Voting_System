@@ -40,7 +40,7 @@ public class PollPaginationRequest extends PaginationRequest {
     }
 
     public static PollPaginationRequest build() {
-        return build(1, 10, null, null);
+        return build(1, 5, null, null);
     }
 
     @Override

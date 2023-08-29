@@ -13,7 +13,7 @@ public class DateUtils {
     private static final Logger logger = Logger.getLogger(DateUtils.class.getName());
     private static final String[] DATE_FORMATS = {
         "yyyy-MM-dd'T'HH:mm",
-        "EEE MMM dd HH:mm:ss z yyyy"
+        "EEE MMM dd HH:mm:ss Z yyyy"
     };
     
     public static Date parseDate(String dateInString, String pattern) {
@@ -43,7 +43,7 @@ public class DateUtils {
 
     
     public static Date parseDefaultDate(String dateInString) {
-        return parseDate(dateInString, "EEE MMM dd HH:mm:ss 'CEST' yyyy");
+        return parseDate(dateInString, "EEE MMM dd HH:mm:ss Z yyyy");
     }
     
     public static Date getDateMinusFiveMinutes() {
@@ -57,7 +57,7 @@ public class DateUtils {
     public static String convertDateToCustomFormat(String input) {
         try {
             // Parse the input date
-            SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'CEST' yyyy");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
             inputFormat.setTimeZone(TimeZone.getTimeZone("CET"));
             Date date = inputFormat.parse(input);
 
