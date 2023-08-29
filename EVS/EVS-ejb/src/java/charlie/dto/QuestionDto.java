@@ -13,7 +13,6 @@ public class QuestionDto extends AbstractDto{
     private QuestionTypeEnum type;
     //private Integer questionId;
     private int pollId;
-    private String pollUuid;
     
     public String getTitle() {
         return title;
@@ -39,20 +38,11 @@ public class QuestionDto extends AbstractDto{
         this.pollId = pollId;
     }
     
-    public String getPollUuid() {
-        return pollUuid;
-    }
-    
-    public void setPollUuid(String pollUuid) {
-        this.pollUuid = pollUuid;
-    }
-    
     @Override
     public String toString() {
         return "QuestionDto{" 
                 + "title=" + title 
                 + ",type=" + type 
-                + ",pollUuid" + pollUuid 
                 + "}";
     }
     

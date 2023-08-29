@@ -53,7 +53,7 @@ public class QuestionManagerBean implements Serializable {
                 .getRequest();
         String pollUuid = request.getParameter("pollUuid");
         
-        questionInfo.setPollUuid(pollUuid);
+        questionInfo.setUuid(pollUuid);
         
         
         FacesContext context = FacesContext.getCurrentInstance();

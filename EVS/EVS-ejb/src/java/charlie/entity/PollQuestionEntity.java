@@ -29,9 +29,6 @@ public class PollQuestionEntity extends AbstractEntity {
     @Column(name = "description")
     @Lob
     private String description;
-    
-    @Column(name = "poll_uuid")
-    private String pollUuid;
 
     @ManyToOne
     @JoinColumn(name = "fk_poll_id")
@@ -95,14 +92,6 @@ public class PollQuestionEntity extends AbstractEntity {
     public void setPoll(PollEntity poll) {
         this.poll = poll;
     }
-    
-    public String getPollUuid() {
-        return pollUuid;
-    }
-    
-    public void setPollUuid(String pollUuid) {
-        this.pollUuid = pollUuid;
-    }
 
     public Set<QuestionAnswerChoiceEntity> getAnswerChoices() {
         return answerChoices;
@@ -116,7 +105,6 @@ public class PollQuestionEntity extends AbstractEntity {
     public String toString() {
         return "PollQuestionEntity{" + "type=" + type + 
                 ", title=" + title + 
-                ", pollUuid" + pollUuid +
                 ", answerChoices=" + answerChoices + 
                 '}';
     }
