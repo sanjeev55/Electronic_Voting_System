@@ -60,7 +60,7 @@
                 <div hidden="true">
                     <input type="hidden" name="jsonResponse" id="user-response"/>
                 </div>
-                <b:commandButton value="Cancel" class="btn-cancel"/>
+                <b:commandButton value="${msg.cancelLabel}" class="btn-cancel"/>
                 <b:commandButton actionListener="#{votingPageBean.submitVote}" value="Submit" onclick="prepareUserResponse()" class="btn-submit"/>
 
             </b:form>

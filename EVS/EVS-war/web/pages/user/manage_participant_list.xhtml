@@ -84,7 +84,7 @@
                     <b:dataTable striped="true" var="participantList" value="#{manageParticipantListBean.participantList}">
                         <b:dataTableColumn label="${msg.participantListNameLabel}" value="#{participantList.name}"/>
                         <b:dataTableColumn label="${msg.participantListEmailLabel}" value="#{participantList.emails}"/>
-                        <b:dataTableColumn label="Action">
+                        <b:dataTableColumn label="${msg.actionLabel}">
                             <b:button id="editListButton"
                                     icon="edit"
                                     outcome="editParticipantPollPage">
@@ -122,7 +122,7 @@
                 <b:inputTextarea label ="${msg.listEmailsLabel}" id="emailList" placeholder="${msg.listEmailsPlaceholder}" value="#{manageParticipantListBean.newListEmails}" required="true">   
                     <h:message for="emailList" class="text-danger mt-2"/>
                 </b:inputTextarea>
-                <b:button value="Cancel"
+                <b:button value="${msg.cancelLabel}"
                           dismiss="modal" onclick="return false;"/>
                 <b:commandButton value="${msg.saveButton}" 
                                  action="#{manageParticipantListBean.createParticipantList()}" 
