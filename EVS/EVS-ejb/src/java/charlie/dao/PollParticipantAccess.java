@@ -67,5 +67,12 @@ public class PollParticipantAccess extends AbstractAccess<PollParticipantEntity>
                 .executeUpdate();
     }
     
+    public Long countPollPaticipantByPollIdAndStatus(PollEntity poll, Boolean hasParticipated){
+        return em.createNamedQuery("countPollParticipantByPollIdAndStatus", Long.class)
+                .setParameter("poll", poll)
+                .setParameter("hasParticipated", hasParticipated)
+                .getSingleResult();
+    }
+    
     
 }

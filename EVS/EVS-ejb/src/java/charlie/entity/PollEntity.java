@@ -17,8 +17,8 @@ import java.util.Set;
     @NamedQuery(name = "getVotingPollsInDateRange", query = "select p from PollEntity p where p.state = :state and p.endsAt >= :from and p.endsAt < :to"),
     @NamedQuery(
     name="deletePollBySingleOwner",
-    query="DELETE FROM PollEntity p WHERE :owner MEMBER OF p.pollOwners AND SIZE(p.pollOwners) = 1"
-)
+    query="DELETE FROM PollEntity p WHERE :owner MEMBER OF p.pollOwners AND SIZE(p.pollOwners) = 1"),
+    @NamedQuery(name="findAllByIdAndState", query="SELECT p FROM PollEntity p WHERE p.id = :id AND p.state = :state")
 })
 public class PollEntity extends AbstractEntity {
 

@@ -1,10 +1,13 @@
 package charlie.entity;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
@@ -12,7 +15,10 @@ import javax.persistence.Table;
 @NamedNativeQueries({
     @NamedNativeQuery(name = "saveParticipantResponse", query = "insert into participant_question_answer(fk_question_id, fk_answer_id, fk_poll_id, uuid, jpa_version) values (?, ?, ?, ?, ?)")
 })
-public class ParticipantQuestionAnswerEntity extends AbstractEntity {
+@NamedQueries({
+    @NamedQuery(name="getAllByPoll", query="SELECT pqa FROM ParticipantQuestionAnswerEntity pqa WHERE pqa.poll = :poll"),
+})
+public class ParticipantQuestionAnswerEntity extends AbstractEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "fk_answer_id")

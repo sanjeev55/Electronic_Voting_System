@@ -13,7 +13,7 @@ public class DateUtils {
     private static final Logger logger = Logger.getLogger(DateUtils.class.getName());
     private static final String[] DATE_FORMATS = {
         "yyyy-MM-dd'T'HH:mm",
-        "EEE MMM dd HH:mm:ss 'CEST' yyyy"
+        "EEE MMM dd HH:mm:ss z yyyy"
     };
     
     public static Date parseDate(String dateInString, String pattern) {

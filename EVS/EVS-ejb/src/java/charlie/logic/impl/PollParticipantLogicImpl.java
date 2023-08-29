@@ -71,11 +71,17 @@ public class PollParticipantLogicImpl implements PollParticipantLogic {
         ppa.deleteByPollId(pm.toEntity(pollDto));
     }
     
+    @Override
     public PollParticipantDto getPollParticipantByToken(String token) {        
        var entity = ppa.findByToken(token);
        if(entity == null)
            return null;
        
        return ppm.toDto(entity);
-    }  
+    }
+    
+    @Override
+    public Long getCountOfPollPaticipantByPollIdAndStatus(PollDto pollDto, Boolean hasParticipated){
+        return ppa.countPollPaticipantByPollIdAndStatus(pm.toEntity(pollDto), hasParticipated);
+    }
 }

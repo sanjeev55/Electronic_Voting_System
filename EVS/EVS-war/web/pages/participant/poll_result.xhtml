@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/WEB-INF/templates/login-layout.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:hf="http://highfaces.org">
+
+    <ui:define name="content">
+        <b:row>
+            <b:column span="12" class="text-center mb-5">
+                <h1>${msg.viewResultLabel} #{viewPollResultBean.pollDto.title}</h1>
+            </b:column>
+        </b:row>
+        <b:row class="mb-5">
+            <b:column span="6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fa fa-check-circle fa-3x mb-3" style="color: green;"></i> <!-- Voted Icon -->
+                        <h4 class="card-title">${msg.hasVotedLabel}</h4>
+                        <h2 class="card-text"><h:outputText value="#{viewPollResultBean.hasVotedParticipants()}" /></h2>
+                    </div>
+                </div>
+            </b:column>
+
+            <b:column span="6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fa fa-times-circle fa-3x mb-3" style="color: red;"></i> <!-- Not Voted Icon -->
+                        <h4 class="card-title">${msg.hasNotVotedLabel}</h4>
+                        <h2 class="card-text"><h:outputText value="#{viewPollResultBean.hasNotParticiated()}" /></h2>
+                    </div>
+                </div>
+            </b:column>
+        </b:row>
+        <b:row class="justify-content-center">
+            <ui:repeat value="#{viewPollResultBean.votingResults}" var="result">
+                <b:column col-md="6" class="text-center mb-5">
+                    <hf:chart title="#{result.questionTitle}" type="pie">
+                        <hf:chartSerie value="#{viewPollResultBean.convertToPoints(result)}"
+                                       name="${msg.votesLabels}"
+                                       var="point"
+                                       point="#{point.count}"
+                                       tickLabel="#{point.label}"/>
+                    </hf:chart>
+                </b:column>
+            </ui:repeat>
+        </b:row>
+    </ui:define>
+</ui:composition>

@@ -7,6 +7,7 @@ package charlie.logic;
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
 import charlie.dto.UserDto;
+import charlie.entity.PollStateEnum;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -22,4 +23,5 @@ public interface PollOwnerLogic {
     public List<PollOwnerDto> findAllByPoll(PollDto pollDto);
     public List<PollOwnerDto> findAllByPollId(int pollId);
     public void deleteByPoll(PollDto pollDto);
+    public List<PollOwnerDto> findAllByOrganizerAndPollState(UserDto user, PollStateEnum state);
 }

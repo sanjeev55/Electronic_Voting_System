@@ -16,4 +16,5 @@ public interface PollParticipantLogic {
     public void savePollParticipant(PollParticipantDto pollParticipantDto);
     public void deleteByPoll(PollDto pollDto);
     PollParticipantDto getPollParticipantByToken(String token);
+    public Long getCountOfPollPaticipantByPollIdAndStatus(PollDto pollDto, Boolean hasParticipated);
 }

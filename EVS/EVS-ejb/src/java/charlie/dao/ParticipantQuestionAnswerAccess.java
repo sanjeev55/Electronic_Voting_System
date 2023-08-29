@@ -2,6 +2,7 @@ package charlie.dao;
 
 import charlie.domain.ParticipantResponse;
 import charlie.entity.ParticipantQuestionAnswerEntity;
+import charlie.entity.PollEntity;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -39,5 +40,13 @@ public class ParticipantQuestionAnswerAccess extends AbstractAccess<ParticipantQ
     
     public void saveParticipantResponses(List<ParticipantResponse> responses) {
         responses.forEach(resp -> this.saveParticipantResponse(resp));
+    }
+    
+    public List<ParticipantQuestionAnswerEntity> findAllByPoll(PollEntity poll){
+        List<ParticipantQuestionAnswerEntity> pqae = em.createNamedQuery("getAllByPoll", ParticipantQuestionAnswerEntity.class)
+                .setParameter("poll", poll)
+                .getResultList();
+        
+        return pqae;
     }
 }
