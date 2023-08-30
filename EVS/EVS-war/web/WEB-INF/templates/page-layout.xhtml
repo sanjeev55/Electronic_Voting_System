@@ -11,7 +11,9 @@
         <h:head id="head">
             <title>${msg.appTitle} - ${pageHeadline} </title>
             <link rel="stylesheet" href="#{resource['css:localcss.css']}"/>
+            <link rel="stylesheet" href="#{resource['css:global.css']}"/>
             <link rel="stylesheet" href="#{resource['css:siderbar.css']}"/>
+            <link rel="icon" type="image/x-icon" href="#{resource['images:logo.ico']}"/>
             
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -22,7 +24,7 @@
             <script src="#{request.contextPath}/resources/js/datetimepicker.js" type="javascript"></script>
         </h:head>
         <h:body id="body">
-            <b:container>
+            <b:container id="global-container">
                 
                 <div id="viewport">
 
@@ -58,15 +60,13 @@
                         </ul>
                     </div>
 
-                    <div class="container">
-                        <div id="content">
+                    <div class="content" id="body-content">
                             <div class="container-fluid">
                                 <h4>${msg.welcomeLabel}, ${loginBean.user.username}</h4>
                                 <ui:insert name="content"/>
                             </div>
-                        </div>
-                    </div>
-                    <footer style="margin-left: 29px">
+                    
+                    <footer>
                         <b:well class="topsep">
                             <b:form>
                                 ${msg.footerCurrentUserLabel}
@@ -100,6 +100,7 @@
                             ${msg.footerLabel}
                         </b:well>
                     </footer>
+                        </div>
                 </div>
             </b:container>
 
