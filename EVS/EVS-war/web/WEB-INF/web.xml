@@ -66,6 +66,10 @@
         <extension>css</extension>
         <mime-type>text/css</mime-type>
     </mime-mapping>
+    <mime-mapping>
+        <extension>images</extension>
+        <mime-type>image/ico</mime-type>
+    </mime-mapping>
     <security-constraint>
         <display-name>Authenticated access</display-name>
         <web-resource-collection>
