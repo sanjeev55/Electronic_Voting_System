@@ -6,8 +6,10 @@ package charlie.logic;
  */
 
 import charlie.domain.Result;
+import charlie.dto.AnswerDto;
 import charlie.dto.QuestionDto;
 import charlie.dto.PollDto;
+import charlie.dto.UserDto;
 
 import java.util.List;
 
@@ -32,5 +34,13 @@ public interface QuestionLogic {
     public int addNewQuestion(QuestionDto questionDto);
     
     public List<QuestionDto> getQuestionByPoll(PollDto pollDto);
+    
+    public List<QuestionDto> getQuestionsByOrganizer(UserDto user);
+    
+    public void delete(QuestionDto questionDto);
+    
+    public void deleteQuestionAnswer(QuestionDto questionDto);
+    
+    public void updateQuestionAnswer(QuestionDto question, List<AnswerDto> answers);
     
 }

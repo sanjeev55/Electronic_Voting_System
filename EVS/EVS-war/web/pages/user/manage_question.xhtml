@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/WEB-INF/templates/page-layout.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:param name="pageHeadline" value="${msg.manageQuestionLabel}"/>
+    <ui:define name="metadata">
+        
+
+    </ui:define>
+    <ui:define name="content">
+        <f:verbatim>
+                <script type="text/javascript">
+                    //<![CDATA[
+                    
+                    //]]> 
+                </script>
+            </f:verbatim>
+        <b:form id="manageQuestionForm">
+            
+            <b:alert severity="success" rendered="${manageQuestionBean.success}">
+                ${msg.questionDeleteSuccessMessage}
+            </b:alert>
+            <b:alert severity="danger" rendered="${manageQuestionBean.failure}">
+                ${msg.questionDeleteFailureMessage}<br/>
+                ${manageQuestionBean.failureMessage}
+            </b:alert>
+            <b:row>
+                <center><h4>${msg.manageQuestionLabel}</h4></center>
+            </b:row>
+            <b:row>
+                <b:column offset="1" span="10">
+                    <b:dataTable striped="true" var="question" value="#{manageQuestionBean.questions}">
+                        <b:dataTableColumn label="${msg.pollTitleLabel}" value="#{question.title}"/>
+                        <b:dataTableColumn label="${msg.pollDescriptionLabel}" value="#{question.description}"/>
+                        <b:dataTableColumn label="${msg.questionTypeLabel}" value="#{question.type}"/>
+                        <b:dataTableColumn label="${msg.maxChoiceLabel}" value="#{question.multipleChoiceMax}"/>
+                        <b:dataTableColumn label="${msg.minChoiceLabel}" value="#{question.multipleChoiceMin}"/>
+                        <b:dataTableColumn label="${msg.pollNameLabel}" value="#{manageQuestionBean.getPollName(question.pollId)}"/>
+                        
+                        <b:dataTableColumn label="${msg.answersCountLabel}" value="#{manageQuestionBean.getAnswersCount(question.id)}"/>
+                        <b:dataTableColumn label="${msg.actionLabel}">
+                            <b:button id="editQuestionButton"
+                                    icon="edit"
+                                    outcome="editQuestionPage"
+                                    disabled="#{manageQuestionBean.getPollState(question.id) eq 'STARTED' 
+                                                or manageQuestionBean.getPollState(question.id) eq 'VOTING' 
+                                                or manageQuestionBean.getPollState(question.id) eq 'FINISHED'}">
+                                <f:param name="questionId" value="#{question.id}"/>
+                            </b:button>
+                            <b:commandButton id="deleteQuestionButton"
+                                    icon="trash"
+                                    action="#{manageQuestionBean.deleteQuestion(question)}"
+                                    disabled="#{manageQuestionBean.getPollState(question.id) eq 'STARTED' 
+                                                or manageQuestionBean.getPollState(question.id) eq 'VOTING' 
+                                                or manageQuestionBean.getPollState(question.id) eq 'FINISHED'}"
+                                    update="manageQuestionForm">
+                            </b:commandButton>
+                        </b:dataTableColumn>
+                    </b:dataTable>
+                </b:column>
+            </b:row>
+        </b:form>
+    </ui:define>
+    
+        
+</ui:composition>

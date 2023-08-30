@@ -85,4 +85,10 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
                 .getSingleResult();
                 
     } 
+    
+    public List<PollOwnerEntity> getAllByOrganizer(UserEntity organizer){
+        return em.createNamedQuery("findAllByOrganizer", PollOwnerEntity.class)
+                .setParameter("organizer", organizer)
+                .getResultList();
+    }
 }

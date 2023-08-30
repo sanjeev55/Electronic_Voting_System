@@ -4,15 +4,20 @@ import charlie.dao.QuestionAccess;
 import charlie.dao.PollAccess;
 import charlie.logic.QuestionLogic;
 import charlie.domain.Result;
+import charlie.dto.AnswerDto;
 import charlie.dto.PollDto;
+import charlie.dto.QuestionAnswerChoiceDto;
 import charlie.dto.QuestionDto;
+import charlie.dto.UserDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollQuestionEntity;
 import charlie.entity.QuestionTypeEnum;
 import charlie.entity.UserEntity;
+import charlie.logic.QuestionAnswerChoiceLogic;
 import charlie.logic.QuestionLogic;
 import charlie.mapper.PollEntityMapper;
 import charlie.mapper.QuestionEntityMapper;
+import charlie.mapper.UserEntityMapper;
 import charlie.service.UserService;
 import charlie.utils.StringUtils;
 import java.util.List;
@@ -43,9 +48,15 @@ public class QuestionLogicImpl implements QuestionLogic{
     @EJB
     private UserService userService;
     
+    @EJB
+    private UserEntityMapper um;
+    
     
     @EJB
     private PollEntityMapper pollEntityMapper;
+    
+    @EJB
+    private QuestionAnswerChoiceLogic qacl;
 
   
         
@@ -118,4 +129,31 @@ public class QuestionLogicImpl implements QuestionLogic{
         List<PollQuestionEntity> pqe = questionDao.findAllByPoll(pollEntityMapper.toEntity(pollDto));
         return pqe.stream().map(questionEntityMapper::toDto).collect(Collectors.toList());
     }
+    
+    @Override
+     public List<QuestionDto> getQuestionsByOrganizer(UserDto organizer){
+         List<PollQuestionEntity> pqe = questionDao.findAllQuestionsByOrganizer(um.toEntity(organizer));
+         return pqe.stream().map(questionEntityMapper::toDto).collect(Collectors.toList());
+     }
+     
+     @Override
+     public void delete(QuestionDto questionDto){
+         questionDao.remove(questionEntityMapper.toEntity(questionDto));
+     }
+     
+     @Override
+     public void deleteQuestionAnswer(QuestionDto questionDto){
+         List<AnswerDto> answers = qacl.getByQuestion(questionDto);
+         for(AnswerDto answer: answers){
+             System.out.println("Answer:" + answer);
+             qacl.deleteAnswer(answer);
+         }
+         delete(questionDto);
+     }
+     
+     @Override
+     public void updateQuestionAnswer(QuestionDto question, List<AnswerDto> answers){
+        questionDao.edit(questionEntityMapper.toEntity(question));
+        qacl.updateAnswers(answers, question);
+     }
 }

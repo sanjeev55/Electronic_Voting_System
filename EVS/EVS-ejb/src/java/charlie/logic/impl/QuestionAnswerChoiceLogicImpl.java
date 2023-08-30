@@ -7,11 +7,13 @@ package charlie.logic.impl;
 import charlie.dao.QuestionAnswerChoiceAccess;
 import charlie.dto.AnswerDto;
 import charlie.dto.QuestionAnswerChoiceDto;
+import charlie.dto.QuestionDto;
 import charlie.entity.QuestionAnswerChoiceEntity;
 import charlie.logic.QuestionAnswerChoiceLogic;
 import charlie.mapper.AnswerEntityMapper;
 import charlie.mapper.QuestionAnswerChoiceEntityMapper;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
@@ -44,6 +46,45 @@ public class QuestionAnswerChoiceLogicImpl implements QuestionAnswerChoiceLogic 
     @Override
     public void addAnswer(AnswerDto answerDto){
         qaca.create(am.toEntity(answerDto));
+    }
+    
+    @Override
+    public List<AnswerDto> getByQuestion(QuestionDto questionDto){
+        List<QuestionAnswerChoiceEntity> qace = qaca.findAllByQuestionId(questionDto.getId());
+        return qace.stream().map(am::toDto).collect(Collectors.toList());
+    }
+    
+    @Override
+    public void deleteAnswer(AnswerDto answerDto){
+        qaca.remove(am.toEntity(answerDto));
+    }
+    
+    public void updateAnswer(AnswerDto answer){
+        qaca.edit(am.toEntity(answer));
+    }
+    
+    @Override
+    public void updateAnswers(List<AnswerDto> newAnswerDto, QuestionDto question){
+        
+        List<AnswerDto> originalAnswers = getByQuestion(question);
+
+        for (AnswerDto answer : newAnswerDto) {
+            if (answer.getId() == null) {
+                // This is a new answer
+                answer.setUuid(UUID.randomUUID().toString());
+                answer.setDescription(answer.getShortName());
+                answer.setQuestionId(question.getId());
+                addAnswer(answer);
+            } else {
+                updateAnswer(answer);
+                originalAnswers.remove(answer); // Remove it from the original list as it's still present
+            }
+        }
+
+        // delete remaining answers
+        for (AnswerDto answer : originalAnswers) {
+            deleteAnswer(answer);
+        }
     }
     
 }

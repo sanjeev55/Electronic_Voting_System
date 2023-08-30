@@ -6,6 +6,7 @@ package charlie.logic;
 
 import charlie.dto.AnswerDto;
 import charlie.dto.QuestionAnswerChoiceDto;
+import charlie.dto.QuestionDto;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -17,5 +18,8 @@ import javax.ejb.Remote;
 public interface QuestionAnswerChoiceLogic {
     public QuestionAnswerChoiceDto getById(int id);
     public List<QuestionAnswerChoiceDto> getAllByQuestionId(int questionId);
+    public List<AnswerDto> getByQuestion(QuestionDto questionDto);
     public void addAnswer(AnswerDto answerDto);
+    public void deleteAnswer(AnswerDto answerDto);
+    public void updateAnswers(List<AnswerDto> newAnswerDto, QuestionDto question);
 }
