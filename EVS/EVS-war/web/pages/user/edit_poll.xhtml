@@ -4,7 +4,8 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:b="http://bootsfaces.net/ui">
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:param name="pageHeadline" value="${msg.pollEditHeadline}"/>
     <ui:define name="metadata">
@@ -41,17 +42,23 @@
             </b:alert>
 
             <b:row>
-                <b:inputText span="6" label-col-md="2" id="title" label="${msg.pollTitleLabel}" value="#{pollEditBean.pollDto.title}" required="true"/>
+                <b:inputText span="6" label-col-md="2" id="title" label="${msg.pollTitleLabel}" value="#{pollEditBean.pollDto.title}" 
+                             required="true"
+                             disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}"/>
                 <b:message offset="2" span="6"/>
             </b:row>
 
             <b:row>
-                <b:inputText span="6" label-col-md="2" id="description" label="${msg.pollDescriptionLabel}" value="#{pollEditBean.pollDto.description}" required="false"/>
+                <b:inputText span="6" label-col-md="2" id="description" label="${msg.pollDescriptionLabel}" 
+                             disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}" 
+                             value="#{pollEditBean.pollDto.description}" 
+                             required="false"/>
                 <b:message offset="2" span="6"/>
             </b:row>
             
             <b:row>
-                <b:inputText span="6" label-col-md="2"  type="datetime-local" id="startsAt" label="${msg.pollStartDateLabel}" value="#{pollEditBean.pollDto.startsAt}"/>
+                <b:inputText span="6" label-col-md="2"  type="datetime-local" id="startsAt" disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}"
+                             label="${msg.pollStartDateLabel}" value="#{pollEditBean.pollDto.startsAt}"/>
                      <f:convertDateTime pattern="yyyy-MM-dd'T'HH:mm:ss" timeZone="UTC" />
                 <b:message offset="2" span="6"/>
             </b:row>
@@ -68,13 +75,13 @@
             </b:row>
 
             <b:row>
-                <b:selectBooleanCheckbox span="6" label-col-md="2" id="trackParticipant" label="${msg.pollTrackParticipantLabel}" value="#{pollEditBean.pollDto.trackParticipant}" />
+                <b:selectBooleanCheckbox span="6" label-col-md="2" id="trackParticipant" disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}" label="${msg.pollTrackParticipantLabel}" value="#{pollEditBean.pollDto.trackParticipant}" />
                 <b:message offset="2" span="6"/>
             </b:row>
 
 
             <b:row>
-                <b:inputText span="6" label-col-md="2" id="username" label="${msg.pollCreatedByLabel}" value="#{pollEditBean.pollDto.primaryOrganizer.username}" disabled = "true"/>
+                <b:inputText span="6" label-col-md="2" id="username" label="${msg.pollCreatedByLabel}" value="#{pollEditBean.getPrimaryOwner()}" disabled = "true"/>
                 <b:message offset="2" span="6"/>
             </b:row>
 
@@ -82,9 +89,7 @@
             <b:row class="topsep">
                 
                 <div class="col-md-3">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#manageParticipantModal">
-                        ${msg.editParticipantListLabel}
-                    </button>
+                    <b:button value="${msg.editParticipantListLabel}" icon="edit" class="btn btn-primary" disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}" p:data-toggle="modal" p:data-target="#manageParticipantModal"/>
                 </div> 
                 <div class="col-md-3">
                     <a href="add_organizers_to_poll.xhtml?poll_uuid=#{pollEditBean.pollUuid}" class="btn btn-default">
@@ -96,7 +101,8 @@
                                     icon="plus-sign"
                                     look="info"
                                     outcome="addQuestionPage"
-                                    value="${msg.addQuestionHeadline}">
+                                    value="${msg.addQuestionHeadline}"
+                                    disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}">
                         <f:param name="pollId" value="#{pollEditBean.pollDto.id}"/>
                     </b:button>
                 </div>

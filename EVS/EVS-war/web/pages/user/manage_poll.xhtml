@@ -72,7 +72,7 @@
                                     <div>
                                         <div class="d-flex justify-content-center align-items-center gap-2">
                                             <div>
-                                                <h:link outcome="editPollPage">
+                                                <h:link outcome="editPollPage" disabled="#{poll.state eq 'FINISHED'}">
                                                     <f:param name="pollUuid" value="#{poll.uuid}" />
                                                     <image src="#{request.contextPath}/resources/images/edit-icon.png" style="width: 25px;"/>
                                                 </h:link>

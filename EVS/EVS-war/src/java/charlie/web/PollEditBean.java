@@ -2,6 +2,7 @@ package charlie.web;
 
 import charlie.dto.ParticipantListDto;
 import charlie.dto.PollDto;
+import charlie.dto.PollOwnerDto;
 import charlie.dto.PollParticipantDto;
 import charlie.dto.UserDto;
 import charlie.entity.PollStateEnum;
@@ -27,6 +28,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import charlie.logic.PollLogic;
+import charlie.logic.PollOwnerLogic;
 
 @Named(value = "pollEditBean")
 @ViewScoped
@@ -43,6 +45,9 @@ public class PollEditBean implements Serializable {
     
     @EJB
     private ParticipantListLogic pll;
+    
+    @EJB
+    private PollOwnerLogic pol;
     
 
     private PollDto pollDto;
@@ -302,6 +307,12 @@ public class PollEditBean implements Serializable {
         if(str2.isEmpty()) return str1;
 
         return str1 + "," + str2;
+    }
+    
+    public String getPrimaryOwner(){
+        System.out.println("pollDto:" + pollDto);
+        PollOwnerDto pollOwnerDto = pol.getPrimaryOrganizerByPoll(pollDto, true);
+        return pollOwnerDto.getUsername();
     }
     
     
