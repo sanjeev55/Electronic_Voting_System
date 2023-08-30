@@ -34,7 +34,7 @@ public class AnswerEntityMapper extends AbstractEntityMapper<QuestionAnswerChoic
         super.setEntity(new QuestionAnswerChoiceEntity());
         QuestionAnswerChoiceEntity entity = super.toEntity(domain);
         entity.setShortName(domain.getShortName());
-        entity.setDescription(entity.getDescription());
+        entity.setDescription(domain.getDescription());
         entity.setPollQuestion(qm.toEntity(ql.getQuestionById(domain.getQuestionId())));
         
 

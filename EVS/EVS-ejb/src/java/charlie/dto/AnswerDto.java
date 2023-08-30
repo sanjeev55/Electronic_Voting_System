@@ -39,7 +39,7 @@ public class AnswerDto extends AbstractDto {
     
     @Override
     public String toString() {
-        return "QuestionDto{" 
+        return "AnswerDto{" 
                 + "shortName=" + shortName 
                 + ",questionId=" + questionId 
                 + ",description=" + description 

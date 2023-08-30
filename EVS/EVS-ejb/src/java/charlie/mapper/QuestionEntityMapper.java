@@ -2,6 +2,7 @@ package charlie.mapper;
 
 import charlie.dto.QuestionDto;
 import charlie.entity.PollQuestionEntity;
+import charlie.logic.PollLogic;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,10 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
     
     @EJB
     private UserEntityMapper userEntityMapper;
+    @EJB
+    private PollLogic pl;
+    @EJB
+    private PollEntityMapper pm;
 
     @Override
     public PollQuestionEntity toEntity(QuestionDto domain) {
@@ -34,9 +39,10 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
         entity.setTitle(domain.getTitle());
         entity.setType(domain.getType());
         entity.setMultipleChoiceMax(domain.getMultipleChoiceMax());
-        entity.setMultipleChoiceMin(entity.getMultipleChoiceMin());
+        entity.setMultipleChoiceMin(domain.getMultipleChoiceMin());
         entity.setDescription(domain.getDescription());
         entity.setName(domain.getName());
+        entity.setPoll(pm.toEntity(pl.getPollById(domain.getPollId())));
 
         return entity;
     }
@@ -56,6 +62,7 @@ public class QuestionEntityMapper extends AbstractEntityMapper<PollQuestionEntit
         dto.setMultipleChoiceMax(entity.getMultipleChoiceMax());
         dto.setMultipleChoiceMin(entity.getMultipleChoiceMin());
         dto.setName(entity.getName());
+        dto.setPollId(entity.getPoll().getId());
 
         return dto;
     }

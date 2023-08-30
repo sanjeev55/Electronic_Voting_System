@@ -5,6 +5,7 @@ package charlie.dao;
  * @author Eric Babcock <ebabcock@uni-koblenz.de>
  */
 
+import charlie.entity.PollEntity;
 import charlie.entity.PollQuestionEntity;
 import charlie.entity.QuestionTypeEnum;
 
@@ -69,6 +70,12 @@ public class QuestionAccess extends AbstractAccess<PollQuestionEntity> {
     
     public void updateQuestion (PollQuestionEntity qe) {
         edit(qe);
+    }
+    
+    public List<PollQuestionEntity> findAllByPoll(PollEntity poll){
+        return em.createNamedQuery("getPollQuestionByPoll", PollQuestionEntity.class)
+                .setParameter("poll", poll)
+                .getResultList();
     }
 }
 

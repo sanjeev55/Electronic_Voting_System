@@ -5,48 +5,123 @@
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:param name="pageHeadline" value="${msg.addQuestionHeadline}"/>
     <ui:define name="content">
+         <h:link outcome="managePollPage" value="${msg.pollEditBackToList}"/>
         <h3>Add Question</h3>
         <h:form class="card-body cardbody-color p-lg-5" id="addQuesion">
-            
+             <b:alert severity="success" rendered="${questionManagerBean.success}">
+                ${msg.questionAddSuccessLabel}
+            </b:alert>
+            <b:alert severity="danger" rendered="${questionManagerBean.failure}">
+                ${msg.questionAddFailureLabel}<br/>
+                ${questionManagerBean.failureMessage}
+            </b:alert>
             <div class ="form-group mb-3 row">
-                <div class="col-1">
-                    <label for="title" class="col-form-label">Title</label>
-                </div>
                 <div class="col-11">
                     <div>
                         <b:inputText type="text" 
                                      class="form-control w-50" 
                                      id="title" 
                                      name ="title"
+                                     label="${msg.pollTitleLabel}"
                                      value="#{questionManagerBean.questionInfo.title}"
+                                     required="true"
+                                     />
+                        <h:message for="title" class="text-danger mt-2"/>
+                    </div>
+                </div>
+            </div>
+            <div class ="form-group mb-3 row">
+                
+                <div class="col-11">
+                    <div>
+                        <b:inputText type="text" 
+                                     class="form-control w-50" 
+                                     id="description" 
+                                     name ="description"
+                                     label="${msg.pollDescriptionLabel}"
+                                     value="#{questionManagerBean.questionInfo.description}"
                                      />
                     </div>
                 </div>
             </div>
             <div class="form-group mb-3 row">
-                <div class = "col-1">
-                    <label for ="title" class = "col-form-label"> Question Type</label>
-                </div>
                 <div class ="col-11">
                     <b:row>
-                        <b:selectOneMenu span="6" label-col-md="2" id="type" value = "#{questionManagerBean.questionInfo.type}">
-                            <f:selectItems value= "#{questionManagerBean.questionTypes}" />
+                        <b:selectOneMenu span="6" label-col-md="2" id="type" label="${msg.questionTypeLabel}" value="#{questionManagerBean.questionInfo.type}" required="true">
+                            <f:selectItems value="#{questionManagerBean.questionTypes}" />
+                            <f:ajax listener="#{questionManagerBean.onQuestionTypeChanged}" render="addQuesion" />
                         </b:selectOneMenu>
+                        <h:message for="type" class="text-danger mt-2"/>
                     </b:row>
                 </div>
             </div>
+            <div class="form-group mb-3 row">
+               
+                <h:panelGroup id="asnwerSection" rendered="#{questionManagerBean.questionInfo.type eq 'MULTIPLE_CHOICE' or questionManagerBean.questionInfo.type eq 'SINGLE_CHOICE'}">
+                    <ui:repeat value="#{questionManagerBean.dynamicAnswers}" var="answer" varStatus="status">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">${msg.answerLabel} #{status.index + 1}</span>
+                            </div>
+                            <b:inputText value="#{answer.shortName}" id="answer" name="answer" placeholder="${msg.enterAnswerPlaceholder}" required="true" />
+                             <h:message for="answer" class="text-danger mt-2"/>
+                            <div class="input-group-append">
+                                <b:commandButton look="warning" icon="minus-sign" value="${msg.removeLabel}" action="#{questionManagerBean.removeDynamicAnswer(answer)}">
+                                    <f:ajax render="addQuesion" />
+                                </b:commandButton>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                    
+                    <b:row>
+                        <div class="col-11">
+                            <div>
+                                <b:inputText type="text" 
+                                             class="form-control w-50" 
+                                             id="minChoice" 
+                                             name ="minChoice"
+                                             label="${msg.minChoiceLabel}"
+                                             value="#{questionManagerBean.questionInfo.multipleChoiceMin}"
+                                             required="true"
+                                             />
+                                <h:message for="minChoice" class="text-danger mt-2"/>
+                            </div>
+                        </div>
+                    </b:row>
+                    <b:row>
+                        <div class="col-11">
+                            <div>
+                                <b:inputText type="text" 
+                                             class="form-control w-50" 
+                                             id="maxChoice" 
+                                             name ="maxChoice"
+                                             label="${msg.maxChoiceLabel}"
+                                             value="#{questionManagerBean.questionInfo.multipleChoiceMax}"
+                                             required="true"
+                                             />
+                                <h:message for="minChoice" class="text-danger mt-2"/>
+                            </div>
+                        </div>
+                    </b:row>
+                    
+                    <b:row>
+                        <div class="col-md-4">
+                            <b:commandButton icon="plus-sign" look="primary" value="${msg.addAnswerLabel}" action="#{questionManagerBean.addDynamicAnswer()}">
+                                <f:ajax render="addQuesion" />
+                            </b:commandButton>
+                        </div>
+                    </b:row>
+                </h:panelGroup>
+            </div> 
             <div class="row">
-                <div class="col-1">
-
-                </div>
                 <div class="col-11">
                     <div class="d-flex justify-content-end w-50" id ="addPoll">
                         <h:commandButton id="btn-submit"
-                                         value="Submit"
+                                         value="${msg.submitLabel}"
                                          class="btn btn-sm btn-dark mt-2"
-                                         action="#{questionManagerBean.addQuestion()}">
-                            <f:param name="pollUuid" value ="#{poll.Uuid}"/>
+                                         action="#{questionManagerBean.addQuestionAnswer()}">
                         </h:commandButton>
                     </div>
 

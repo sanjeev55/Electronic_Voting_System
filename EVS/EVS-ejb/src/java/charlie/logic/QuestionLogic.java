@@ -29,4 +29,8 @@ public interface QuestionLogic {
     
     public Result<QuestionDto> getQuestionByUuid (String uuid);
     
+    public int addNewQuestion(QuestionDto questionDto);
+    
+    public List<QuestionDto> getQuestionByPoll(PollDto pollDto);
+    
 }
