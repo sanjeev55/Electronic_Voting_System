@@ -1,5 +1,6 @@
 package charlie.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -8,7 +9,7 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "getPollQuestionByPoll", query = "select q from PollQuestionEntity q where q.poll = :poll"),
 })
-public class PollQuestionEntity extends AbstractEntity {
+public class PollQuestionEntity extends AbstractEntity implements Serializable {
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)

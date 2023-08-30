@@ -4,6 +4,7 @@ import charlie.dao.QuestionAccess;
 import charlie.dao.PollAccess;
 import charlie.logic.QuestionLogic;
 import charlie.domain.Result;
+import charlie.dto.PollDto;
 import charlie.dto.QuestionDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollQuestionEntity;
@@ -14,9 +15,11 @@ import charlie.mapper.PollEntityMapper;
 import charlie.mapper.QuestionEntityMapper;
 import charlie.service.UserService;
 import charlie.utils.StringUtils;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -38,19 +41,13 @@ public class QuestionLogicImpl implements QuestionLogic{
     private QuestionAccess questionDao;
     
     @EJB
-    private UserService userService;//TODO: WHAT does this do
+    private UserService userService;
     
-    //@EJB
-    //private QuestionEntityMapper entityMapper;//TODO: do I need?
     
     @EJB
     private PollEntityMapper pollEntityMapper;
-    
-    @EJB
-    private PollAccess pollDao;
+
   
-    //@Override
-    //public PollDto getPollById(int id){}
         
     
     @Override
@@ -84,13 +81,11 @@ public class QuestionLogicImpl implements QuestionLogic{
    
     public Result<QuestionDto> addQuestion (QuestionDto domain) {
         if (domain == null) {
-            return Result.error("Cannot accept null values");//TODO: check if correct
+            return Result.error("Cannot accept null values");
         }
         domain.setUuid(UUID.randomUUID().toString());
         
         PollQuestionEntity entity = questionEntityMapper.toEntity(domain);
-        
-        //TODO: if cases for errors
         
         try {
             UserEntity userEntity = userService.getCurrentLoggedInUser();
@@ -111,22 +106,16 @@ public class QuestionLogicImpl implements QuestionLogic{
         }
     }
     
-    /*@Override
-    public Result<?> addAssociatedPoll(Integer pollId, Integer questionId) {
-        var poll = pollDao.find(pollId);
-        if (poll == null)
-            return Result.error("cannot find poll");
-        
-        var question = questionDao.find(questionId);
-        if(question == null)
-            return Result.error("cannot find question");
-        
-        pollQuestionEntity.setPoll(poll);
-    }*/
+    @Override
+    public int addNewQuestion(QuestionDto questionDto){
+        PollQuestionEntity pq = questionDao.create(questionEntityMapper.toEntity(questionDto));
+        int questionId = pq.getId();
+        return questionId;
+    }
     
-    
-    
-    /*public void deleteById(int id) {
-        questionDao.deleteById(id);
-    }*/
+    @Override
+    public List<QuestionDto> getQuestionByPoll(PollDto pollDto){
+        List<PollQuestionEntity> pqe = questionDao.findAllByPoll(pollEntityMapper.toEntity(pollDto));
+        return pqe.stream().map(questionEntityMapper::toDto).collect(Collectors.toList());
+    }
 }

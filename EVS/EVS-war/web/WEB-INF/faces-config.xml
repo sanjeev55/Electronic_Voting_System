@@ -109,6 +109,11 @@
             <redirect>true</redirect>
             <to-view-id>/pages/participant/poll_result.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>addQuestionPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/user/add_question.xhtml</to-view-id>
+        </navigation-case>
         
     </navigation-rule>
 

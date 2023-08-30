@@ -25,17 +25,12 @@ public interface QuestionLogic {
     
     public QuestionDto getQuestionForEdit(String uuid);
     
-    //public void updateQuestion(QuestionDto questionDto);
+    public Result<QuestionDto> addQuestion(QuestionDto domain);
     
-    //public void updateQuestionType(String uuid, String type);
+    public Result<QuestionDto> getQuestionByUuid (String uuid);
     
-    Result<QuestionDto> addQuestion(QuestionDto domain);
+    public int addNewQuestion(QuestionDto questionDto);
     
-    //void deleteById(int id);
-    Result<QuestionDto> getQuestionByUuid (String uuid);
+    public List<QuestionDto> getQuestionByPoll(PollDto pollDto);
     
-    // POLL SECTION
-    //PollDto getPollById(int pollId);
-    
-    //Result<?> addAssociatedPoll(Integer pollId, Integer questionId);//TODO: DOUBLE CHECK
 }
