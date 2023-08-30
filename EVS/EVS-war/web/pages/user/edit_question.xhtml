@@ -5,17 +5,17 @@
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:param name="pageHeadline" value="${msg.addQuestionHeadline}"/>
+    <ui:param name="pageHeadline" value="${msg.editQuestionHeadline}"/>
     <ui:define name="content">
-         <h:link outcome="managePollPage" value="${msg.pollEditBackToList}"/>
-         <h3>${msg.addQuestionHeadline}</h3>
+         <h:link outcome="manageQuestionPage" value="${msg.pollEditBackToList}"/>
+         <h3>${msg.editQuestionHeadline}</h3>
         <h:form class="card-body cardbody-color p-lg-5" id="addQuesion">
-             <b:alert severity="success" rendered="${questionManagerBean.success}">
-                ${msg.questionAddSuccessLabel}
+            <b:alert severity="success" rendered="${editQuestionBean.success}">
+                ${msg.questionEditSuccessMessage}
             </b:alert>
-            <b:alert severity="danger" rendered="${questionManagerBean.failure}">
-                ${msg.questionAddFailureLabel}<br/>
-                ${questionManagerBean.failureMessage}
+            <b:alert severity="danger" rendered="${editQuestionBean.failure}">
+                ${msg.questionEditFailureMessage}<br/>
+                ${editQuestionBean.failureMessage}
             </b:alert>
             <div class ="form-group mb-3 row">
                 <div class="col-11">
@@ -25,7 +25,7 @@
                                      id="title" 
                                      name ="title"
                                      label="${msg.pollTitleLabel}"
-                                     value="#{questionManagerBean.questionInfo.title}"
+                                     value="#{editQuestionBean.question.title}"
                                      required="true"
                                      />
                         <h:message for="title" class="text-danger mt-2"/>
@@ -41,7 +41,7 @@
                                      id="description" 
                                      name ="description"
                                      label="${msg.pollDescriptionLabel}"
-                                     value="#{questionManagerBean.questionInfo.description}"
+                                     value="#{editQuestionBean.question.description}"
                                      />
                     </div>
                 </div>
@@ -49,9 +49,9 @@
             <div class="form-group mb-3 row">
                 <div class ="col-11">
                     <b:row>
-                        <b:selectOneMenu span="6" label-col-md="2" id="type" label="${msg.questionTypeLabel}" value="#{questionManagerBean.questionInfo.type}" required="true">
-                            <f:selectItems value="#{questionManagerBean.questionTypes}" />
-                            <f:ajax listener="#{questionManagerBean.onQuestionTypeChanged}" render="addQuesion" />
+                        <b:selectOneMenu span="6" label-col-md="2" id="type" label="${msg.questionTypeLabel}" value="#{editQuestionBean.question.type}" required="true">
+                            <f:selectItems value="#{editQuestionBean.questionTypes}" />
+                            <f:ajax render="addQuesion" />
                         </b:selectOneMenu>
                         <h:message for="type" class="text-danger mt-2"/>
                     </b:row>
@@ -59,8 +59,8 @@
             </div>
             <div class="form-group mb-3 row">
                
-                <h:panelGroup id="asnwerSection" rendered="#{questionManagerBean.questionInfo.type eq 'MULTIPLE_CHOICE' or questionManagerBean.questionInfo.type eq 'SINGLE_CHOICE'}">
-                    <ui:repeat value="#{questionManagerBean.dynamicAnswers}" var="answer" varStatus="status">
+                <h:panelGroup id="asnwerSection" rendered="#{editQuestionBean.question.type eq 'MULTIPLE_CHOICE' or editQuestionBean.question.type eq 'SINGLE_CHOICE'}">
+                    <ui:repeat value="#{editQuestionBean.dynamicAnswers}" var="answer" varStatus="status">
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">${msg.answerLabel} #{status.index + 1}</span>
@@ -68,8 +68,8 @@
                             <b:inputText value="#{answer.shortName}" id="answer" name="answer" placeholder="${msg.enterAnswerPlaceholder}" required="true" />
                              <h:message for="answer" class="text-danger mt-2"/>
                             <div class="input-group-append">
-                                <b:commandButton look="warning" icon="minus-sign" value="${msg.removeLabel}" action="#{questionManagerBean.removeDynamicAnswer(answer)}">
-                                    <f:ajax render="addQuesion" />
+                                <b:commandButton look="warning" icon="minus-sign" value="${msg.removeLabel}" action="#{editQuestionBean.removeDynamicAnswer(answer)}">
+                                    <f:ajax execute="@this" render="addQuesion" />
                                 </b:commandButton>
                             </div>
                         </div>
@@ -83,9 +83,9 @@
                                              id="minChoice" 
                                              name ="minChoice"
                                              label="${msg.minChoiceLabel}"
-                                             value="#{questionManagerBean.questionInfo.type eq 'SINGLE_CHOICE' ? '1' : questionManagerBean.questionInfo.multipleChoiceMin}"
+                                             value="#{editQuestionBean.question.multipleChoiceMin}"
                                              required="true"
-                                             disabled="#{questionManagerBean.questionInfo.type eq 'SINGLE_CHOICE'}"
+                                             disabled="#{editQuestionBean.question.type eq 'SINGLE_CHOICE'}"
                                              />
                                 <h:message for="minChoice" class="text-danger mt-2"/>
                             </div>
@@ -99,9 +99,9 @@
                                              id="maxChoice" 
                                              name ="maxChoice"
                                              label="${msg.maxChoiceLabel}"
-                                             value="#{questionManagerBean.questionInfo.type eq 'SINGLE_CHOICE' ? '1' : questionManagerBean.questionInfo.multipleChoiceMax}"
+                                             value="#{editQuestionBean.question.multipleChoiceMax}"
                                              required="true"
-                                             disabled="#{questionManagerBean.questionInfo.type eq 'SINGLE_CHOICE'}"
+                                             disabled="#{editQuestionBean.question.type eq 'SINGLE_CHOICE'}"
                                              />
                                 <h:message for="minChoice" class="text-danger mt-2"/>
                             </div>
@@ -110,8 +110,8 @@
                     
                     <b:row>
                         <div class="col-md-4">
-                            <b:commandButton icon="plus-sign" look="primary" value="${msg.addAnswerLabel}" action="#{questionManagerBean.addDynamicAnswer()}">
-                                <f:ajax render="addQuesion" />
+                            <b:commandButton icon="plus-sign" look="primary" value="${msg.addAnswerLabel}" action="#{editQuestionBean.addDynamicAnswer()}">
+                                <f:ajax execute="@this" render="addQuesion" />
                             </b:commandButton>
                         </div>
                     </b:row>
@@ -123,7 +123,7 @@
                         <h:commandButton id="btn-submit"
                                          value="${msg.submitLabel}"
                                          class="btn btn-sm btn-dark mt-2"
-                                         action="#{questionManagerBean.addQuestionAnswer()}">
+                                         action="${editQuestionBean.updateQuestionAnswer()}">
                         </h:commandButton>
                     </div>
 

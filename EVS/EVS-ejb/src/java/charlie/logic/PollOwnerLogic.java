@@ -25,4 +25,5 @@ public interface PollOwnerLogic {
     public void deleteByPoll(PollDto pollDto);
     public List<PollOwnerDto> findAllByOrganizerAndPollState(UserDto user, PollStateEnum state);
     public PollOwnerDto getPrimaryOrganizerByPoll(PollDto pollDto, Boolean isPrimaryOrganizer);
+    public List<PollOwnerDto> getAllByOrganizer(UserDto user);
 }

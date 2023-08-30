@@ -8,6 +8,7 @@ import java.util.Set;
 @Table(name = "question")
 @NamedQueries({
     @NamedQuery(name = "getPollQuestionByPoll", query = "select q from PollQuestionEntity q where q.poll = :poll"),
+    @NamedQuery(name= "findAllQuestionsByOrganizer", query="SELECT q FROM PollQuestionEntity q JOIN q.poll p JOIN p.pollOwners po WHERE po.organizer = :organizer ")
 })
 public class PollQuestionEntity extends AbstractEntity implements Serializable {
 

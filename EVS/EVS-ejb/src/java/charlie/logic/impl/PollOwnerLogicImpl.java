@@ -80,4 +80,10 @@ public class PollOwnerLogicImpl implements PollOwnerLogic {
         return pom.toDto(pod);
     }
     
+    @Override
+    public List<PollOwnerDto> getAllByOrganizer(UserDto user){
+        List<PollOwnerEntity> poe = poa.getAllByOrganizer(um.toEntity(user));
+        return poe.stream().map(pom::toDto).collect(Collectors.toList());
+    }
+    
 }

@@ -90,7 +90,7 @@ public class QuestionManagerBean implements Serializable {
         return Arrays.asList(QuestionTypeEnum.values());
     }
 
-    public void addQuestion() {
+    public String addQuestion() {
         try {
             if (isTitleUnique(questionInfo.getTitle())) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Question title already in use: " + questionInfo.getTitle(), null));
@@ -102,6 +102,8 @@ public class QuestionManagerBean implements Serializable {
                 questionId = questionService.addNewQuestion(questionInfo);
                 success = true;
                 failure = false;
+                
+                return "addQuestionPage?faces-redirect=true";
             
         } catch (ValidatorException e) {
             success = false;
@@ -111,6 +113,7 @@ public class QuestionManagerBean implements Serializable {
                 t = t.getCause();
             }
             failureMessage = t.getMessage();
+            return null;
         }
     }
 

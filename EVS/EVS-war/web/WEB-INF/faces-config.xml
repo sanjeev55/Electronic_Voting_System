@@ -114,6 +114,16 @@
             <redirect>true</redirect>
             <to-view-id>/pages/user/add_question.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>manageQuestionPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/user/manage_question.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>editQuestionPage</from-outcome>
+            <redirect>true</redirect>
+            <to-view-id>/pages/user/edit_question.xhtml</to-view-id>
+        </navigation-case>
         
     </navigation-rule>
 

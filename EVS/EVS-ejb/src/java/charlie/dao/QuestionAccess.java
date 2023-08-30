@@ -8,6 +8,7 @@ package charlie.dao;
 import charlie.entity.PollEntity;
 import charlie.entity.PollQuestionEntity;
 import charlie.entity.QuestionTypeEnum;
+import charlie.entity.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,17 +48,6 @@ public class QuestionAccess extends AbstractAccess<PollQuestionEntity> {
                 .executeUpdate();
     }*/
     
-    public PollQuestionEntity getQuestionById(int id) {
-        try {
-            return em.createNamedQuery("getQuestionById", PollQuestionEntity.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-            
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-    
     public PollQuestionEntity getQuestionForEdit (String uuid) { 
         try{
             return em.createNamedQuery("getPollByUuid", PollQuestionEntity.class)
@@ -68,13 +58,15 @@ public class QuestionAccess extends AbstractAccess<PollQuestionEntity> {
         }
     }
     
-    public void updateQuestion (PollQuestionEntity qe) {
-        edit(qe);
-    }
-    
     public List<PollQuestionEntity> findAllByPoll(PollEntity poll){
         return em.createNamedQuery("getPollQuestionByPoll", PollQuestionEntity.class)
                 .setParameter("poll", poll)
+                .getResultList();
+    }
+    
+    public List<PollQuestionEntity> findAllQuestionsByOrganizer(UserEntity organizer){
+        return em.createNamedQuery("findAllQuestionsByOrganizer", PollQuestionEntity.class)
+                .setParameter("organizer", organizer)
                 .getResultList();
     }
 }
