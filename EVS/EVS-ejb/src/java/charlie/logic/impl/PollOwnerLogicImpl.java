@@ -74,4 +74,10 @@ public class PollOwnerLogicImpl implements PollOwnerLogic {
         return poe.stream().map(pom::toDto).collect(Collectors.toList());
     }
     
+    @Override
+    public PollOwnerDto getPrimaryOrganizerByPoll(PollDto pollDto, Boolean isPrimaryOrganizer){
+        PollOwnerEntity pod = poa.getByPollAndIsPrimaryOraginzer(pm.toEntity(pollDto), isPrimaryOrganizer);
+        return pom.toDto(pod);
+    }
+    
 }

@@ -78,5 +78,11 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
                 .getResultList();
     }
     
-    
+    public PollOwnerEntity getByPollAndIsPrimaryOraginzer(PollEntity poll, Boolean isPrimaryOrganizer){
+        return em.createNamedQuery("findByPollAndIsPrimaryOrganizer", PollOwnerEntity.class)
+                .setParameter("poll", poll)
+                .setParameter("isPrimaryOrganizer", isPrimaryOrganizer)
+                .getSingleResult();
+                
+    } 
 }
