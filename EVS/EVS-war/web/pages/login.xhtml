@@ -12,28 +12,55 @@
         <b:alert severity="info">
             ${msg.loginInfoMessage}
         </b:alert>
-        <form class="form form-horizontal" role="form" method="post" action="j_security_check" name="loginForm">
-            <legend>${msg.loginPleaseLogin}</legend>
-            <div class="form-group">
-                <label class="control-label col-md-2" for="username">${msg.loginUsernameLabel}</label>
-                <div class="col-md-4">
-                    <input class="form-control" placeholder="${msg.loginUsernamePlaceholder}" autofocus="true" type="text" id="username" name="j_username" autocomplete="off"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2" for="password">${msg.loginPasswordLabel}</label>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input class="form-control" type="password" placeholder="${msg.loginPasswordPlaceholder}" id="password" name="j_password" autocomplete="off"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-success" type="submit" action="#{loginBean.redirectBasedOnRole()}">
-                                ${msg.loginButtonLabel} <span class="glyphicon glyphicon-log-in"></span>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
+        <legend>${msg.loginPleaseLogin}</legend>
+        <b:form horizontal="true" 
+                id="loginForm"
+                onsubmit ="document.getElementById('loginForm').action='j_security_check';"
+                >
+            <b:inputText 
+                placeholder ="${msg.loginUsernamePlaceholder}"
+                
+                fieldId ="username"
+                name="j_username"
+                label="${msg.loginUsernameLabel}"
+                required = "true"
+                colMd="10"
+                labelColMd="2"
+                >
+                <f:facet name ="prepend">
+                    <b:icon name="user"/>
+                </f:facet>
+            </b:inputText>
+            <b:message for="@previous"/>
+            <b:inputSecret
+                id ="passwordDiv"
+                type="password"
+                fieldId="password"
+                name="j_password"
+                placeholder ="${msg.loginPasswordPlaceholder}"
+                label="${msg.loginPasswordLabel}"
+                required = "true"
+                colMd="10"
+                labelColMd="2"
+                >
+                
+                <f:facet name="prepend">
+                    <b:iconAwesome name="key" />
+                </f:facet>
+                <f:facet name="append">
+                    <b:commandButton 
+                        look ="success"
+                        ajax ="false"
+                        type="submit"
+                        value = "${msg.loginButtonLabel}"
+                        action="#{loginBean.redirectBasedOnRole()}"
+                        onclick="#{loginBean.redirectBasedOnRole()}"/>
+                </f:facet>
+            </b:inputSecret>
+            <b:message for="passwordDiv"/>
+        </b:form>
+        
+        
 
         <!--
         this page is also registered as login error page in web.xml
