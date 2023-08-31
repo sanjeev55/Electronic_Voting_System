@@ -130,6 +130,7 @@ public class QuestionManagerBean implements Serializable {
             }
             resetFields();
         } catch(EJBException e){
+            resetFields();
             System.out.println("Error:" + e);
             
         }
