@@ -39,7 +39,7 @@ public class PollQuestionEntity extends AbstractEntity implements Serializable {
     @JoinColumn(name = "fk_poll_id")
     private PollEntity poll;
 
-    @OneToMany(mappedBy = "pollQuestion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pollQuestion", fetch = FetchType.EAGER)
     private Set<QuestionAnswerChoiceEntity> answerChoices;
 
     public QuestionTypeEnum getType() {

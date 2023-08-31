@@ -3,9 +3,7 @@ package charlie.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user", indexes = {
-    @Index(name = "email_idx", columnList = "email")
-})
+@Table(name = "user")
 @NamedQueries({
     @NamedQuery(name = "deleteUserById", query = "DELETE FROM UserEntity u WHERE u.id= :id"),
     @NamedQuery(name = "getUserCount", query = "SELECT COUNT(u) FROM UserEntity u"),
