@@ -95,6 +95,31 @@ public class PollManagerBean implements Serializable {
             this.errorMessage = t.getMessage();
         }
     }
+    
+    public void deletePoll() {
+        try {
+            System.out.println("inside delete poll");
+            Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            pollId = params.get("id");
+            System.out.println("pollId: " + pollId);
+
+            pollService.deletePollInfo(Integer.parseInt(pollId));         
+            
+            System.out.println("poll info deleted successfully");
+            
+            pollId = null;
+            renderErrorMessage = false;
+            errorMessage = null;
+        } catch (Exception e) {
+            this.renderErrorMessage = true;
+
+            Throwable t = e;
+            while (t.getCause() != null) {
+                t = t.getCause();
+            }
+            this.errorMessage = t.getMessage();
+        }
+    }
 
     public String addPoll() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();

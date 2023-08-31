@@ -78,13 +78,13 @@
                                                 </h:link>
                                             </div>
                                         </div>
-                                        <div id="btn-delete-#{poll.id}">
-                                            <a onclick="return confirm('Are you sure you want to delete the poll?');"
-                                               href="#{request.contextPath}/pages/user/manage_poll.xhtml?pageNumber=1&amp;pageSize=#{pollManager.requestedPageSize}&amp;sortOrder=#{pollManager.requestedSortOrder}&amp;sortBy=#{pollManager.requestedSortBy}&amp;action=delete&amp;poll_id=#{poll.id}">
-
-                                                <image width="20px" src="#{request.contextPath}/resources/images/delete-icon.png"/>
-                                            </a>
-                                        </div>
+                                        <b:commandButton id="startPollBtn-#{poll.id}"
+                                                         size="lg"
+                                                         icon-awesome="fa-trash-o"                                     
+                                                         action="#{pollManager.deletePoll()}"
+                                                         update="participantListForm">
+                                            <f:param name="id" value="#{poll.id}"/>
+                                        </b:commandButton>
                                     </div>
                                 </td>
                             </tr>

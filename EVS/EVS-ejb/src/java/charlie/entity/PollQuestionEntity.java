@@ -10,6 +10,9 @@ import java.util.Set;
     @NamedQuery(name = "getPollQuestionByPoll", query = "select q from PollQuestionEntity q where q.poll = :poll"),
     @NamedQuery(name= "findAllQuestionsByOrganizer", query="SELECT q FROM PollQuestionEntity q JOIN q.poll p JOIN p.pollOwners po WHERE po.organizer = :organizer ")
 })
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "deletePollQuestionById", query = "delete from question where id = ?")
+})
 public class PollQuestionEntity extends AbstractEntity implements Serializable {
 
     @Column(name = "type", nullable = false)
@@ -36,7 +39,7 @@ public class PollQuestionEntity extends AbstractEntity implements Serializable {
     @JoinColumn(name = "fk_poll_id")
     private PollEntity poll;
 
-    @OneToMany(mappedBy = "pollQuestion", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pollQuestion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<QuestionAnswerChoiceEntity> answerChoices;
 
     public QuestionTypeEnum getType() {

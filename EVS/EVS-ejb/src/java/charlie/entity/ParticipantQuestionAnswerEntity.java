@@ -13,7 +13,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "participant_question_answer")
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "saveParticipantResponse", query = "insert into participant_question_answer(fk_question_id, fk_answer_id, fk_poll_id, uuid, jpa_version) values (?, ?, ?, ?, ?)")
+    @NamedNativeQuery(name = "saveParticipantResponse", query = "insert into participant_question_answer(fk_question_id, fk_answer_id, fk_poll_id, uuid, jpa_version) values (?, ?, ?, ?, ?)"),
+    @NamedNativeQuery(name = "getParticipantQuestionAnswerIdsByPollId", query = "select id from participant_question_answer where fk_poll_id = ?"),
+    @NamedNativeQuery(name = "deleteByParticipantQuestionAnswerById", query = "delete from participant_question_answer where id = ?")
 })
 @NamedQueries({
     @NamedQuery(name="getAllByPoll", query="SELECT pqa FROM ParticipantQuestionAnswerEntity pqa WHERE pqa.poll = :poll"),
