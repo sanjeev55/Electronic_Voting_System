@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
 
 #sidebar {
-       
-    width: 0;
     z-index: 1000;
     position: fixed;
     top: 0;
@@ -15,12 +13,6 @@
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-
-.active {
-    visibility: visible;
-    width: 250px;
-}
-
 
 #sidebar header {
     background-color: #263238;
