@@ -21,9 +21,13 @@
     <ui:define name="content">
         <h:link outcome="managePollPage" value="${msg.pollEditBackToList}"/>
         <b:messages/>
-        
+         <b:alert severity="info" rendered="${not pollEditBean.valid}">
+             <h:outputFormat value="${msg.pollEditPollNotFound}">
+                 <f:param value="${pollEditBean.pollUuid}"/>
+            </h:outputFormat>
+        </b:alert>
 
-        <b:form id="pollEditForm" class="card-body cardbody-color p-lg-5" horizontal="true">
+        <b:form id="pollEditForm" class="card-body cardbody-color p-lg-5" rendered="${pollEditBean.valid}" horizontal="true">
 
             <b:alert severity="success" rendered="${pollEditBean.success}">
                 ${msg.pollEditSuccessMessage}
@@ -58,13 +62,13 @@
             
             <b:row>
                 <b:inputText span="6" label-col-md="2"  type="datetime-local" id="startsAt" disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}"
-                             label="${msg.pollStartDateLabel}" value="#{pollEditBean.pollDto.startsAt}"/>
+                             label="${msg.pollStartDateLabel}" value="#{pollEditBean.pollDto.startsAt}" required="true"/>
                      <f:convertDateTime pattern="yyyy-MM-dd'T'HH:mm:ss" timeZone="UTC" />
                 <b:message offset="2" span="6"/>
             </b:row>
 
             <b:row>
-                <b:inputText span="6" label-col-md="2"  type="datetime-local" id="endsAt" label="${msg.pollEndDateLabel}" value="#{pollEditBean.pollDto.endsAt}"/>
+                <b:inputText span="6" label-col-md="2"  type="datetime-local" id="endsAt" label="${msg.pollEndDateLabel}" value="#{pollEditBean.pollDto.endsAt}" required="true"/>
                      <f:convertDateTime pattern="yyyy-MM-dd'T'HH:mm:ss" timeZone="UTC" />
                 <b:message offset="2" span="6"/>
             </b:row>

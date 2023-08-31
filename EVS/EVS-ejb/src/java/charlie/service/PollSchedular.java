@@ -37,7 +37,7 @@ public class PollSchedular {
         }
     }
     
-    @Schedule(hour = "*", minute = "*/5", second = "0", persistent = false)
+    @Schedule(hour = "*", minute = "*/2", second = "0", persistent = false)
     public void findAndChangePollStatusToFinishedAfterVotingPeriodEnds() {
         Date toDate = new Date();
         Date fiveMinutesBack = DateUtils.getDateMinusFiveMinutes();

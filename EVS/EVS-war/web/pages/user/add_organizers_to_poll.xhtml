@@ -22,10 +22,10 @@
             <b:form id="participantListForm">
 
                 <b:alert severity="success" rendered="${managePollOrganizers.deleteSuccess}">
-                    ${msg.participantListDeleteSuccessMessage}
+                    ${msg.organizerAddedLabel}
                 </b:alert>
                 <b:alert severity="danger" rendered="${managePollOrganizers.deleteFailure}">
-                    ${msg.participantListDeleteFailureMessage}<br/>
+                    ${msg.organizerAddedFailedLabel}<br/>
                     ${managePollOrganizers.deleteFailureMessage}
                 </b:alert>
 

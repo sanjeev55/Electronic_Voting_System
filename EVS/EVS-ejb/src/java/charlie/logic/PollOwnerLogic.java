@@ -26,4 +26,5 @@ public interface PollOwnerLogic {
     public List<PollOwnerDto> findAllByOrganizerAndPollState(UserDto user, PollStateEnum state);
     public PollOwnerDto getPrimaryOrganizerByPoll(PollDto pollDto, Boolean isPrimaryOrganizer);
     public List<PollOwnerDto> getAllByOrganizer(UserDto user);
+    public PollOwnerDto getPollByOrganizer(UserDto user, PollDto poll);
 }

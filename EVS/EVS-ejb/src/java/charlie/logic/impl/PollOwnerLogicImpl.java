@@ -19,6 +19,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -76,14 +77,24 @@ public class PollOwnerLogicImpl implements PollOwnerLogic {
     
     @Override
     public PollOwnerDto getPrimaryOrganizerByPoll(PollDto pollDto, Boolean isPrimaryOrganizer){
-        PollOwnerEntity pod = poa.getByPollAndIsPrimaryOraginzer(pm.toEntity(pollDto), isPrimaryOrganizer);
-        return pom.toDto(pod);
+        try{
+            PollOwnerEntity pod = poa.getByPollAndIsPrimaryOraginzer(pm.toEntity(pollDto), isPrimaryOrganizer);
+            return pom.toDto(pod);
+        }catch(NoResultException e){
+            return null;
+        }
     }
     
     @Override
     public List<PollOwnerDto> getAllByOrganizer(UserDto user){
         List<PollOwnerEntity> poe = poa.getAllByOrganizer(um.toEntity(user));
         return poe.stream().map(pom::toDto).collect(Collectors.toList());
+    }
+    
+    @Override
+    public PollOwnerDto getPollByOrganizer(UserDto user, PollDto poll){
+        PollOwnerEntity pod = poa.getPollByOrganizer(um.toEntity(user),pm.toEntity(poll));
+        return pom.toDto(pod);
     }
     
 }

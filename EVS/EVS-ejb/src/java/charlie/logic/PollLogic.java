@@ -12,6 +12,10 @@ import javax.ejb.Remote;
 
 @Remote
 public interface PollLogic {
+    
+    public static final String USER_ROLE = "USER";
+    public static final String STAFF_ROLE = "STAFF";
+    
     PollDto getPollById(int id);
     
     PollDto getPollForEdit(String uuid);

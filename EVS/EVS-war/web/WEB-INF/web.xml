@@ -75,7 +75,12 @@
         <web-resource-collection>
             <web-resource-name>User pages</web-resource-name>
             <description/>
-            <url-pattern>/pages/guest/*</url-pattern>
+            <url-pattern>/pages/user/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Admin Pages</web-resource-name>
+            <description/>
+            <url-pattern>/pages/admin/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>

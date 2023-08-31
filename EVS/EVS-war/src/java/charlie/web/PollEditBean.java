@@ -111,7 +111,7 @@ public class PollEditBean implements Serializable {
     }
 
     public boolean isValid() {
-        return pollDto != null;
+        return pollUuid != null && getPollDto() != null;
     }
 
     public boolean isSuccess() {
@@ -129,8 +129,10 @@ public class PollEditBean implements Serializable {
     public PollDto getPollDto() {
         if (pollDto == null) {
             pollDto = pl.getPollForEdit(pollUuid);
-            pollDto.setStartsAt(DateUtils.convertDateToCustomFormat(pollDto.getStartsAt()));
-            pollDto.setEndsAt(DateUtils.convertDateToCustomFormat(pollDto.getEndsAt()));
+            if(pollDto!=null){
+                pollDto.setStartsAt(DateUtils.convertDateToCustomFormat(pollDto.getStartsAt()));
+                pollDto.setEndsAt(DateUtils.convertDateToCustomFormat(pollDto.getEndsAt()));
+            }         
         }
         return pollDto;
     }
@@ -312,6 +314,9 @@ public class PollEditBean implements Serializable {
     public String getPrimaryOwner(){
         System.out.println("pollDto:" + pollDto);
         PollOwnerDto pollOwnerDto = pol.getPrimaryOrganizerByPoll(pollDto, true);
+        if(pollOwnerDto == null){
+            return null;
+        }
         return pollOwnerDto.getUsername();
     }
     
