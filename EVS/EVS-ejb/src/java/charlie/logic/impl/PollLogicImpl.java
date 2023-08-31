@@ -98,18 +98,11 @@ public class PollLogicImpl implements PollLogic {
     private PollParticipantLogic ppl;
     
     @EJB
-<<<<<<< HEAD
     private ParticipantQuestionAnswerAccess pqaa;
     
     @EJB
     private QuestionAnswerChoiceAccess qaca;
-=======
-    private QuestionLogic ql;
-    
-    @EJB
-    private QuestionAnswerChoiceLogic qacl;
-    
->>>>>>> b9683dd (bug fixes)
+
 
     @Override
     public PollDto getPollById(int id) {
