@@ -19,7 +19,8 @@ import javax.persistence.*;
     @NamedQuery(name="deleteAllByPoll", query="DELETE FROM PollOwnerEntity po WHERE po.poll = :poll"),
     @NamedQuery(name="findAllByOrganizerAndPollState", query ="SELECT po FROM PollOwnerEntity po WHERE po.organizer = :organizer AND po.poll.state = :state"),
     @NamedQuery(name="findByPollAndIsPrimaryOrganizer", query="SELECT po FROM PollOwnerEntity po WHERE po.poll = :poll AND po.isPrimaryOrganizer = :isPrimaryOrganizer"),
-    @NamedQuery(name="findAllByOrganizer", query="SELECT po FROM PollOwnerEntity po WHERE po.organizer=:organizer")
+    @NamedQuery(name="findAllByOrganizer", query="SELECT po FROM PollOwnerEntity po WHERE po.organizer=:organizer"),
+    @NamedQuery(name="findPollByOrganizer", query="SELECT po FROM PollOwnerEntity po WHERE po.organizer=:organizer AND po.poll = :poll"),
 })
 public class PollOwnerEntity extends AbstractEntity implements Serializable {
 

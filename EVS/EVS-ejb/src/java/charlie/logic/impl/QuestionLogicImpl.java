@@ -13,6 +13,7 @@ import charlie.entity.PollEntity;
 import charlie.entity.PollQuestionEntity;
 import charlie.entity.QuestionTypeEnum;
 import charlie.entity.UserEntity;
+import static charlie.logic.PollLogic.STAFF_ROLE;
 import charlie.logic.QuestionAnswerChoiceLogic;
 import charlie.logic.QuestionLogic;
 import charlie.mapper.PollEntityMapper;
@@ -25,6 +26,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

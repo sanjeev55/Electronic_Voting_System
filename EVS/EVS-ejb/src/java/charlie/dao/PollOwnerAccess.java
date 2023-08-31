@@ -8,7 +8,9 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.NotAuthorizedException;
 
 @Stateless
 @LocalBean
@@ -79,10 +81,14 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
     }
     
     public PollOwnerEntity getByPollAndIsPrimaryOraginzer(PollEntity poll, Boolean isPrimaryOrganizer){
-        return em.createNamedQuery("findByPollAndIsPrimaryOrganizer", PollOwnerEntity.class)
-                .setParameter("poll", poll)
-                .setParameter("isPrimaryOrganizer", isPrimaryOrganizer)
-                .getSingleResult();
+        try{
+            return em.createNamedQuery("findByPollAndIsPrimaryOrganizer", PollOwnerEntity.class)
+                    .setParameter("poll", poll)
+                    .setParameter("isPrimaryOrganizer", isPrimaryOrganizer)
+                    .getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }
                 
     } 
     
@@ -90,5 +96,16 @@ public class PollOwnerAccess extends AbstractAccess<PollOwnerEntity> {
         return em.createNamedQuery("findAllByOrganizer", PollOwnerEntity.class)
                 .setParameter("organizer", organizer)
                 .getResultList();
+    }
+    
+    public PollOwnerEntity getPollByOrganizer(UserEntity organizer, PollEntity poll){
+        try{
+        return em.createNamedQuery("findPollByOrganizer", PollOwnerEntity.class)
+                .setParameter("organizer", organizer)
+                .setParameter("poll", poll)
+                .getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }
     }
 }

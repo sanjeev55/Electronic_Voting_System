@@ -18,6 +18,7 @@ import charlie.dto.PollOwnerDto;
 import charlie.dto.PollParticipantDto;
 import charlie.dto.PollQuestionAnswerDto;
 import charlie.dto.QuestionDto;
+import charlie.dto.UserDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.entity.PollParticipantEntity;
@@ -28,6 +29,7 @@ import charlie.logic.PollOwnerLogic;
 import charlie.logic.PollParticipantLogic;
 import charlie.logic.QuestionAnswerChoiceLogic;
 import charlie.logic.QuestionLogic;
+import charlie.logic.UserLogic;
 import charlie.mapper.PollEntityMapper;
 import charlie.mapper.PollOwnerEntityMapper;
 import charlie.mapper.PollQuestionAnswerEntityMapper;
@@ -44,8 +46,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
@@ -102,6 +106,9 @@ public class PollLogicImpl implements PollLogic {
     
     @EJB
     private QuestionAnswerChoiceAccess qaca;
+    
+    @EJB
+    private UserLogic ul;
 
 
     @Override
@@ -112,19 +119,24 @@ public class PollLogicImpl implements PollLogic {
     }
 
     @Override
+    @RolesAllowed(STAFF_ROLE)
     public PollDto getPollForEdit(String uuid) {
-
+        UserDto caller = ul.getCurrentUser();
         PollEntity pe = pollDao.getPollForEdit(uuid);
-        System.out.println("POll Entity" + pe);
+        if (pe == null) {
+           
+            return null;
+        }
+        PollOwnerDto pod = pol.getPollByOrganizer(caller, pollEntityMapper.toDto(pe));
+        if (pod == null || !caller.getId().equals(pod.getOrganizerId())) {
+            return null;
+        }
         return pollEntityMapper.toDto(pe);
     }
 
     @Override
+    @RolesAllowed(STAFF_ROLE)
     public void updatePoll(PollDto pollDto) {
-        String startDate = pollDto.getStartsAt();
-        System.out.println("startDate====" + startDate);
-        String endDate = pollDto.getEndsAt();
-        System.out.print("End date=====" + endDate);
         System.out.println("PollDTO:" + pollDto);
         PollEntity pe = pollEntityMapper.toEntity(pollDto);
         pollDao.updatePoll(pe);
@@ -245,7 +257,7 @@ public class PollLogicImpl implements PollLogic {
 
         return Page.build(pollPageEntities.getTotalCount(), pollPageEntities.getPageSize(), pollPageEntities.getPageNumber(), pollDtos);
     }
-
+    
     public void deleteById(int id) {
         pollDao.deleteById(id);
     }
@@ -272,6 +284,7 @@ public class PollLogicImpl implements PollLogic {
     }
 
     @Override
+    @RolesAllowed(STAFF_ROLE)
     public Result<PollDto> getPollByUUID(String uuid) {
         PollEntity pe = pollDao.getPollForEdit(uuid);
         if (pe == null) {
@@ -297,6 +310,7 @@ public class PollLogicImpl implements PollLogic {
     }
 
     @Override
+    @RolesAllowed(STAFF_ROLE)
     public Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId) {
         var poll = pollDao.find(pollId);
         if(poll == null)
@@ -340,8 +354,7 @@ public class PollLogicImpl implements PollLogic {
         List<PollEntity> listOfPolls = pollDao.findAll();
         return listOfPolls.stream().map(entityMapper::toDto).collect(Collectors.toList());
     }
-    
-    @Override
+
     public void deletePollAdmin(int pollId, String pollState) {
 
         this.deletePollInfo(pollId);
