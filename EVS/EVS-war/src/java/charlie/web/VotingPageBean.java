@@ -152,6 +152,12 @@ public class VotingPageBean implements Serializable {
         renderInvalidTokenMessage = false;
         FacesContext.getCurrentInstance().getExternalContext().redirect("thankyou-page.xhtml");
     }
+    
+    public void cancelVote() throws IOException {
+        System.out.println("cancelling vote: " + token);
+        participantLogic.cancelVoting(token);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("thankyou-page.xhtml");
+    }
 
     public String getToken() {
         return token;

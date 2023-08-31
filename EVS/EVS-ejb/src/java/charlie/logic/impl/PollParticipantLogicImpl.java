@@ -84,4 +84,11 @@ public class PollParticipantLogicImpl implements PollParticipantLogic {
     public Long getCountOfPollPaticipantByPollIdAndStatus(PollDto pollDto, Boolean hasParticipated){
         return ppa.countPollPaticipantByPollIdAndStatus(pm.toEntity(pollDto), hasParticipated);
     }
+
+    @Override
+    public void cancelVoting(String token) {
+        PollParticipantEntity entity = ppa.findByToken(token);
+        entity.setHasParticipated(Boolean.TRUE);
+        ppa.edit(entity);
+    }
 }
