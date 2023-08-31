@@ -8,6 +8,9 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name="getAllByQuestionId", query="SELECT qac FROM QuestionAnswerChoiceEntity qac WHERE qac.pollQuestion.id = :questionId"),
 })
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "deleteByQuestionId", query = "delete from answer_choice where fk_question_id = ?")
+})
 public class QuestionAnswerChoiceEntity extends AbstractEntity implements Serializable {
 
     @Column(name = "short_name", nullable = false)

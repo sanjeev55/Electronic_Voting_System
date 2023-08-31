@@ -1,9 +1,11 @@
 package charlie.logic.impl;
 
+import charlie.dao.ParticipantQuestionAnswerAccess;
 import charlie.dao.PollAccess;
 import charlie.dao.PollOwnerAccess;
 import charlie.dao.PollParticipantAccess;
 import charlie.dao.PollQuestionAnswerAccess;
+import charlie.dao.QuestionAnswerChoiceAccess;
 import charlie.dao.UserAccess;
 import charlie.dao.filter.PollSearchFilter;
 import charlie.dao.filter.SearchOrderEnum;
@@ -43,6 +45,7 @@ import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 
 @Stateless
 public class PollLogicImpl implements PollLogic {
@@ -91,6 +94,11 @@ public class PollLogicImpl implements PollLogic {
     @EJB
     private PollParticipantLogic ppl;
     
+    @EJB
+    private ParticipantQuestionAnswerAccess pqaa;
+    
+    @EJB
+    private QuestionAnswerChoiceAccess qaca;
 
     @Override
     public PollDto getPollById(int id) {
@@ -331,25 +339,7 @@ public class PollLogicImpl implements PollLogic {
     
     @Override
     public void deletePollAdmin(int pollId, String pollState) {
-        PollDto pollDto = getPollById(pollId);
-
-        if(pollDto == null) {
-            LOG.log(Level.WARNING, "No poll found with the provided pollId.");
-            return;
-        }
-
-        List<String> allRecipients = getAllRecipientsForPoll(pollId, pollDto);
-        System.out.println("All Recipients" + allRecipients);
-        
-        ppl.deleteByPoll(pollDto);
-        
-        deleteById(pollId);
-        
-        //TODO: Add delete operation for PollQuestionEntity and QuestionAnswerChoiceEntity
-
-        if(!"PREPARED".equals(pollState) && !"FINISHED".equals(pollState)) {
-            sendPollDeletionNotification(allRecipients, pollDto.getTitle());
-        }
+        this.deletePollInfo(pollId);
     }
 
     private List<String> getAllRecipientsForPoll(int pollId, PollDto pollDto) {
@@ -417,6 +407,43 @@ public class PollLogicImpl implements PollLogic {
         
         sendPollResultNotification(allRecipients, pollDto.getTitle(), pollDto.getUuid());
         
+    }
+
+    @Transactional
+    @Override
+    public void deletePollInfo(int pollId) {
+       var pollDto = this.getPollById(pollId);       
+       
+       if(pollDto == null)
+           return;
+       
+       List<String> allRecipients = getAllRecipientsForPoll(pollId, pollDto);
+       System.out.println("All Recipients" + allRecipients);
+       
+       pol.deleteByPoll(pollDto);
+       ppl.deleteByPoll(pollDto); 
+       
+       var participantResponses = pqaa.getParticipantQuestionAnswerIdsByPollId(pollId);
+       LOG.log(Level.INFO, "deleting participant responses with ids: " + participantResponses);
+       if(participantResponses != null) {
+           participantResponses.stream().forEach(resp -> pqaa.deleteById(resp));
+       }
+        
+       var questions = pollQuestionAnswerDao.getPollQuestionsByPollId(pollId);
+       if(questions != null && !questions.isEmpty()) {           
+           questions.stream().forEach(question -> {
+               LOG.log(Level.INFO, "deleting question with id: " + question.getId());
+               qaca.deleteByQuestionId(question.getId());
+               pollQuestionAnswerDao.deleteById(question.getId());
+           });
+       }
+       
+       this.deleteById(pollId);
+
+        if(pollDto.getState().equals(PollStateEnum.VOTING) || pollDto.getState().equals(PollStateEnum.STARTED)) {
+            sendPollDeletionNotification(allRecipients, pollDto.getTitle());
+        }
+       
     }
 
 }

@@ -47,9 +47,6 @@ public interface PollLogic {
     public List<PollDto> getPollsByIdAndState(int id, PollStateEnum state);
     
     public void publishPollResult(int pollId);
-
-    //TODO: List<PollQuestionDto> getPollQuestions (int pollId);
-    //TODO: deletQuestionById
-    //TODO: addQuestionToPoll
-
+    
+    void deletePollInfo(int pollId);
 }

@@ -18,11 +18,10 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class QuestionAnswerChoiceAccess extends AbstractAccess<QuestionAnswerChoiceEntity> {
-    
+
     @PersistenceContext(unitName = "EVS-ejbPU")
     private EntityManager em;
-    
-    
+
     public QuestionAnswerChoiceAccess() {
         super(QuestionAnswerChoiceEntity.class);
     }
@@ -31,14 +30,18 @@ public class QuestionAnswerChoiceAccess extends AbstractAccess<QuestionAnswerCho
     protected EntityManager getEntityManager() {
         return em;
     }
-    
-    public List<QuestionAnswerChoiceEntity> findAllByQuestionId(int questionId){
+
+    public List<QuestionAnswerChoiceEntity> findAllByQuestionId(int questionId) {
         List<QuestionAnswerChoiceEntity> qace = em.createNamedQuery("getAllByQuestionId", QuestionAnswerChoiceEntity.class)
                 .setParameter("questionId", questionId)
                 .getResultList();
-        
+
         return qace;
     }
-    
-    
+
+    public void deleteByQuestionId(Integer questionId) {
+        em.createNamedQuery("deleteByQuestionId")
+                .setParameter(1, questionId)
+                .executeUpdate();
+    }
 }

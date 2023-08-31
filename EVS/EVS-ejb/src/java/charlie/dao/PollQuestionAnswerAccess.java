@@ -38,4 +38,9 @@ public class PollQuestionAnswerAccess extends AbstractAccess<PollQuestionEntity>
                 .getResultList();
     }
     
+    public void deleteById(Integer id) {
+        em.createNamedQuery("deletePollQuestionById")
+                .setParameter(1, id)
+                .executeUpdate();
+    }
 }
