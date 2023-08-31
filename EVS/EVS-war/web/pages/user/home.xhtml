@@ -7,6 +7,46 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
     <ui:define name="content">
-        
+                <b:form class="card-body cardbody-color p-lg-5">
+            <b:row>
+                <div class ="d-flex justify-content-between">
+                    <b:column span ="4">
+                        <b:row><center><h4>Polls</h4></center></b:row>
+                        <b:form>
+                            <table class="table" id="tbl-organizers">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">
+                                <h:outputText value = "${msg.pollTitleLabel}" />
+                            </th>
+                            <th scope="col">
+                                <h:outputText value="${msg.pollStateLabel}"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{pollManager.pollsWithPagination.data}" var="poll" varStatus="loop">
+                        <tr>
+                        <th scope="row">#{loop.index + 1}</th>
+                        <td>#{poll.title}</td>
+                        <td>#{poll.state}</td>
+                        </tr>
+                        </ui:repeat>
+                    </tbody>        
+                    </table>
+                        </b:form>
+                </b:column>
+                    <b:column span = "8">
+                        <b:row><center><h4>Results Ready to View</h4></center></b:row>
+                        <b:dataTable striped="true" var="polls" value="#{viewResultBean.polls}">
+                            <b:dataTableColumn label="${msg.pollTitleLabel}" value="#{polls.title}"/>
+                        </b:dataTable>
+                    </b:column>
+
+                </div>
+            </b:row>
+            
+        </b:form>
     </ui:define>
 </ui:composition>
