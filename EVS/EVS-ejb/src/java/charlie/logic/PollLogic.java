@@ -20,6 +20,8 @@ public interface PollLogic {
     
     PollDto getPollForEdit(String uuid);
     
+    PollDto getPollByUuid(String uuid);
+    
     void updatePoll(PollDto pollDto);
     
     Result<PollDto> save(PollDto domain);

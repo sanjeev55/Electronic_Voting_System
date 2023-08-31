@@ -6,7 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui">
 
-    <ui:param name="pageHeadline" value="${msg.viewResultLabel}"/>
+    <ui:param name="pageHeadline" value="${msg.viewResultNavLabel}"/>
 
     <ui:define name="content">
         <f:verbatim>
@@ -25,6 +25,9 @@
                 ${msg.resultPublishFailureLabel}<br/>
                 ${viewResultBean.failureMessage}
             </b:alert>
+            <b:row>
+                <center><h4>${msg.viewResultNavLabel}</h4></center>
+            </b:row>
             <b:row>
                 <b:column span="12" class="text-center mb-3">
                     <h:link outcome="staffPage" value="${msg.goToHomepage}" styleClass="btn btn-primary"/>
