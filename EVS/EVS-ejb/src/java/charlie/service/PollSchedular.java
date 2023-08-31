@@ -19,7 +19,7 @@ public class PollSchedular {
     @EJB
     private PollAccess pollDao;
 
-    @Schedule(hour = "*", minute = "*/5", second = "0", persistent = false)
+    @Schedule(hour = "*", minute = "*/2", second = "0", persistent = false)
     public void findAndChangePollStatusToVotingAfterVotingPeriodStarts() {
         Date toDate = new Date();
         Date fiveMinutesBack = DateUtils.getDateMinusFiveMinutes();

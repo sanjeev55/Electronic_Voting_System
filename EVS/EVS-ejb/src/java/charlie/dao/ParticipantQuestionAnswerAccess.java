@@ -55,7 +55,7 @@ public class ParticipantQuestionAnswerAccess extends AbstractAccess<ParticipantQ
     }
     
     public void deleteById(Integer id) {
-        em.createNativeQuery("deleteByParticipantQuestionAnswerById")
+        em.createNamedQuery("deleteByParticipantQuestionAnswerById")
                 .setParameter(1, id)
                 .executeUpdate();
     }

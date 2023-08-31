@@ -430,6 +430,7 @@ public class PollLogicImpl implements PollLogic {
        ppl.deleteByPoll(pollDto); 
        
        var participantResponses = pqaa.getParticipantQuestionAnswerIdsByPollId(pollId);
+        System.out.println("participantResponses: " + participantResponses);
        LOG.log(Level.INFO, "deleting participant responses with ids: " + participantResponses);
        if(participantResponses != null) {
            participantResponses.stream().forEach(resp -> pqaa.deleteById(resp));
