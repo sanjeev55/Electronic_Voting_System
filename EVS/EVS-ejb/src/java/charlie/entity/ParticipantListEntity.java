@@ -1,5 +1,6 @@
 package charlie.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
@@ -8,9 +9,9 @@ import javax.persistence.*;
     @NamedQuery(name = "findParticipantListByOrganizer", query="SELECT pl FROM ParticipantListEntity pl WHERE pl.organizer.id = :organizerId "),
     @NamedQuery(name = "deleteParicipantListByOrganizerId", query="DELETE FROM ParticipantListEntity pl WHERE pl.organizer.id = :organizerId")
 })
-public class ParticipantListEntity extends AbstractEntity {
+public class ParticipantListEntity extends AbstractEntity implements Serializable {
 
-    @Column(name = "name", unique=true)
+    @Column(name = "name")
     private String name;
 
     // This will store the list of unique email configured by organizers in json array format

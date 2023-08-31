@@ -46,17 +46,13 @@
                             <b:button id="editQuestionButton"
                                     icon="edit"
                                     outcome="editQuestionPage"
-                                    disabled="#{manageQuestionBean.getPollState(question.id) eq 'STARTED' 
-                                                or manageQuestionBean.getPollState(question.id) eq 'VOTING' 
-                                                or manageQuestionBean.getPollState(question.id) eq 'FINISHED'}">
+                                    rendered="#{manageQuestionBean.getPollState(question.id) eq 'PREPARED'}">
                                 <f:param name="questionId" value="#{question.id}"/>
                             </b:button>
                             <b:commandButton id="deleteQuestionButton"
                                     icon="trash"
                                     action="#{manageQuestionBean.deleteQuestion(question)}"
-                                    disabled="#{manageQuestionBean.getPollState(question.id) eq 'STARTED' 
-                                                or manageQuestionBean.getPollState(question.id) eq 'VOTING' 
-                                                or manageQuestionBean.getPollState(question.id) eq 'FINISHED'}"
+                                    rendered="#{manageQuestionBean.getPollState(question.id) eq 'PREPARED'}"
                                     update="manageQuestionForm">
                             </b:commandButton>
                         </b:dataTableColumn>

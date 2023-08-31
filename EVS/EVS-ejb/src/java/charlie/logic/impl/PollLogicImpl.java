@@ -17,6 +17,7 @@ import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
 import charlie.dto.PollParticipantDto;
 import charlie.dto.PollQuestionAnswerDto;
+import charlie.dto.QuestionDto;
 import charlie.entity.PollEntity;
 import charlie.entity.PollOwnerEntity;
 import charlie.entity.PollParticipantEntity;
@@ -25,6 +26,8 @@ import charlie.entity.UserEntity;
 import charlie.logic.PollLogic;
 import charlie.logic.PollOwnerLogic;
 import charlie.logic.PollParticipantLogic;
+import charlie.logic.QuestionAnswerChoiceLogic;
+import charlie.logic.QuestionLogic;
 import charlie.mapper.PollEntityMapper;
 import charlie.mapper.PollOwnerEntityMapper;
 import charlie.mapper.PollQuestionAnswerEntityMapper;
@@ -95,10 +98,18 @@ public class PollLogicImpl implements PollLogic {
     private PollParticipantLogic ppl;
     
     @EJB
+<<<<<<< HEAD
     private ParticipantQuestionAnswerAccess pqaa;
     
     @EJB
     private QuestionAnswerChoiceAccess qaca;
+=======
+    private QuestionLogic ql;
+    
+    @EJB
+    private QuestionAnswerChoiceLogic qacl;
+    
+>>>>>>> b9683dd (bug fixes)
 
     @Override
     public PollDto getPollById(int id) {
@@ -339,7 +350,9 @@ public class PollLogicImpl implements PollLogic {
     
     @Override
     public void deletePollAdmin(int pollId, String pollState) {
+
         this.deletePollInfo(pollId);
+
     }
 
     private List<String> getAllRecipientsForPoll(int pollId, PollDto pollDto) {

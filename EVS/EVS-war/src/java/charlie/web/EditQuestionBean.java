@@ -174,6 +174,7 @@ public class EditQuestionBean implements Serializable {
     public List<QuestionDto> getQuestionList(){
         PollDto poll = pl.getPollById(question.getPollId());
         List<QuestionDto> questionList = ql.getQuestionByPoll(poll);
+        questionList.remove(question);
         return questionList;
     }
     

@@ -80,6 +80,7 @@ public class QuestionManagerBean implements Serializable {
 
     public void addDynamicAnswer() {
         dynamicAnswers.add(new AnswerDto());
+        System.out.println("Dynamice answer add:" + dynamicAnswers);
     }
 
     public void removeDynamicAnswer(AnswerDto answer) {
@@ -94,6 +95,10 @@ public class QuestionManagerBean implements Serializable {
         try {
             if (isTitleUnique(questionInfo.getTitle())) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Question title already in use: " + questionInfo.getTitle(), null));
+            }
+            if(questionInfo.getType().equals(QuestionTypeEnum.SINGLE_CHOICE)){
+                questionInfo.setMultipleChoiceMax(1);
+                questionInfo.setMultipleChoiceMin(1);
             }
                 questionInfo.setPollId(pollDto.getId());
                 questionUuid = UUID.randomUUID().toString();
