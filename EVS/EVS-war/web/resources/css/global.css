@@ -7,13 +7,17 @@ body {
 
 /* Toggle Styles */
 
-#global-container {
-    position: relative;
-    left: 200px;
-    right: 10px;
-    bottom: 0;
-    top:0;
-}
+
 .container-fluid {
     flex:1;
+}
+
+#viewport {
+    padding: 0 80px;
+    margin-left: 100px;
+    padding-left: 100px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
