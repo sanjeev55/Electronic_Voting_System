@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+/* Toggle Styles */
+
+#global-container {
+    position: relative;
+    left: 200px;
+    right: 10px;
+    bottom: 0;
+    top:0;
+}
+.container-fluid {
+    flex:1;
+}
