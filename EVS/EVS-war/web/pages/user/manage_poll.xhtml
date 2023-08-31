@@ -7,11 +7,11 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <ui:param name="pageHeadline" value="${msg.loginPageHeadline}"/>
+    <ui:param name="pageHeadline" value="${msg.managePolls}"/>
     <ui:define name="content">
         <div class="container-fluid">
             <div class="d-flex justify-content-between">
-                <center><h4>Polls</h4></center>
+                <center><h4>${msg.managePolls}</h4></center>
                 <hr/>
                 <div>
                     <a class="btn btn-dark" href="#{request.contextPath}/pages/user/add_poll.xhtml"

@@ -119,7 +119,6 @@ public class PollLogicImpl implements PollLogic {
     }
 
     @Override
-    @RolesAllowed(STAFF_ROLE)
     public PollDto getPollForEdit(String uuid) {
         UserDto caller = ul.getCurrentUser();
         PollEntity pe = pollDao.getPollForEdit(uuid);
@@ -133,9 +132,15 @@ public class PollLogicImpl implements PollLogic {
         }
         return pollEntityMapper.toDto(pe);
     }
+    
+    @Override
+    public PollDto getPollByUuid(String uuid){
+        PollEntity pe = pollDao.getPollForEdit(uuid);
+        System.out.println("POll Entity" + pe);
+        return pollEntityMapper.toDto(pe);
+    }
 
     @Override
-    @RolesAllowed(STAFF_ROLE)
     public void updatePoll(PollDto pollDto) {
         System.out.println("PollDTO:" + pollDto);
         PollEntity pe = pollEntityMapper.toEntity(pollDto);
@@ -284,7 +289,6 @@ public class PollLogicImpl implements PollLogic {
     }
 
     @Override
-    @RolesAllowed(STAFF_ROLE)
     public Result<PollDto> getPollByUUID(String uuid) {
         PollEntity pe = pollDao.getPollForEdit(uuid);
         if (pe == null) {
@@ -310,7 +314,6 @@ public class PollLogicImpl implements PollLogic {
     }
 
     @Override
-    @RolesAllowed(STAFF_ROLE)
     public Result<?> addOrganizerToPoll(Integer pollId, Integer organizerId) {
         var poll = pollDao.find(pollId);
         if(poll == null)

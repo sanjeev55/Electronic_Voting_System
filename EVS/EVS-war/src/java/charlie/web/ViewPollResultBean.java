@@ -86,7 +86,7 @@ public class ViewPollResultBean implements Serializable {
         try {
             Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             String pollUuid = params.get("pollUuid");
-            pollDto = pl.getPollForEdit(pollUuid);
+            pollDto = pl.getPollByUuid(pollUuid);
         } catch (NumberFormatException e) {
             logger.log(Level.SEVERE, "Error parsing pollId", e);
         }
