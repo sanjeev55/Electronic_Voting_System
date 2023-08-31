@@ -65,8 +65,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">${msg.answerLabel} #{status.index + 1}</span>
                             </div>
-                            <b:inputText value="#{answer.shortName}" id="answer" name="answer" placeholder="${msg.enterAnswerPlaceholder}" required="true" />
-                             <h:message for="answer" class="text-danger mt-2"/>
+                            <b:inputText value="#{answer.shortName}" id="answer_#{status.index}" name="answer_#{status.index}" placeholder="${msg.enterAnswerPlaceholder}" required="true"/>
+                            <h:message for="answer_#{status.index}" class="text-danger mt-2"/>
                             <div class="input-group-append">
                                 <b:commandButton look="warning" icon="minus-sign" value="${msg.removeLabel}" action="#{questionManagerBean.removeDynamicAnswer(answer)}">
                                     <f:ajax render="addQuesion" />

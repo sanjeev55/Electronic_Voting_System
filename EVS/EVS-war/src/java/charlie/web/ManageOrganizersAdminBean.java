@@ -3,6 +3,7 @@ package charlie.web;
 import charlie.dto.PollDto;
 import charlie.dto.PollOwnerDto;
 import charlie.dto.UserDto;
+import charlie.entity.PollStateEnum;
 import charlie.logic.ParticipantListLogic;
 import charlie.logic.PollLogic;
 import charlie.logic.PollOwnerLogic;
@@ -70,7 +71,6 @@ public class ManageOrganizersAdminBean implements Serializable {
             List<PollOwnerDto> exclusivePolls = fetchExclusivePollsFor(userDto);
 
             pll.deleteByOrganizerId(organizerId);
-            pol.deleteAllByOrganizer(userDto);
 
             exclusivePolls.forEach(this::deleteExclusivePoll);
 
@@ -102,7 +102,7 @@ public class ManageOrganizersAdminBean implements Serializable {
     private void deleteExclusivePoll(PollOwnerDto pollOwner) {
         PollDto pollDto = pl.getPollById(pollOwner.getPollId());
         ppl.deleteByPoll(pollDto);
-        pl.deletePollbyPollId(pollDto);
+        pl.deletePollAdmin(pollDto.getId(), pollDto.getState().toString());
     }
 
     private void handleError(String userMessage, String logMessage) {

@@ -89,7 +89,7 @@
             <b:row class="topsep">
                 
                 <div class="col-md-3">
-                    <b:button value="${msg.editParticipantListLabel}" icon="edit" class="btn btn-primary" disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}" p:data-toggle="modal" p:data-target="#manageParticipantModal"/>
+                    <b:button value="${msg.editParticipantListLabel}" icon="edit" class="btn btn-primary" rendered="#{pollEditBean.pollDto.state eq 'PREPARED'}" p:data-toggle="modal" p:data-target="#manageParticipantModal"/>
                 </div> 
                 <div class="col-md-3">
                     <a href="add_organizers_to_poll.xhtml?poll_uuid=#{pollEditBean.pollUuid}" class="btn btn-default">
@@ -102,7 +102,7 @@
                                     look="info"
                                     outcome="addQuestionPage"
                                     value="${msg.addQuestionHeadline}"
-                                    disabled="#{pollEditBean.pollDto.state eq 'STARTED' or pollEditBean.pollDto.state eq 'VOTING'}">
+                                    rendered="#{pollEditBean.pollDto.state eq 'PREPARED'}">
                         <f:param name="pollId" value="#{pollEditBean.pollDto.id}"/>
                     </b:button>
                 </div>
