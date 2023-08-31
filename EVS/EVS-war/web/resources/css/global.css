@@ -8,7 +8,6 @@ body {
 /* Toggle Styles */
 
 #global-container {
-    display: flex;
     position: relative;
     left: 200px;
     right: 10px;
@@ -17,11 +16,4 @@ body {
 }
 .container-fluid {
     flex:1;
-}
-
-#viewport {
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
 }
